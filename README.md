@@ -2,5 +2,25 @@
 
 Basically Lisp but compiles into a type of bytecode like JRE and has interpreter.
 
-This will have more information but just jotting down information quickly while I
-can't work on this rn.
+- No null
+- Every statement has a return type
+- No void return type (Maybe)
+
+## EBNF
+
+This is a description of the language
+
+```ebnf
+file ::= statement*
+statement ::= '(' method_id parameters ')'
+method_id ::= (letter | '_')+
+parameters ::= ...
+```
+
+## Code Samples
+
+```text
+(printf "This is cool, %s\n" "name")
+(def name
+  (return "bob"))
+```
