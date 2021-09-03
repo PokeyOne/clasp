@@ -57,10 +57,34 @@ MapKey* create_map_key_o(void* value) {
   return result;
 }
 
+/**
+  Compare two keys. They are expected to be the same type; if they aren't the
+  same type, the return value is undefined.
+
+  if a<b then return negative number.
+  if a=b then return 0.
+  if a>b then return positive number.
+ */
+int compare_keys(MapKey a, MapKey b) {
+  switch(a.type) {
+  case STRING_KEY_TYPE:
+    return strcmp(a.raw_string_value, b.raw_string_value);
+  case INTEGER_KEY_TYPE:
+    return a - b;
+  default:
+    return 0;
+  }
+}
+
+int compare_elements(MapElement a, MapElement b) {
+  return compare_keys(a.key, b.key);
+}
+
 void map_put_in_slot(MapHashSlot* slot, MapElement element) {
   int i = 0;
 
   // TODO: while ele[i] < element, i++; then insert element and move the rest
+
 }
 
 void map_put(Map* map, MapKey key, MapValue value) {
