@@ -59,19 +59,25 @@ MapKey* create_map_key_o(void* value) {
 
 /**
   Compare two keys. They are expected to be the same type; if they aren't the
-  same type, the return value is undefined.
+  same type, the return value is 0.
 
   if a<b then return negative number.
   if a=b then return 0.
   if a>b then return positive number.
  */
 int compare_keys(MapKey a, MapKey b) {
+  if(a.type != b.type) {
+    fprintf(stderr, "[Map][compare_keys]The keys provided are not the same type\n");
+    return 0;
+  }
+
   switch(a.type) {
   case STRING_KEY_TYPE:
     return strcmp(a.raw_string_value, b.raw_string_value);
   case INTEGER_KEY_TYPE:
     return a - b;
   default:
+    fprintf(stderr, "[Map][compare_keys]The keys provided to compare_keys are not comparable\n");
     return 0;
   }
 }
