@@ -7,16 +7,13 @@
 #include <string.h>
 
 #define STRING_KEY_TYPE 0
-#define OBJECT_KEY_TYPE 1
-#define INTEGER_KEY_TYPE 2
+#define INTEGER_KEY_TYPE 1
 #define INITIAL_MAP_SIZE 300
 
 typedef struct {
-  // 0 = string, 1 = pointer, 2 = integer;
-  int type;
+  int type; // STRING_KEY_TYPE || INTEGER_KEY_TYPE
   char* raw_string_value;
   int raw_int_value;
-  void* raw_pointer_value;
   int hash;
 } MapKey;
 
@@ -44,7 +41,6 @@ typedef struct {
 
 MapKey* create_map_key_s(char* value);
 MapKey* create_map_key_i(int value);
-MapKey* create_map_key_o(void* value);
 
 Map* create_map();
 void map_put(Map* map, MapKey key, MapValue value);
