@@ -20,7 +20,20 @@ parameters ::= ...
 ## Code Samples
 
 ```text
-(printf "This is cool, %s\n" "name")
+(include standard_io)
+
 (def name
+  (returns char*)
   (return "bob"))
+
+(def name_with_args
+  (accept String name)
+  (returns char*)
+  (return (sprintf "%s" name)))
+
+(def main
+  (returns int)
+  (printf "This is cool, %s\n" (name))
+  (printf "but this is even cooler, %s\n" (name_with_args "boris"))
+  (return 0))
 ```
