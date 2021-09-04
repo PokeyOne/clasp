@@ -34,8 +34,8 @@ typedef struct {
 
 typedef struct {
   MapHashSlot* slots;
-  int count;
-  int capacity;
+  int count; // Number of total items inserted
+  int capacity; // Number of hash slots
   int key_type;
 } Map;
 
@@ -43,7 +43,10 @@ MapKey* create_map_key_s(char* value);
 MapKey* create_map_key_i(int value);
 
 Map* create_map();
-void map_put(Map* map, MapKey key, MapValue value);
+/**
+  Put a key-value pair into the map. Returns 0 if successful, 1 if failed.
+ */
+int map_put(Map* map, MapKey key, MapValue value);
 MapValue map_get(Map* map, MapKey key);
 void destroy_map(Map* map);
 

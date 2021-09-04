@@ -45,6 +45,15 @@ MapKey* create_map_key_i(int value) {
   return result;
 }
 
+MapElement* create_map_element(MapKey key, MapValue value) {
+  MapElement* result = (MapElement*) malloc(sizeof(MapElement));
+
+  result->key = key;
+  result->value = value;
+
+  return result;
+}
+
 /**
   Compare two keys. They are expected to be the same type; if they aren't the
   same type, the return value is 0.
@@ -118,8 +127,19 @@ void map_put_in_slot(MapHashSlot* slot, MapElement element) {
   slot->count++;
 }
 
-void map_put(Map* map, MapKey key, MapValue value) {
-  // TODO
+int map_put(Map* map, MapKey key, MapValue value) {
+  if(map->key_type != key.type) {
+    fprintf(stderr, "Cannot put key type %d into map type %d\n", key.type, map->key_type);
+    return 1;
+  }
+
+  map->count++;
+
+  MapElement* element = create_map_element(key, value);
+  map_put_in_slot(map->slots[key.hash], *element);
+  free(element);
+
+  return 0;
 }
 
 MapValue map_get(Map* map, MapKey key) {
