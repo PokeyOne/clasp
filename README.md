@@ -6,6 +6,14 @@ Basically Lisp but compiles into a type of bytecode like JRE and has interpreter
 - Every statement has a return type
 - No void return type (Maybe)
 
+## Documentation
+
+Currently documentation is light. Below is a list of documentation resources.
+
+1. [CLASM.md](CLASM.md): This file contains documentation on programming for the clasp virtual machine in assembly.
+
+more to come
+
 ## EBNF
 
 This is a description of the language
