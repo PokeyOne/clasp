@@ -3,9 +3,8 @@
 #include <stdint.h>
 #include "../common/file_util.h"
 #include "../common/buffer.h"
+#include "../common/instruction_codes.h"
 
-#define NOP_INSTR 0x00
-#define MOVE_INSTR 0x01
 #define SIGNATURE_SIZE 6 // C, L, A, S, P, <version byte>
 // Currently the only version byte is 0x00, but there should be more eventually
 
