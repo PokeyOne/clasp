@@ -1,16 +1,16 @@
 #include "map_type.h"
 
 // Private definitions
-int map_hash(MapKey key);
+int map_hash(MapKey key, int map_capacity);
 
 Map* create_map(int key_type) {
   Map* result = (Map*) malloc(sizeof(Map));
-  result->slots = (MapValue*) malloc(sizeof(MapKey) * INITIAL_MAP_SIZE);
+  result->slots = (MapHashSlot*) malloc(sizeof(MapHashSlot) * MAP_SIZE);
   result->count = 0;
-  result->capacity = INITIAL_MAP_SIZE;
+  result->capacity = MAP_SIZE;
   result->key_type = key_type;
 
-  for(int i = 0; i < INITIAL_MAP_SIZE; i++) {
+  for(int i = 0; i < MAP_SIZE; i++) {
     MapHashSlot slot;
     slot.capacity = 100;
     slot.count = 0;
@@ -27,8 +27,7 @@ MapKey* create_map_key_s(char* value) {
   result->type = STRING_KEY_TYPE;
   result->raw_string_value = value;
   result->raw_int_value = 0;
-  result->raw_pointer_value = NULL;
-  result->hash = map_hash(*result, INITIAL_MAP_CAPACITY);
+  result->hash = map_hash(*result, MAP_SIZE);
 
   return result;
 }
@@ -37,10 +36,9 @@ MapKey* create_map_key_i(int value) {
   MapKey* result = (MapKey*) malloc(sizeof(MapKey));
 
   result->type = INTEGER_KEY_TYPE;
-  result->raw_string_value = NULL;
+  result->raw_string_value = (char*) NULL;
   result->raw_int_value = value;
-  result->raw_pointer_value = NULL;
-  result->hash = map_hash(*result, INITIAL_MAP_CAPACITY);
+  result->hash = map_hash(*result, MAP_SIZE);
 
   return result;
 }
@@ -72,7 +70,7 @@ int compare_keys(MapKey a, MapKey b) {
   case STRING_KEY_TYPE:
     return strcmp(a.raw_string_value, b.raw_string_value);
   case INTEGER_KEY_TYPE:
-    return a - b;
+    return a.raw_int_value - b.raw_int_value;
   default:
     fprintf(stderr, "[Map][compare_keys]The keys provided to compare_keys are not comparable\n");
     return 0;
@@ -114,7 +112,7 @@ void map_put_in_slot(MapHashSlot* slot, MapElement element) {
   }
 
   // Temporary storage for moving things around
-  MapElement temp[] = {element, NULL};
+  MapElement temp[] = {element, element};
 
   while(i < slot->count) {
     temp[1] = slot->elements[i];
@@ -136,7 +134,7 @@ int map_put(Map* map, MapKey key, MapValue value) {
   map->count++;
 
   MapElement* element = create_map_element(key, value);
-  map_put_in_slot(map->slots[key.hash], *element);
+  map_put_in_slot(&(map->slots[key.hash]), *element);
   free(element);
 
   return 0;
@@ -144,15 +142,18 @@ int map_put(Map* map, MapKey key, MapValue value) {
 
 MapValue map_get(Map* map, MapKey key) {
   // TODO
+  MapValue result;
+
+  return result;
 }
 
 void destroy_map_hash_slot(MapHashSlot slot) {
-  free(slot->elements);
+  free(slot.elements);
 }
 
 void destroy_map(Map* map) {
   for(int i = 0; i < map->count; i++) {
-    destory_map_hash_slot(map->slots[i]);
+    destroy_map_hash_slot(map->slots[i]);
   }
   free(map->slots);
   free(map);

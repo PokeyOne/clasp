@@ -8,7 +8,7 @@
 
 #define STRING_KEY_TYPE 0
 #define INTEGER_KEY_TYPE 1
-#define INITIAL_MAP_SIZE 300
+#define MAP_SIZE 300
 
 typedef struct {
   int type; // STRING_KEY_TYPE || INTEGER_KEY_TYPE

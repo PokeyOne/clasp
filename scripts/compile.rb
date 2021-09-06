@@ -16,6 +16,10 @@ def compiler_directory
   File.join(source_directory, "compiler")
 end
 
+def runner_directory
+  File.join(source_directory, "runtime_environment")
+end
+
 def common_files
   source_files = Dir.glob(File.join(common_directory, "**", "*.c"))
   source_files << Dir.glob(File.join(common_directory, "**", "*.h"))
@@ -26,6 +30,13 @@ def compiler_source_files
   source_files = common_files
   source_files << Dir.glob(File.join(compiler_directory, "**", "*.c"))
   source_files << Dir.glob(File.join(compiler_directory, "**", "*.h"))
+  source_files.flatten!
+end
+
+def runner_source_files
+  source_files = common_files
+  source_files << Dir.glob(File.join(runner_directory, "**", "*.c"))
+  source_files << Dir.glob(File.join(runner_directory, "**", "*.h"))
   source_files.flatten!
 end
 
@@ -48,6 +59,7 @@ def compile_compiler
 end
 
 def compile_runner
+  compile_files(files: runner_source_files)
 end
 
 def show_help
