@@ -4,6 +4,7 @@
 #include "../common/file_util.h"
 #include "../common/buffer.h"
 #include "../common/instruction_codes.h"
+#include "../common/memory.h"
 
 #define SIGNATURE_SIZE 6 // C, L, A, S, P, <version byte>
 // Currently the only version byte is 0x00, but there should be more eventually
@@ -21,7 +22,8 @@ int verify_file(Buffer buffer) {
     buffer.buffer[5] == 0x00; // In the future the 6th byte will be version
 }
 
-int run_instruction(Buffer program, long* index, Buffer memory) {
+// TODO: This should take a memloc_t, not a long
+int run_instruction(Buffer program, long* index, Buffer memory, RegisterSet reg) {
   char instruction = program.buffer[*index];
 
   switch(instruction) {
@@ -31,11 +33,30 @@ int run_instruction(Buffer program, long* index, Buffer memory) {
   case MOVE_INSTR:
     // Create a new scope because variable declaration and label/scope stuff
     {
-      // 0 = raw value, 1 = pointer;
+      // The type of move instructions is actual 2 four bit numbers. The
+      // highest order one is the type of from value and the second is the type
+      // of destination value. 0 -> raw value, 1 -> register, 2 -> memloc
       char type = program.buffer[*index + 1];
+      char from_type = type & 0xF0;
+      char dest_type = type & 0x0F;
       uint32_t from = read_uint32(program, *index + 2);
       uint32_t dest = read_uint32(program, *index + 6);
-      printf("Completing move instruction with type %d, from %d to %d\n", type, from, dest);
+
+      uint32_t from_value;
+      switch(from_type) {
+      case 0: // raw
+        from_value = from;
+        break;
+      case 1: // register
+        from_value = read_register(reg, from);
+        break;
+      case 2: // memloc
+        from_value = read_uint32(memory, from);
+        break;
+      default:
+        fprintf(stderr, "Invalid move instructions. Unsupported from type %d\n", from_type);
+        break;
+      }
 
       if(type == 0) {
         write_uint32(memory, dest, from);
