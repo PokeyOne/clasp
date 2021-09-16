@@ -30,11 +30,12 @@ int verify_file(Buffer buffer) {
 int run_instruction(Program* program, Buffer memory) {
   program->program_counter++;
   // TODO: Implement instuctions
+
   return 0;
 }
 
 int run_sequence(Buffer program_buffer, Buffer memory) {
-  if(!verify_file(buffer)) {
+  if(!verify_file(program_buffer)) {
     return 300;
   }
 
@@ -74,5 +75,6 @@ int main(int argc, char* argv[]) {
 
   free_buffer(file_buffer);
   free_buffer(memory);
+
   return status;
 }
