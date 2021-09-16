@@ -19,7 +19,7 @@ Buffer create_manual_buffer(long size, byte* data);
 void free_buffer(Buffer buffer);
 void print_buffer(Buffer buffer);
 
-uint32_t read_uint32(Buffer buffer, long index);
+uint32_t read_uint32(Buffer buffer, memloc_t index);
 void write_uint32(Buffer memory, memloc_t index, uint32_t value);
 
 #endif
