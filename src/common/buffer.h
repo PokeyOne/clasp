@@ -7,13 +7,15 @@
 #include <ctype.h>
 #include "memory.h"
 
+typedef uint8_t byte;
+
 typedef struct {
-  char* buffer;
+  byte* buffer;
   long size;
 } Buffer;
 
 Buffer create_buffer(long size);
-Buffer create_manual_buffer(long size, char* data);
+Buffer create_manual_buffer(long size, byte* data);
 void free_buffer(Buffer buffer);
 void print_buffer(Buffer buffer);
 

@@ -3,12 +3,12 @@
 Buffer create_buffer(long size) {
   Buffer buffer;
   buffer.size = size;
-  buffer.buffer = (char*) malloc(sizeof(char) * size);
+  buffer.buffer = (byte*) malloc(sizeof(byte) * size);
 
   return buffer;
 }
 
-Buffer create_manual_buffer(long size, char* data) {
+Buffer create_manual_buffer(long size, byte* data) {
   Buffer buffer;
   buffer.size = size;
   buffer.buffer = data;
