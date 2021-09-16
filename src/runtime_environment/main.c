@@ -44,6 +44,8 @@ int run_sequence(Buffer program_buffer, Buffer memory) {
 
   while(program.program_counter < program.buffer.size) {
     int inst_status = run_instruction(&program, memory);
+
+    // TODO: If inst_status is not zero, set the "err" register to the value
   }
 
   return 0;
