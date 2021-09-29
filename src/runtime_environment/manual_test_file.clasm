@@ -1,6 +1,6 @@
 ;; This is a test file to demonstrate and thuroughly test the runtime
 ;; environment working.
 
-NOP
+NOP ;; This is a test
 MOV 1 ga ;; Move literal value '1' to the general 'ga' register
 MOV 'h' out ;; Move 'h' to the special 'out' register to be printed
