@@ -7,3 +7,13 @@ pub type Word = u64;
 /// An alias for the u8 type to signal when working with data
 pub type Byte = u8;
 pub type WordByteArray = [Byte; WORD_SIZE];
+
+pub enum Result<T> {
+    Ok(T),
+    Err(MemoryErrorType)
+}
+
+pub enum MemoryErrorType {
+    LocationOutOfBounds,
+    RegLocationNotAligned
+}

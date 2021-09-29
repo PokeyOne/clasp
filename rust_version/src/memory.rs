@@ -3,6 +3,7 @@ pub mod types;
 
 use constants::*;
 use types::*;
+use types::Result::*;
 use std::convert::TryInto;
 
 /// ByteCollection is a trait exclusively meant for the Word type to implement
@@ -19,12 +20,6 @@ trait ByteCollection {
 
 impl ByteCollection for Word {
     fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word {
-        // TODO: Pretty sure that this check is unnecessary because of the
-        //       type definition of the argument being size word_size.
-        if bytes.len() != WORD_SIZE {
-            panic!()
-        }
-
         let mut result: u64 = 0;
 
         for byte in bytes {
@@ -68,7 +63,7 @@ impl Memory {
         }
     }
 
-    pub fn read(&self, location: MemoryLocation) -> Word {
+    pub fn read(&self, location: MemoryLocation) -> Result<Word> {
         if location >= RMS {
             self.read_register(location)
         } else {
@@ -79,19 +74,20 @@ impl Memory {
                 bytes[i] = self.memory[i + location as usize];
             }
 
-            Word::from_bytes(&bytes)
+            let ans = Word::from_bytes(&bytes);
+            Ok(ans)
         }
     }
 
-    fn read_register(&self, location: MemoryLocation) -> Word {
+    fn read_register(&self, location: MemoryLocation) -> Result<Word> {
         if location % WORD_SIZE as u64 != 0 {
-            panic!() // TODO: Actually handle this. Some sort of RuntimeError type. Maybe a custom Result for runtime environment
+            return Err(MemoryErrorType::RegLocationNotAligned);
         }
 
         let index = (location - RMS) / WORD_SIZE as u64;
 
         // TODO: Also return error for out of bounds
-        self.registers[index as usize]
+        Ok(self.registers[index as usize])
     }
 }
 
