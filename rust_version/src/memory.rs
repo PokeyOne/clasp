@@ -85,6 +85,10 @@ impl Memory {
         if location >= RMS {
             self.read_register(location)
         } else {
+            if location > (self.memory.len() as u64) {
+                return Err(MemoryErrorType::LocationOutOfBounds);
+            }
+
             // Might be more efficient to store memory as words and
             // editing bytes takes longer, because words will be most common
             let mut bytes: WordByteArray = [0; WORD_SIZE];
@@ -111,11 +115,28 @@ impl Memory {
         Ok(self.registers[index as usize])
     }
 
-    pub fn write(&self, location: MemoryLocation, value: Word) -> Status {
-        Status::Err(MemoryErrorType::FunctionalityNotImplemented)
+    pub fn write(&mut self, location: MemoryLocation, value: Word) -> Status {
+        if !location.is_aligned() {
+            return Status::Err(MemoryErrorType::LocationNotAligned);
+        }
+
+        if location >= RMS {
+            self.write_register(location, value)
+        } else {
+            if location > (self.memory.len() as u64) {
+                return Status::Err(MemoryErrorType::LocationOutOfBounds);
+            }
+
+            let bytes: WordByteArray = value.get_bytes();
+            for i in 0..8 {
+                self.memory[(location + i) as usize] = bytes[i as usize];
+            }
+
+            Status::Ok
+        }
     }
 
-    fn write_register(&self, location: MemoryLocation, value: Word) -> Status {
+    fn write_register(&mut self, location: MemoryLocation, value: Word) -> Status {
         Status::Err(MemoryErrorType::FunctionalityNotImplemented)
     }
 }

@@ -24,3 +24,13 @@ pub enum Status {
     Ok,
     Err(MemoryErrorType)
 }
+
+pub trait Alignable {
+    fn is_aligned(&self) -> bool;
+}
+
+impl Alignable for MemoryLocation {
+    fn is_aligned(&self) -> bool {
+        self % 8 == 0
+    }
+}
