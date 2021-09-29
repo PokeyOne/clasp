@@ -22,8 +22,7 @@ impl ByteCollection for Word {
         let mut temp = self.clone();
         let mut result: Vec<Byte> = Vec::new();
 
-
-        // THis is going to require casting
+        // This is going to require casting
         result.push((temp % 256).try_into().unwrap());
         temp = temp >> 8;
         result.push((temp % 256).try_into().unwrap());
