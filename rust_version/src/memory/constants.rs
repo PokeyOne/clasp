@@ -61,3 +61,11 @@ pub const GX_LOC: MemoryLocation = RMS + (WORD_SIZE * 23) as u64;
 pub const GY_LOC: MemoryLocation = RMS + (WORD_SIZE * 24) as u64;
 #[allow(dead_code)]
 pub const GZ_LOC: MemoryLocation = RMS + (WORD_SIZE * 25) as u64;
+
+// TODO: OUT and IN registers. Out will be easiest; Both should be buffered and
+//       basically writing to out will just add to buffer until FLO instruction
+//       sent. There should also be a register to configure the functionality of
+//       the OUT register, such as what's described about, or a non-buffered
+//       version, or even a mode that allows direct location, but probably not
+//       because location complicated.
+
