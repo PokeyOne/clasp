@@ -169,4 +169,21 @@ mod tests {
             );
         }
     }
+
+    #[test]
+    fn initial_memory_should_be_zero_and_readable() {
+        let mut memory: Memory = Memory::new(1000); // 1kb
+
+        for i in 0..(1000-8) {
+            println!("{}", i);
+            let value: Word = match memory.read(i as MemoryLocation) {
+                Ok(value) => value,
+                Err(err_type) => {
+                    panic!();
+                }
+            };
+
+            assert_eq!(0, value);
+        }
+    }
 }
