@@ -3,8 +3,40 @@ use std::convert::TryInto;
 /// The number of bytes in a word
 const WORD_SIZE: usize = 8;
 
+const REGISTER_MEMORY_START: MemoryLocation = 0x8000_0000_0000_0000;
+const RMS: MemoryLocation = REGISTER_MEMORY_START;
+const GA_LOC: MemoryLocation = RMS + WORD_SIZE * 0;
+const GB_LOC: MemoryLocation = RMS + WORD_SIZE * 1;
+const GC_LOC: MemoryLocation = RMS + WORD_SIZE * 2;
+const GD_LOC: MemoryLocation = RMS + WORD_SIZE * 3;
+const GE_LOC: MemoryLocation = RMS + WORD_SIZE * 4;
+const GF_LOC: MemoryLocation = RMS + WORD_SIZE * 5;
+const GG_LOC: MemoryLocation = RMS + WORD_SIZE * 6;
+const GH_LOC: MemoryLocation = RMS + WORD_SIZE * 7;
+const GI_LOC: MemoryLocation = RMS + WORD_SIZE * 8;
+const GJ_LOC: MemoryLocation = RMS + WORD_SIZE * 9;
+const GK_LOC: MemoryLocation = RMS + WORD_SIZE * 10;
+const GL_LOC: MemoryLocation = RMS + WORD_SIZE * 11;
+const GM_LOC: MemoryLocation = RMS + WORD_SIZE * 12;
+const GN_LOC: MemoryLocation = RMS + WORD_SIZE * 13;
+const GO_LOC: MemoryLocation = RMS + WORD_SIZE * 14;
+const GP_LOC: MemoryLocation = RMS + WORD_SIZE * 15;
+const GQ_LOC: MemoryLocation = RMS + WORD_SIZE * 16;
+const GR_LOC: MemoryLocation = RMS + WORD_SIZE * 17;
+const GS_LOC: MemoryLocation = RMS + WORD_SIZE * 18;
+const GT_LOC: MemoryLocation = RMS + WORD_SIZE * 19;
+const GU_LOC: MemoryLocation = RMS + WORD_SIZE * 20;
+const GV_LOC: MemoryLocation = RMS + WORD_SIZE * 21;
+const GW_LOC: MemoryLocation = RMS + WORD_SIZE * 22;
+const GX_LOC: MemoryLocation = RMS + WORD_SIZE * 23;
+const GY_LOC: MemoryLocation = RMS + WORD_SIZE * 24;
+const GZ_LOC: MemoryLocation = RMS + WORD_SIZE * 25;
+
+/// Just an alias for word to be more descriptive when referring to a location
 pub type MemoryLocation = u64;
+/// The standard unit of the system == 8 bytes == 64 bit
 pub type Word = u64;
+/// An alias for the u8 type to signal when working with data
 pub type Byte = u8;
 
 /// ByteCollection is a trait exclusively meant for the Word type to implement
