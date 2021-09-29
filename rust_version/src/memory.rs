@@ -2,9 +2,9 @@ pub mod constants;
 pub mod types;
 
 use constants::*;
-use types::*;
-use types::Result::*;
 use std::convert::TryInto;
+use types::Result::*;
+use types::*;
 
 /// ByteCollection is a trait exclusively meant for the Word type to implement
 /// a couple useful functions/methods.
@@ -137,6 +137,7 @@ impl Memory {
     }
 
     fn write_register(&mut self, location: MemoryLocation, value: Word) -> Status {
+        // TODO
         Status::Err(MemoryErrorType::FunctionalityNotImplemented)
     }
 }
@@ -162,12 +163,9 @@ mod tests {
 
         for i in 0..8 {
             assert_eq!(
-                expected_bytes[i],
-                result[i],
+                expected_bytes[i], result[i],
                 "Byte {} should match, expected {:#X} -> got {:#X}",
-                i,
-                expected_bytes[i],
-                result[i]
+                i, expected_bytes[i], result[i]
             );
         }
     }

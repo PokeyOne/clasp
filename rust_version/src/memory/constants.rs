@@ -68,4 +68,3 @@ pub const GZ_LOC: MemoryLocation = RMS + (WORD_SIZE * 25) as u64;
 //       the OUT register, such as what's described about, or a non-buffered
 //       version, or even a mode that allows direct location, but probably not
 //       because location complicated.
-
