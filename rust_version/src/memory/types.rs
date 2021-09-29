@@ -15,5 +15,12 @@ pub enum Result<T> {
 
 pub enum MemoryErrorType {
     LocationOutOfBounds,
-    RegLocationNotAligned
+    RegLocationNotAligned,
+    LocationNotAligned,
+    FunctionalityNotImplemented
+}
+
+pub enum Status {
+    Ok,
+    Err(MemoryErrorType)
 }

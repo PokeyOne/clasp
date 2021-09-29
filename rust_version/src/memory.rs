@@ -86,8 +86,19 @@ impl Memory {
 
         let index = (location - RMS) / WORD_SIZE as u64;
 
-        // TODO: Also return error for out of bounds
+        if index > REGISTER_COUNT {
+            return Err(MemoryErrorType::LocationOutOfBounds);
+        }
+
         Ok(self.registers[index as usize])
+    }
+
+    pub fn write(&self, location: MemoryLocation, value: Word) -> Status {
+        Status::Err(MemoryErrorType::FunctionalityNotImplemented)
+    }
+
+    fn write_register(&self, location: MemoryLocation, value: Word) -> Status {
+        Status::Err(MemoryErrorType::FunctionalityNotImplemented)
     }
 }
 
