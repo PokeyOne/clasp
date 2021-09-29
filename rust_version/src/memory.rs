@@ -81,6 +81,10 @@ impl Memory {
         }
     }
 
+    pub fn size(&self) -> u64 {
+        self.memory_size
+    }
+
     pub fn read(&self, location: MemoryLocation) -> Result<Word> {
         if location >= RMS {
             self.read_register(location)
@@ -185,5 +189,7 @@ mod tests {
 
             assert_eq!(0, value);
         }
+
+        assert_eq!(memory.size(), 1000);
     }
 }
