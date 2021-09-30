@@ -192,4 +192,18 @@ mod tests {
 
         assert_eq!(memory.size(), 1000);
     }
+
+    #[test]
+    fn writing_to_memory() {
+        let mut memory: Memory = Memory::new(8);
+
+        memory.write(0, 0x3F);
+
+        assert_eq!(0x3F, match memory.read(0) {
+            Ok(value) => value,
+            Err(err_type) => {
+                panic!();
+            }
+        });
+    }
 }
