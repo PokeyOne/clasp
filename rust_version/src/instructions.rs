@@ -1,4 +1,5 @@
-use memory::types::{Word};
+use memory::types::{Word, MemoryLocation};
+use memory::Memory;
 use phf::phf_map;
 
 pub enum InstructionType {
@@ -31,4 +32,29 @@ pub static INSTRUCTION_CODES: phf::Map<InstructionType, Word> = phf_map! {
     MUL => 0x0000_0000_0000_0004,
     DIV => 0x0000_0000_0000_0005,
     POW => 0x0000_0000_0000_0006
+}
+
+mod instruction_providers {
+    static INSTRUCTION_FUNCTIONS: phf::Map<InstructionType, fn(&mut Memory, &mut MemoryLocation)> phf_map! {
+        NOP => nop_provider,
+        MOV => mov_provider,
+        ADD => add_provider
+    }
+
+    pub fn perform(inst: InstructionType, memory: &mut Memory, program_counter: &mut MemoryLocation) {
+        INSTRUCTION_FUNCTIONS.get(inst)(memory, program_counter);
+    }
+
+    fn nop_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
+        pc += 1;
+        return;
+    }
+
+    fn mov_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        return;
+    }
+
+    fn add_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        return;
+    }
 }
