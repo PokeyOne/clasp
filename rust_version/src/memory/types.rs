@@ -25,6 +25,7 @@ impl<T> Result<T> {
     }
 }
 
+#[derive(Debug)]
 pub enum MemoryErrorType {
     LocationOutOfBounds,
     RegLocationNotAligned,

@@ -206,4 +206,24 @@ mod tests {
             }
         });
     }
+
+    #[test]
+    fn writing_and_reading_to_register() {
+        let mut memory: Memory = Memory::new(16);
+
+        let test_value = 0x0123456789ABCDEF;
+        match memory.write(GA_LOC, test_value) {
+            Status::Ok => {},
+            Status::Err(err_type) => {
+                panic!("Could not write to memory with error: {:?}", err_type);
+            }
+        };
+
+        assert_eq!(test_value, match memory.read(GA_LOC) {
+            Ok(value) => value,
+            Err(err_type) => {
+                panic!();
+            }
+        });
+    }
 }
