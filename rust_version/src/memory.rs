@@ -141,8 +141,19 @@ impl Memory {
     }
 
     fn write_register(&mut self, location: MemoryLocation, value: Word) -> Status {
-        // TODO
-        Status::Err(MemoryErrorType::FunctionalityNotImplemented)
+        if !location.is_aligned() {
+            return Status::Err(MemoryErrorType::RegLocationNotAligned);
+        }
+
+        let index = (location - RMS) / WORD_SIZE as u64;
+
+        if index > REGISTER_COUNT {
+            return Status::Err(MemoryErrorType::LocationOutOfBounds);
+        }
+
+        self.registers[index as usize] = value;
+
+        Status::Ok
     }
 }
 
