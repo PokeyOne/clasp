@@ -1,4 +1,5 @@
 use memory::types::{Word, MemoryLocation};
+use memory::constants::*;
 use memory::Memory;
 use phf::phf_map;
 
@@ -38,7 +39,11 @@ mod instruction_providers {
     static INSTRUCTION_FUNCTIONS: phf::Map<InstructionType, fn(&mut Memory, &mut MemoryLocation)> phf_map! {
         NOP => nop_provider,
         MOV => mov_provider,
-        ADD => add_provider
+        ADD => add_provider,
+        SUB => sub_provider,
+        MUL => mul_provider,
+        DIV => div_provider,
+        POW => pow_provider
     }
 
     pub fn perform(inst: InstructionType, memory: &mut Memory, program_counter: &mut MemoryLocation) {
@@ -46,15 +51,37 @@ mod instruction_providers {
     }
 
     fn nop_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-        pc += 1;
+        pc += WORD_SIZE;
         return;
     }
 
     fn mov_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
         return;
     }
 
     fn add_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
+        return;
+    }
+
+    fn sub_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
+        return;
+    }
+
+    fn mul_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
+        return;
+    }
+
+    fn div_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
+        return;
+    }
+
+    fn pow_provider(_mem: &mut Memory, _pc: &mut MemoryLocation) {
+        pc += WORD_SIZE;
         return;
     }
 }
