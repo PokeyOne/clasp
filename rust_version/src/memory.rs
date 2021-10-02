@@ -81,8 +81,12 @@ impl Memory {
         }
     }
 
-    pub fn size(&self) -> u64 {
-        self.memory_size
+    pub fn len(&self) -> usize {
+        self.size()
+    }
+
+    pub fn size(&self) -> usize {
+        self.memory_size.try_into().unwrap()
     }
 
     pub fn read(&self, location: MemoryLocation) -> Result<Word> {
