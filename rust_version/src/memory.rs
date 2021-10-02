@@ -193,7 +193,7 @@ mod tests {
     fn initial_memory_should_be_zero_and_readable() {
         let mut memory: Memory = Memory::new(1000); // 1kb
 
-        for i in 0..(1000-8) {
+        for i in 0..(1000 - 8) {
             println!("{}", i);
             let value: Word = match memory.read(i as MemoryLocation) {
                 Ok(value) => value,
@@ -214,12 +214,15 @@ mod tests {
 
         memory.write(0, 0x3F);
 
-        assert_eq!(0x3F, match memory.read(0) {
-            Ok(value) => value,
-            Err(err_type) => {
-                panic!();
+        assert_eq!(
+            0x3F,
+            match memory.read(0) {
+                Ok(value) => value,
+                Err(err_type) => {
+                    panic!();
+                }
             }
-        });
+        );
     }
 
     #[test]
@@ -228,17 +231,20 @@ mod tests {
 
         let test_value = 0x0123456789ABCDEF;
         match memory.write(GA_LOC, test_value) {
-            Status::Ok => {},
+            Status::Ok => {}
             Status::Err(err_type) => {
                 panic!("Could not write to memory with error: {:?}", err_type);
             }
         };
 
-        assert_eq!(test_value, match memory.read(GA_LOC) {
-            Ok(value) => value,
-            Err(err_type) => {
-                panic!();
+        assert_eq!(
+            test_value,
+            match memory.read(GA_LOC) {
+                Ok(value) => value,
+                Err(err_type) => {
+                    panic!();
+                }
             }
-        });
+        );
     }
 }

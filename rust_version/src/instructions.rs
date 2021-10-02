@@ -1,5 +1,5 @@
-use crate::memory::types::{Word, MemoryLocation};
 use crate::memory::constants::*;
+use crate::memory::types::{MemoryLocation, Word};
 use crate::memory::Memory;
 use phf::phf_map;
 
@@ -41,7 +41,9 @@ mod instruction_providers {
     };
 
     pub fn perform(inst: u64, memory: &mut Memory, program_counter: &mut MemoryLocation) {
-        let method: &InstructionProvider = INSTRUCTION_FUNCTIONS.get(&inst).expect("Unimplemented instruction");
+        let method: &InstructionProvider = INSTRUCTION_FUNCTIONS
+            .get(&inst)
+            .expect("Unimplemented instruction");
         method(memory, program_counter);
     }
 

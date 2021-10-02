@@ -1,11 +1,11 @@
+use crate::memory::types::{Byte, MemoryLocation};
 use crate::memory::Memory;
-use crate::memory::types::{MemoryLocation, Byte};
 
-use std::io::prelude::*;
-use std::io;
 use ascii;
-use std::fs;
 use ascii::AsciiChar;
+use std::fs;
+use std::io;
+use std::io::prelude::*;
 
 pub enum ClaspIOError {
     StandardIOError(io::Error),
@@ -30,7 +30,11 @@ const CCLASP_SIGNATURE: [Byte; 6] = [
     0x00u8
 ];
 
-pub fn read_cclasp_binary_into_memory(memory: &Memory, address: MemoryLocation, path: &str) -> Result<usize, ClaspIOError> {
+pub fn read_cclasp_binary_into_memory(
+    memory: &Memory,
+    address: MemoryLocation,
+    path: &str
+) -> Result<usize, ClaspIOError> {
     let data = fs::read(path)?;
 
     if data.len() > memory.len() {
