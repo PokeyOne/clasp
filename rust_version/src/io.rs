@@ -5,7 +5,7 @@ use ascii;
 use ascii::AsciiChar;
 use std::fs;
 use std::io;
-use std::io::prelude::*;
+//use std::io::prelude::*;
 
 pub enum ClaspIOError {
     StandardIOError(io::Error),
@@ -31,7 +31,7 @@ const CCLASP_SIGNATURE: [Byte; 6] = [
 ];
 
 pub fn read_cclasp_binary_into_memory(
-    memory: &Memory,
+    memory: &mut Memory,
     address: MemoryLocation,
     path: &str
 ) -> Result<usize, ClaspIOError> {
@@ -41,6 +41,9 @@ pub fn read_cclasp_binary_into_memory(
         return Err(ClaspIOError::MemoryTooSmall);
     }
 
+    if CCLASP_SIGNATURE.len() > data.len() {
+        return Err(ClaspIOError::MissingSignature);
+    }
     for i in 0..(CCLASP_SIGNATURE.len()) {
         if data[i] != CCLASP_SIGNATURE[i] {
             return Err(ClaspIOError::MissingSignature);
