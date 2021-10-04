@@ -5,12 +5,12 @@ use ascii;
 use ascii::AsciiChar;
 use std::fs;
 use std::io;
-//use std::io::prelude::*;
 
 pub enum ClaspIOError {
     StandardIOError(io::Error),
     MemoryTooSmall,
     MissingSignature,
+    #[allow(dead_code)]
     UnimplementedFeature
 }
 

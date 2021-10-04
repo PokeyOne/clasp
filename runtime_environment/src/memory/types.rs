@@ -13,24 +13,13 @@ pub enum Result<T> {
     Err(MemoryErrorType)
 }
 
-impl<T> Result<T> {
-    pub fn expect(&self, msg: &str) -> &T {
-        match self {
-            Result::Ok(t) => t,
-            Result::Err(t) => {
-                println!("{}", msg);
-                panic!();
-            }
-        }
-    }
-}
-
 #[derive(Debug)]
 pub enum MemoryErrorType {
     LocationOutOfBounds,
     RegLocationNotAligned,
     LocationNotAligned,
     CannotWriteArrayToRegister,
+    #[allow(dead_code)]
     FunctionalityNotImplemented
 }
 
