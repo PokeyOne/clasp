@@ -1,2 +1,9 @@
 build
 *.gch
+*.out
+*.o
+build
+*.gch
+target
+.#*
+.DS_Store
