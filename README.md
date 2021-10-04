@@ -6,6 +6,17 @@ Basically Lisp but compiles into a type of bytecode like JRE and has interpreter
 - Every statement has a return type
 - No void return type (Maybe)
 
+The project is built using Rust and Rust's package manager, Cargo, and is
+divided into three components.
+
+- **Runtime Environment**: The runner for the compiled clasp.
+- **Clasm Compiler**: The program that compiles the Clasm code into a compiled `.cclasp` file that the interpreter can run.
+- **Clasp Compiler**: The program that compiles the Clasp code to Clasm.
+
+The base of the project is a cargo workspace, and each of the three components
+is a cargo project. All the standard cargo commands work in terms of building
+and running the project.
+
 ## Documentation
 
 Currently documentation is light. Below is a list of documentation resources.
