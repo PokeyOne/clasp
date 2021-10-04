@@ -5,7 +5,7 @@ mod memory;
 use std::env;
 
 use io::ClaspIOError::*;
-use memory::types::{MemoryLocation};
+use memory::types::MemoryLocation;
 use memory::Memory;
 
 fn main() {
