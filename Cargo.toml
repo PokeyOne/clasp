@@ -2,5 +2,6 @@
 
 members = [
     "runtime_environment",
-    "clasm_compiler"
+    "clasm_compiler",
+    "clasp_common"
 ]
