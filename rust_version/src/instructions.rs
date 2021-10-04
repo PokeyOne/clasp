@@ -3,6 +3,10 @@ use crate::memory::types::{MemoryLocation, Word};
 use crate::memory::Memory;
 use phf::phf_map;
 
+// Rexport perform function
+pub use instruction_providers::perform;
+
+#[derive(Debug)]
 pub enum InstructionType {
     NOP,
     MOV,
@@ -10,9 +14,9 @@ pub enum InstructionType {
     SUB,
     MUL,
     DIV,
-    POW
+    POW,
+    END
 }
-
 use InstructionType::*;
 
 pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
@@ -22,8 +26,10 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0003u64 => SUB,
     0x0000_0000_0000_0004u64 => MUL,
     0x0000_0000_0000_0005u64 => DIV,
-    0x0000_0000_0000_0006u64 => POW
+    0x0000_0000_0000_0006u64 => POW,
+    0x0000_0000_0000_0007u64 => END
 };
+
 
 mod instruction_providers {
     use super::*;
@@ -37,10 +43,12 @@ mod instruction_providers {
         3u64 => sub_provider,
         4u64 => mul_provider,
         5u64 => div_provider,
-        6u64 => pow_provider
+        6u64 => pow_provider,
+        7u64 => end_provider
     };
 
     pub fn perform(inst: u64, memory: &mut Memory, program_counter: &mut MemoryLocation) {
+        println!("Running instruction {:?}", INSTRUCTIONS.get(&inst));
         let method: &InstructionProvider = INSTRUCTION_FUNCTIONS
             .get(&inst)
             .expect("Unimplemented instruction");
@@ -84,6 +92,11 @@ mod instruction_providers {
 
     fn pow_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
         *pc += WORD_SIZE as u64;
+        return;
+    }
+
+    fn end_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
+        *pc = 0xFFFF_FFFF_FFFF_FFFFu64;
         return;
     }
 }

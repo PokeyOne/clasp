@@ -93,7 +93,7 @@ impl Memory {
         if location >= RMS {
             self.read_register(location)
         } else {
-            if location > (self.memory.len() as u64) {
+            if location + 8 > (self.memory.len() as u64) {
                 return Err(MemoryErrorType::LocationOutOfBounds);
             }
 
@@ -121,6 +121,22 @@ impl Memory {
         }
 
         Ok(self.registers[index as usize])
+    }
+
+    pub fn writes(&mut self, location: MemoryLocation, value: &[u8]) -> Status {
+        if location >= RMS {
+            return Status::Err(MemoryErrorType::CannotWriteArrayToRegister);
+        }
+
+        // If the bytes to write would go out of bounds, then return error
+        if location + (value.len() as u64) > (self.memory.len() as u64) {
+            return Status::Err(MemoryErrorType::LocationOutOfBounds);
+        }
+
+        for i in 0..(value.len()) {
+            self.memory[location as usize + i] = value[i];
+        }
+        Status::Ok
     }
 
     pub fn write(&mut self, location: MemoryLocation, value: Word) -> Status {

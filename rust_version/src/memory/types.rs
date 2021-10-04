@@ -30,6 +30,7 @@ pub enum MemoryErrorType {
     LocationOutOfBounds,
     RegLocationNotAligned,
     LocationNotAligned,
+    CannotWriteArrayToRegister,
     FunctionalityNotImplemented
 }
 

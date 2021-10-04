@@ -6,7 +6,7 @@ use std::env;
 
 use io::ClaspIOError;
 use io::ClaspIOError::*;
-use memory::types::MemoryLocation;
+use memory::types::{MemoryLocation, MemoryErrorType};
 use memory::Memory;
 
 fn main() {
@@ -34,6 +34,20 @@ fn main() {
                 "The cclasp file you tried to run contains features that are not yet implemented"
             ),
             StandardIOError(err) => panic!("IO Error occurred while opening file: {:?}", err)
+        }
+    }
+
+    loop {
+        let inst = match memory.read(program_counter) {
+            memory::types::Result::Ok(val) => val,
+            memory::types::Result::Err(t) => panic!("Instruction read error: {:?}", t)
+        };
+
+        println!("Evaluating instruction {:X}", inst);
+        instructions::perform(inst, &mut memory, &mut program_counter);
+
+        if program_counter == 0xFFFF_FFFF_FFFF_FFFFu64 {
+            break;
         }
     }
 
