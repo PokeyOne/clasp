@@ -1,8 +1,8 @@
 use crate::memory::constants::*;
-use crate::memory::types::{MemoryLocation, Word};
-use crate::memory::Memory;
 use crate::memory::types::Result as MemoryResult;
 use crate::memory::types::Status as MemoryStatus;
+use crate::memory::types::{MemoryLocation, Word};
+use crate::memory::Memory;
 use phf::phf_map;
 
 // Rexport perform function
@@ -31,7 +31,6 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0006u64 => POW,
     0x0000_0000_0000_0007u64 => END
 };
-
 
 mod instruction_providers {
     use super::*;
@@ -73,7 +72,10 @@ mod instruction_providers {
         *pc += WORD_SIZE as u64;
         let source_value: Word = match (*mem).read(source_location) {
             MemoryResult::Ok(val) => val,
-            MemoryResult::Err(t) => panic!("Could not read move instruction source value word due to memory error type: {:?}", t)
+            MemoryResult::Err(t) => panic!(
+                "Could not read move instruction source value word due to memory error type: {:?}",
+                t
+            )
         };
 
         let destination_location: Word = match (*mem).read((*pc).clone()) {
@@ -84,12 +86,10 @@ mod instruction_providers {
 
         println!(
             "About to move {:016X} from {:016X} to {:016X}",
-            source_value,
-            source_location,
-            destination_location
+            source_value, source_location, destination_location
         );
         match (*mem).write(destination_location, source_value) {
-            MemoryStatus::Ok => {},
+            MemoryStatus::Ok => {}
             MemoryStatus::Err(t) => panic!("Moving data to memory threw error: {:?}", t)
         };
         return;

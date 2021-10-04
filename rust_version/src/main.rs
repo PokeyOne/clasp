@@ -6,7 +6,7 @@ use std::env;
 
 use io::ClaspIOError;
 use io::ClaspIOError::*;
-use memory::types::{MemoryLocation, MemoryErrorType};
+use memory::types::{MemoryErrorType, MemoryLocation};
 use memory::Memory;
 
 fn main() {

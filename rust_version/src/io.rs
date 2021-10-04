@@ -60,7 +60,10 @@ pub fn read_cclasp_binary_into_memory(
 
     memory.writes(address, &data[(CCLASP_SIGNATURE.len())..data.len()]);
 
-    println!("Loaded into memory: {:?}", &data[(CCLASP_SIGNATURE.len())..data.len()]);
+    println!(
+        "Loaded into memory: {:?}",
+        &data[(CCLASP_SIGNATURE.len())..data.len()]
+    );
 
     return Ok(data.len() - (CCLASP_SIGNATURE.len()));
 }
