@@ -9,11 +9,11 @@ type InstructionProvider = fn(&mut Memory, &mut MemoryLocation);
 static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
     0u64 => general::nop_provider,
     1u64 => mov_provider,
-    2u64 => add_provider,
-    3u64 => sub_provider,
-    4u64 => mul_provider,
-    5u64 => div_provider,
-    6u64 => pow_provider,
+    2u64 => math::add_provider,
+    3u64 => math::sub_provider,
+    4u64 => math::mul_provider,
+    5u64 => math::div_provider,
+    6u64 => math::pow_provider,
     7u64 => general::end_provider
 };
 
@@ -64,29 +64,3 @@ fn mov_provider(mem: &mut Memory, pc: &mut MemoryLocation) {
     };
     return;
 }
-
-fn add_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
-}
-
-fn sub_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
-}
-
-fn mul_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
-}
-
-fn div_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
-}
-
-fn pow_provider(_mem: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
-}
-
