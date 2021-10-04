@@ -180,7 +180,7 @@ impl Memory {
         for i in 0..self.memory.len() {
             if i % 8 == 0 {
                 print!("\n{:016X} | ", i);
-            } else if i+1 % 4 == 0 {
+            } else if i + 1 % 4 == 0 {
                 print!(" ");
             }
 
