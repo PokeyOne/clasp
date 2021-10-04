@@ -51,5 +51,6 @@ fn main() {
         }
     }
 
+    memory.debug_dump();
     println!("Hello, world!");
 }

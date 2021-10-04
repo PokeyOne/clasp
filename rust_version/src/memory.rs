@@ -175,6 +175,20 @@ impl Memory {
 
         Status::Ok
     }
+
+    pub fn debug_dump(&mut self) {
+        for i in 0..self.memory.len() {
+            if i % 8 == 0 {
+                print!("\n{:016X} | ", i);
+            } else if i+1 % 4 == 0 {
+                print!(" ");
+            }
+
+            print!("{:02X} ", self.memory[i]);
+        }
+
+        println!("");
+    }
 }
 
 #[cfg(test)]
