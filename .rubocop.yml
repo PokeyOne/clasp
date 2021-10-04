@@ -1,9 +1,0 @@
-Style/StringLiterals:
-  Enabled: true
-  EnforcedStyle: double_quotes
-Style/EmptyMethod:
-  EnforcedStyle: expanded
-Style/FormatString:
-  EnforcedStyle: sprintf
-Style/FormatStringToken:
-  EnforcedStyle: unannotated
