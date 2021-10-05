@@ -9,6 +9,7 @@ use phf::phf_map;
 mod instruction_providers;
 pub use instruction_providers::perform;
 
+// TODO: These have been copied to clasp_common::instruction_constants
 #[derive(Debug)]
 pub enum InstructionType {
     NOP,

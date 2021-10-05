@@ -1,5 +1,7 @@
 use super::constants::*;
 
+// TODO: These definitions have been copied to clasp_common::data_types
+//       Remove these and change all references to use those;
 /// Just an alias for word to be more descriptive when referring to a location
 pub type MemoryLocation = u64;
 /// The standard unit of the system == 8 bytes == 64 bit

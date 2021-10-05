@@ -6,6 +6,7 @@ use std::convert::TryInto;
 use types::Result::*;
 use types::*;
 
+// TODO: This has been re-implemented in common file, delete these and update refs
 /// ByteCollection is a trait exclusively meant for the Word type to implement
 /// a couple useful functions/methods.
 ///

@@ -1,6 +1,4 @@
-use super::types::*;
-
-// TODO: All of this moved to clasp_common
+use super::data_types::*;
 
 /// The number of bytes in a word
 pub const WORD_SIZE: usize = 8;
