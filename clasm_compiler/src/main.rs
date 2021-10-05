@@ -4,6 +4,11 @@ use clasp_common::data_types::{Word, ByteCollection};
 use clasp_common::instruction_constants::instruction_codes::*;
 use hex;
 
+#[derive(Debug)]
+enum OpProcessError {
+    WrongNumberOfArguments(String)
+}
+
 #[derive(Debug, PartialEq, Eq)]
 enum ArgType {
     Literal,
@@ -52,17 +57,19 @@ fn process_arg(val: &str) -> Option<Argument> {
     return None;
 }
 
-fn nop_process(words: Vec<&str>) {
+fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("nop: {:?}", &words);
 
     if words.len() > 1 {
-        panic!("Syntax error, unexpected arguments for nop instruction");
+        return Err(OpProcessError::WrongNumberOfArguments("Syntax error, unexpected arguments for nop instruction".to_string()));
     }
+
+    Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8])
 }
 
 // TODO Return u8 array to add to buffer
 // TODO: Return should be Result<Vec<u8>, String>
-fn mov_process(words: Vec<&str>) {
+fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("mov: {:?}", &words);
 
     if words.len() != 3 {
@@ -91,6 +98,8 @@ fn mov_process(words: Vec<&str>) {
     resulting_byte_code.append(&mut destination_arg.value.to_bytes().to_vec());
 
     println!("mov bytes: {:?}", &resulting_byte_code);
+
+    Ok(resulting_byte_code)
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -102,6 +111,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let file_content = fs::read_to_string(&args[1])?;
+
+    let mut resulting_byte_code: Vec<u8> = Vec::new();
+    // TODO: put the file signature here first;
 
     let mut line_index = 0;
     for line in file_content.lines() {
@@ -123,12 +135,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             important_words.push(trimmed);
         }
 
-        match important_words[0] {
+        let byte_code_result = match important_words[0] {
             "nop" => nop_process(important_words),
             "mov" => mov_process(important_words),
             _ => panic!("Syntax error, unexpected instruction at line {}", line_index)
-        }
+        };
+
+        let mut byte_code = match byte_code_result {
+            Ok(val) => val,
+            Err(err) => panic!("line {}: {:?}", line_index, err)
+        };
+
+        resulting_byte_code.append(&mut byte_code);
     }
+
+    println!("Compiled to {} raw bytes: {:?}", resulting_byte_code.len(), resulting_byte_code);
 
     return Ok(());
 }
