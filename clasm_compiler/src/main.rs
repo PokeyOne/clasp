@@ -117,12 +117,14 @@ fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    // TODO: Command line arguments for things like output file location
     let args: Vec<String> = env::args().collect();
     let pargs: Vec<CLArg> = command_line::process_args();
     for parg in pargs {
         println!("Parg: {:?}", parg);
     }
+    // TODO: Use the pargs to get things like output file location
+
+    let output_file_location = "./a.out";
 
     if args.len() != 2 {
         panic!("Expected command with only one argument with the path of the clasm source file");
