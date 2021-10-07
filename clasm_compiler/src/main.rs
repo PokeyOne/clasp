@@ -1,8 +1,10 @@
-use std::env;
-use std::fs;
-use clasp_common::data_types::{Word, ByteCollection};
+use clasp_common::command_line;
+use clasp_common::command_line::CLArg;
+use clasp_common::data_types::{ByteCollection, Word};
 use clasp_common::instruction_constants::instruction_codes::*;
 use hex;
+use std::env;
+use std::fs;
 
 #[derive(Debug)]
 enum OpProcessError {
@@ -23,7 +25,10 @@ struct Argument {
 
 impl Argument {
     fn new(arg_type: ArgType, value: u64) -> Argument {
-        Argument { arg_type: arg_type, value: value }
+        Argument {
+            arg_type: arg_type,
+            value: value
+        }
     }
 }
 
@@ -32,7 +37,7 @@ fn process_arg(val: &str) -> Option<Argument> {
     if val.chars().nth(0)? == '(' && val.chars().nth(val.len() - 1)? == ')' {
         // Recursively get this method to process the inside value and then
         // return it with the type swapped to literal
-        return match process_arg(&val[1..(val.len()-1)]) {
+        return match process_arg(&val[1..(val.len() - 1)]) {
             Some(val) => Some(Argument::new(ArgType::Literal, val.value)),
             None => None
         };
@@ -61,7 +66,9 @@ fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("nop: {:?}", &words);
 
     if words.len() > 1 {
-        return Err(OpProcessError::WrongNumberOfArguments("Syntax error, unexpected arguments for nop instruction".to_string()));
+        return Err(OpProcessError::WrongNumberOfArguments(
+            "Syntax error, unexpected arguments for nop instruction".to_string()
+        ));
     }
 
     Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8])
@@ -73,7 +80,10 @@ fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("mov: {:?}", &words);
 
     if words.len() != 3 {
-        panic!("Syntax error, expected 2 arguments on mov instruction, found {}", words.len()-1);
+        panic!(
+            "Syntax error, expected 2 arguments on mov instruction, found {}",
+            words.len() - 1
+        );
     }
 
     let origin_arg: Argument = match process_arg(words[1]) {
@@ -91,7 +101,11 @@ fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
 
     let mut resulting_byte_code: Vec<u8> = Vec::new();
 
-    let op_code = if origin_arg.arg_type == ArgType::Address { MOV_CODE } else { MOVR_CODE };
+    let op_code = if origin_arg.arg_type == ArgType::Address {
+        MOV_CODE
+    } else {
+        MOVR_CODE
+    };
     resulting_byte_code.append(&mut op_code.to_bytes().to_vec());
 
     resulting_byte_code.append(&mut origin_arg.value.to_bytes().to_vec());
@@ -105,6 +119,10 @@ fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO: Command line arguments for things like output file location
     let args: Vec<String> = env::args().collect();
+    let pargs: Vec<CLArg> = command_line::process_args();
+    for parg in pargs {
+        println!("Parg: {:?}", parg);
+    }
 
     if args.len() != 2 {
         panic!("Expected command with only one argument with the path of the clasm source file");
@@ -138,7 +156,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let byte_code_result = match important_words[0] {
             "nop" => nop_process(important_words),
             "mov" => mov_process(important_words),
-            _ => panic!("Syntax error, unexpected instruction at line {}", line_index)
+            _ => panic!(
+                "Syntax error, unexpected instruction at line {}",
+                line_index
+            )
         };
 
         let mut byte_code = match byte_code_result {
@@ -149,7 +170,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.append(&mut byte_code);
     }
 
-    println!("Compiled to {} raw bytes: {:?}", resulting_byte_code.len(), resulting_byte_code);
+    println!(
+        "Compiled to {} raw bytes: {:?}",
+        resulting_byte_code.len(),
+        resulting_byte_code
+    );
 
     return Ok(());
 }

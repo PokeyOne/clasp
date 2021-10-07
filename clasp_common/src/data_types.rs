@@ -1,5 +1,5 @@
-use std::convert::TryInto;
 use super::data_constants::WORD_SIZE;
+use std::convert::TryInto;
 
 /// Just an alias for word to be more descriptive when referring to a location
 pub type MemoryLocation = u64;
@@ -69,4 +69,3 @@ impl ByteCollection for Word {
         result
     }
 }
-
