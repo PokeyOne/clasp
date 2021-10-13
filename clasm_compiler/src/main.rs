@@ -142,9 +142,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     let file_content = fs::read_to_string(&input_path)?;
-
     let mut resulting_byte_code: Vec<u8> = Vec::new();
 
+    // Append the clasp file signature to the data buffer
     for sig_byte in clasp_common::io::CCLASP_SIGNATURE {
         resulting_byte_code.push(sig_byte);
     }
@@ -191,6 +191,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.len(),
         resulting_byte_code
     );
+
+    match clasp_common::io::write_binary_file(resulting_byte_code, &output_file_location) {
+        Ok(_) => println!("Successfully wrote to file {}", &output_file_location),
+        Err(e) => panic!("{:?}", e)
+    };
 
     return Ok(());
 }
