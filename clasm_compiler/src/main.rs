@@ -117,23 +117,37 @@ fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let args: Vec<String> = env::args().collect();
     let pargs: Vec<CLArg> = command_line::process_args();
+    let mut output_file_location: String = "./a.out".to_string();
+    let mut input_path: String = String::new();
+
     for parg in pargs {
-        println!("Parg: {:?}", parg);
+        println!("arugment: {:?}", parg);
+        if parg.is_anonymous() {
+            input_path = parg.value;
+        } else {
+            match parg.name {
+                None => {},
+                Some(n) => {
+                    if n == "--output" || n == "-o" {
+                        output_file_location = parg.value;
+                    }
+                }
+            }
+        }
     }
-    // TODO: Use the pargs to get things like output file location
 
-    let output_file_location = "./a.out";
-
-    if args.len() != 2 {
-        panic!("Expected command with only one argument with the path of the clasm source file");
+    if input_path == "" {
+        panic!("Must suply input path");
     }
 
-    let file_content = fs::read_to_string(&args[1])?;
+    let file_content = fs::read_to_string(&input_path)?;
 
     let mut resulting_byte_code: Vec<u8> = Vec::new();
-    // TODO: put the file signature here first;
+
+    for sig_byte in clasp_common::io::CCLASP_SIGNATURE {
+        resulting_byte_code.push(sig_byte);
+    }
 
     let mut line_index = 0;
     for line in file_content.lines() {

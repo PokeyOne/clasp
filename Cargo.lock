@@ -26,6 +26,7 @@ dependencies = [
 name = "clasp_common"
 version = "0.1.0"
 dependencies = [
+ "ascii",
  "phf",
 ]
 
@@ -34,6 +35,7 @@ name = "clasp_runtime_environment"
 version = "0.1.0"
 dependencies = [
  "ascii",
+ "clasp_common",
  "phf",
 ]
 

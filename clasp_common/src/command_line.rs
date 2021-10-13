@@ -2,8 +2,8 @@ use std::env;
 
 #[derive(Debug)]
 pub struct CLArg {
-    name: Option<String>,
-    value: String
+    pub name: Option<String>,
+    pub value: String
 }
 
 impl CLArg {
