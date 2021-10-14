@@ -16,6 +16,8 @@ pub mod instruction_codes {
     pub const POW_CODE: Word = 0x0000_0000_0000_0006u64;
     pub const END_CODE: Word = 0x0000_0000_0000_0007u64;
     pub const MOVR_CODE: Word = 0x0000_0000_0000_0008u64;
+    pub const OUTR_ADDR_CODE: Word = 0x0000_0000_0000_0009u64;
+    pub const OUTR_LIT_CODE: Word = 0x0000_0000_0000_000Au64;
 }
 pub use instruction_codes::*;
 
@@ -29,7 +31,9 @@ pub enum InstructionType {
     DIV,
     POW,
     END,
-    MOVR // move raw
+    MOVR, // move raw
+    OUTR_ADDR, // out raw, address
+    OUTR_LIT // out raw, literal
 }
 use InstructionType::*;
 
@@ -42,5 +46,7 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0005u64 => DIV,
     0x0000_0000_0000_0006u64 => POW,
     0x0000_0000_0000_0007u64 => END,
-    0x0000_0000_0000_0008u64 => MOVR
+    0x0000_0000_0000_0008u64 => MOVR,
+    0x0000_0000_0000_0009u64 => OUTR_ADDR,
+    0x0000_0000_0000_000Au64 => OUTR_LIT
 };

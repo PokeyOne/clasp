@@ -19,6 +19,7 @@ pub fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
 pub fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("mov: {:?}", &words);
 
+    // TODO: Convert these panics into OpProcessErrors
     if words.len() != 3 {
         panic!(
             "Syntax error, expected 2 arguments on mov instruction, found {}",

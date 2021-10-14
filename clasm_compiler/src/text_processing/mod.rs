@@ -1,14 +1,17 @@
 pub mod utility;
 pub mod general_instructions;
+pub mod console_instructions;
 
 pub use general_instructions::*;
+pub use console_instructions::*;
 
 #[derive(Debug)]
 pub enum OpProcessError {
-    WrongNumberOfArguments(String)
+    WrongNumberOfArguments(String),
+    InvalidArgument
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum ArgType {
     Literal,
     Address

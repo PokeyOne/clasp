@@ -32,20 +32,20 @@ pub fn process_arg(val: &str) -> Option<Argument> {
         // Recursively get this method to process the inside value and then
         // return it with the type swapped to literal
         return match process_arg(&val[1..(val.len() - 1)]) {
-            Some(val) => Some(Argument::new(ArgType::Literal, val.value)),
+            Some(val) => {
+                Some(Argument::new(ArgType::Literal, val.value))
+            },
             None => None
         };
     }
 
     // Hex value
     if val.chars().nth(0)? == '0' && val.chars().nth(1)? == 'x' {
-        println!("[DEBUG] processing {}", val);
         let raw_value_vec: Vec<u8> = match hex::decode(&val[2..]) {
             Ok(vec) => vec,
             Err(err) => panic!("ToHexError: {:?}", err)
         };
         let raw_value: u64 = Word::from_bytes_v(&raw_value_vec);
-        println!("[DEBUG] got raw_value: {}", raw_value);
         return Some(Argument::new(ArgType::Address, raw_value));
     }
     println!("[DEBUG] {} does not start with 0x", val);

@@ -60,6 +60,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let byte_code_result = match important_words[0] {
             "nop" => text_processing::nop_process(important_words),
             "mov" => text_processing::mov_process(important_words),
+            "outr" => text_processing::outr_process(important_words),
             _ => panic!(
                 "Syntax error, unexpected instruction at line {}",
                 line_index
