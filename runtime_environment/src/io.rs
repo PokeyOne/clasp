@@ -1,4 +1,4 @@
-use crate::memory::types::{Byte, MemoryLocation};
+use crate::memory::types::{MemoryLocation};
 use crate::memory::Memory;
 
 use clasp_common::io::CCLASP_SIGNATURE;
