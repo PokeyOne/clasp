@@ -42,7 +42,6 @@ fn main() {
             memory::types::Result::Err(t) => panic!("Instruction read error: {:?}", t)
         };
 
-        println!("Evaluating instruction {:X}", inst);
         instructions::perform(inst, &mut memory, &mut program_counter);
 
         if program_counter == 0xFFFF_FFFF_FFFF_FFFFu64 {
@@ -50,6 +49,7 @@ fn main() {
         }
     }
 
-    memory.debug_dump();
+    // TODO: Make memory dump a command line arg --nodump
+    // memory.debug_dump();
     println!("Hello, world!");
 }

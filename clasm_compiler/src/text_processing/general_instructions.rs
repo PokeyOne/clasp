@@ -16,6 +16,12 @@ pub fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8])
 }
 
+pub fn end_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+    println!("end: {:?}", &words);
+
+    Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 7u8])
+}
+
 pub fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("mov: {:?}", &words);
 

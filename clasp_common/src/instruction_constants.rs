@@ -21,6 +21,7 @@ pub mod instruction_codes {
 }
 pub use instruction_codes::*;
 
+// TODO: Convert these to UpperCamelCase
 #[derive(Debug)]
 pub enum InstructionType {
     NOP,
