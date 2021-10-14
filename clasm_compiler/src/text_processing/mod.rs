@@ -36,15 +36,15 @@ impl Argument {
 /// - Address value
 /// - Register name
 ///
-/// An address is written as just a plain number: 34, 0xF3, 0b00101011, or 0o147
+/// An address is written as just a plain number: `34`, `0xF3`, `0b00101011`, or `0o147`
 ///
 /// A literal value is written the same as an address but wrapped in round
-/// brackets: (34), (0xF3), (0b00101011), or (0o147)
+/// brackets: `(34)`, `(0xF3)`, `(0b00101011)`, or `(0o147)`
 ///
 /// And finally a register name is just the character string identifier of the
 /// register. Similar to before it can take several forms:
-/// - reg = The value in the register is used. (the name is an address)
-/// - (reg) = The actual address of the register.
+/// - `reg` = The value in the register is used. (the name is an address)
+/// - `(reg)` = The actual address of the register.
 ///
 /// Essentially anywhere that you see a register name it will be replaced with
 /// the address of the register.
@@ -94,8 +94,6 @@ pub fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8])
 }
 
-// TODO Return u8 array to add to buffer
-// TODO: Return should be Result<Vec<u8>, String>
 pub fn mov_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("mov: {:?}", &words);
 
