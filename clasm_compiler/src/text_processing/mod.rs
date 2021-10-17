@@ -1,9 +1,9 @@
-pub mod utility;
-pub mod general_instructions;
 pub mod console_instructions;
+pub mod general_instructions;
+pub mod utility;
 
-pub use general_instructions::*;
 pub use console_instructions::*;
+pub use general_instructions::*;
 
 #[derive(Debug)]
 pub enum OpProcessError {
@@ -31,4 +31,3 @@ impl Argument {
         }
     }
 }
-

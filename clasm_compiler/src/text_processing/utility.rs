@@ -1,6 +1,6 @@
-use hex;
 use super::{ArgType, Argument};
-use clasp_common::data_types::{Word, ByteCollection};
+use clasp_common::data_types::{ByteCollection, Word};
+use hex;
 
 /// Given the string token of the raw assembly code instruction argument, this
 /// will process that and return an argument object.
@@ -32,9 +32,7 @@ pub fn process_arg(val: &str) -> Option<Argument> {
         // Recursively get this method to process the inside value and then
         // return it with the type swapped to literal
         return match process_arg(&val[1..(val.len() - 1)]) {
-            Some(val) => {
-                Some(Argument::new(ArgType::Literal, val.value))
-            },
+            Some(val) => Some(Argument::new(ArgType::Literal, val.value)),
             None => None
         };
     }

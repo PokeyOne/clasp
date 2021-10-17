@@ -4,11 +4,11 @@
 //! These include:
 //! - outr <some raw ascii byte> : Out put one raw ascii character to the screen
 
-use clasp_common::instruction_constants::instruction_codes::*;
 use clasp_common::data_types::ByteCollection;
+use clasp_common::instruction_constants::instruction_codes::*;
 
-use super::{OpProcessError, ArgType, Argument};
 use super::utility;
+use super::{ArgType, Argument, OpProcessError};
 
 pub fn outr_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("outr: {:?}", &words);

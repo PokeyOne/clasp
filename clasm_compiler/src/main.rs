@@ -15,7 +15,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             input_path = parg.value;
         } else {
             match parg.name {
-                None => {},
+                None => {}
                 Some(n) => {
                     if n == "--output" || n == "-o" {
                         output_file_location = parg.value;

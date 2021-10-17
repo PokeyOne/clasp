@@ -1,8 +1,8 @@
+use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::*;
-use clasp_common::data_types::{ByteCollection};
 
-use super::{OpProcessError, ArgType, Argument};
 use super::utility::process_arg;
+use super::{ArgType, Argument, OpProcessError};
 
 pub fn nop_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("nop: {:?}", &words);
