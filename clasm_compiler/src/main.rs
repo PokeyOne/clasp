@@ -64,6 +64,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "end" => text_processing::end_process(important_words),
             "add" => text_processing::add_process(important_words),
             "sub" => text_processing::sub_process(important_words),
+            "mul" => text_processing::mul_process(important_words),
+            "div" => text_processing::div_process(important_words),
+            "pow" => text_processing::pow_process(important_words),
             _ => panic!(
                 "Syntax error, unexpected instruction at line {}",
                 line_index

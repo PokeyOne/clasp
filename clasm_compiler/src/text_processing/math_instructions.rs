@@ -22,6 +22,33 @@ pub fn sub_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
 }
 
+pub fn mul_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+    println!("mul: {:?}", &words);
+
+    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+
+    Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
+}
+
+pub fn div_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+    println!("div: {:?}", &words);
+
+    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+
+    Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
+}
+
+pub fn pow_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+    println!("pow: {:?}", &words);
+
+    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+
+    Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
+}
+
 fn construct_byte_code(op_code: u64, alpha: Argument, beta: Argument, dest_addr: u64) -> Vec<u8> {
     let mut result: Vec<u8> = Vec::new();
 
