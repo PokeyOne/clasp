@@ -11,7 +11,8 @@ pub use math_instructions::*;
 pub enum OpProcessError {
     WrongNumberOfArguments(String),
     InvalidArgument,
-    UnimplementedFeature
+    UnimplementedFeature,
+    ExpectedAddress
 }
 
 #[derive(Debug, PartialEq, Eq, Clone)]

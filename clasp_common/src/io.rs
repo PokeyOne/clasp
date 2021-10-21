@@ -22,3 +22,19 @@ pub fn write_binary_file(data: Vec<Byte>, path: &String) -> Result<(), Box<dyn s
     fs::write(path, &data[0..])?;
     Ok(())
 }
+
+pub fn print_binary_vec(data: &Vec<Byte>) {
+    let mut i = 0;
+
+    for val in data {
+        print!("{:02X} ", val);
+
+        if ((i+1) % 8 == 0) {
+            print!("\n");
+        } else if ((i+1) % 4 == 0) {
+            print!(" ");
+        }
+
+        i += 1;
+    }
+}

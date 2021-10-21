@@ -62,6 +62,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             "mov" => text_processing::mov_process(important_words),
             "outr" => text_processing::outr_process(important_words),
             "end" => text_processing::end_process(important_words),
+            "add" => text_processing::add_process(important_words),
+            "sub" => text_processing::sub_process(important_words),
             _ => panic!(
                 "Syntax error, unexpected instruction at line {}",
                 line_index
@@ -77,10 +79,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 
     println!(
-        "Compiled to {} raw bytes: {:?}",
+        "Compiled to {} ({:X}) raw bytes: {:?}",
+        resulting_byte_code.len(),
         resulting_byte_code.len(),
         resulting_byte_code
     );
+
+    clasp_common::io::print_binary_vec(&resulting_byte_code);
 
     match clasp_common::io::write_binary_file(resulting_byte_code, &output_file_location) {
         Ok(_) => println!("Successfully wrote to file {}", &output_file_location),

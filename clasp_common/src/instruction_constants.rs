@@ -7,10 +7,23 @@ use phf::phf_map;
 pub mod instruction_codes {
     use super::Word;
 
+    pub const MATH_MOD_CC: Word = 0x0000_0000_0000_0000u64; // 2 constants
+    pub const MATH_MOD_CA: Word = 0x1000_0000_0000_0000u64; // address, constant
+    pub const MATH_MOD_AC: Word = 0x2000_0000_0000_0000u64; // constant, address
+    pub const MATH_MOD_AA: Word = 0x3000_0000_0000_0000u64; // 2 addresses
+
     pub const NOP_CODE: Word = 0x0000_0000_0000_0000u64;
     pub const MOV_CODE: Word = 0x0000_0000_0000_0001u64;
     pub const ADD_CODE: Word = 0x0000_0000_0000_0002u64;
+    pub const ADD_CODE_CC: Word = ADD_CODE + MATH_MOD_CC;
+    pub const ADD_CODE_CA: Word = ADD_CODE + MATH_MOD_CA;
+    pub const ADD_CODE_AC: Word = ADD_CODE + MATH_MOD_AC;
+    pub const ADD_CODE_AA: Word = ADD_CODE + MATH_MOD_AA;
     pub const SUB_CODE: Word = 0x0000_0000_0000_0003u64;
+    pub const SUB_CODE_CC: Word = SUB_CODE + MATH_MOD_CC;
+    pub const SUB_CODE_CA: Word = SUB_CODE + MATH_MOD_CA;
+    pub const SUB_CODE_AC: Word = SUB_CODE + MATH_MOD_AC;
+    pub const SUB_CODE_AA: Word = SUB_CODE + MATH_MOD_AA;
     pub const MUL_CODE: Word = 0x0000_0000_0000_0004u64;
     pub const DIV_CODE: Word = 0x0000_0000_0000_0005u64;
     pub const POW_CODE: Word = 0x0000_0000_0000_0006u64;
@@ -42,7 +55,13 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0000u64 => NOP,
     0x0000_0000_0000_0001u64 => MOV,
     0x0000_0000_0000_0002u64 => ADD,
+    0x1000_0000_0000_0002u64 => ADD,
+    0x2000_0000_0000_0002u64 => ADD,
+    0x3000_0000_0000_0002u64 => ADD,
     0x0000_0000_0000_0003u64 => SUB,
+    0x1000_0000_0000_0003u64 => SUB,
+    0x2000_0000_0000_0003u64 => SUB,
+    0x3000_0000_0000_0003u64 => SUB,
     0x0000_0000_0000_0004u64 => MUL,
     0x0000_0000_0000_0005u64 => DIV,
     0x0000_0000_0000_0006u64 => POW,
