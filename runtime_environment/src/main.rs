@@ -20,6 +20,8 @@ fn main() {
     let mut program_counter: MemoryLocation = 0;
     let path: &str = &args[1];
 
+    // TODO: Make the program be stored in seperate memory because it will just
+    //       make memory management so much easier.
     match io::read_cclasp_binary_into_memory(&mut memory, program_counter, &path) {
         Ok(bytes_read) => println!("Loaded file '{}' into {} bytes of memory", path, bytes_read),
         Err(cioe) => match cioe {
