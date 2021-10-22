@@ -4,7 +4,10 @@ use ascii::AsciiChar;
 pub fn outr_provider(mem: &mut Memory, pc: &mut MemoryLocation) {
     let inst_code = match (*mem).read((*pc).clone()) {
         MemoryResult::Ok(val) => val,
-        MemoryResult::Err(t) => panic!("Could not read instruction from memory at program counter in outr_provider: {:?}", t)
+        MemoryResult::Err(t) => panic!(
+            "Could not read instruction from memory at program counter in outr_provider: {:?}",
+            t
+        )
     };
     *pc += WORD_SIZE as u64;
 
@@ -21,12 +24,10 @@ pub fn outr_provider(mem: &mut Memory, pc: &mut MemoryLocation) {
                 MemoryResult::Ok(val) => val,
                 MemoryResult::Err(t) => panic!("{:?}", t)
             }
-        },
-        OUTR_LIT_CODE => {
-            match (*mem).read((*pc).clone()) {
-                MemoryResult::Ok(val) => val,
-                MemoryResult::Err(t) => panic!("{:?}", t)
-            }
+        }
+        OUTR_LIT_CODE => match (*mem).read((*pc).clone()) {
+            MemoryResult::Ok(val) => val,
+            MemoryResult::Err(t) => panic!("{:?}", t)
         },
         _ => panic!("unexpected op code for outr method")
     };

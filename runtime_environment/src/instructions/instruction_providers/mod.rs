@@ -1,9 +1,9 @@
 use super::*;
 
+mod console;
 mod general;
 mod math;
 mod movement;
-mod console;
 
 type InstructionProvider = fn(&mut Memory, &mut MemoryLocation);
 

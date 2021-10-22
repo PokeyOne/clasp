@@ -80,7 +80,7 @@ pub fn process_args(arg_specs: Vec<NamedArgSpec>) -> Vec<CLArg> {
             Some(n) => {
                 result.push(CLArg::named(n, arg));
                 name = None;
-            },
+            }
             None => {
                 for spec in &arg_specs {
                     // Check if the spec name or any aliases match the current argument

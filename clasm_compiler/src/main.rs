@@ -6,13 +6,11 @@ use std::fs;
 mod text_processing;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let pargs: Vec<CLArg> = command_line::process_args(
-        vec![
-            NamedArgSpec::new("--output", true, Some(vec!["-o".to_string()])),
-            NamedArgSpec::new("--hello", false, None),
-            NamedArgSpec::new("--version", false, Some(vec!["-v".to_string()]))
-        ]
-    );
+    let pargs: Vec<CLArg> = command_line::process_args(vec![
+        NamedArgSpec::new("--output", true, Some(vec!["-o".to_string()])),
+        NamedArgSpec::new("--hello", false, None),
+        NamedArgSpec::new("--version", false, Some(vec!["-v".to_string()])),
+    ]);
     let mut output_file_location: String = "./a.out".to_string();
     let mut input_path: String = String::new();
 

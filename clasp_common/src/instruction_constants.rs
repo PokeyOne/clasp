@@ -56,9 +56,9 @@ pub enum InstructionType {
     Div,
     Pow,
     End,
-    Movr, // move raw
+    Movr,     // move raw
     OutrAddr, // out raw, address
-    OutrLit // out raw, literal
+    OutrLit   // out raw, literal
 }
 use InstructionType::*;
 

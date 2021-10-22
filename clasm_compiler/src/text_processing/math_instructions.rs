@@ -1,8 +1,8 @@
-use clasp_common::instruction_constants::instruction_codes::*;
 use clasp_common::data_types::ByteCollection;
+use clasp_common::instruction_constants::instruction_codes::*;
 
-use super::{OpProcessError, ArgType, Argument};
 use super::utility::process_arg;
+use super::{ArgType, Argument, OpProcessError};
 
 pub fn add_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     println!("add: {:?}", &words);
@@ -75,7 +75,10 @@ fn math_mod_code(a: &Argument, b: &Argument) -> u64 {
         }
     }
 
-    panic!("Could not find math mod code for {:?} and {:?}", a.arg_type, b.arg_type);
+    panic!(
+        "Could not find math mod code for {:?} and {:?}",
+        a.arg_type, b.arg_type
+    );
 }
 
 fn construct_abd(words: &Vec<&str>) -> Result<(Argument, Argument, u64), OpProcessError> {
