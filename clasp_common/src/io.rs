@@ -29,9 +29,9 @@ pub fn print_binary_vec(data: &Vec<Byte>) {
     for val in data {
         print!("{:02X} ", val);
 
-        if ((i + 1) % 8 == 0) {
+        if (i + 1) % 8 == 0 {
             print!("\n");
-        } else if ((i + 1) % 4 == 0) {
+        } else if (i + 1) % 4 == 0 {
             print!(" ");
         }
 
