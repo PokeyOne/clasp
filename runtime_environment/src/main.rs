@@ -1,3 +1,6 @@
+//! This is the main runner of all cclasp files. These are the files that have
+//! alright been compiled all the way down to binary.
+
 mod instructions;
 mod io;
 mod memory;
@@ -15,6 +18,7 @@ use clasp_common::command_line::{CLArg, NamedArgSpec, process_args};
 /// for debugging instruction development. Safe to change. Should be false in
 /// release.
 const DEFAULT_SHOW_DUMP: bool = true;
+// TODO: const DEFAULT_MEMORY_SIZE, plus an argument to set the size.
 
 fn main() {
     let args: Vec<CLArg> = process_args(vec![
