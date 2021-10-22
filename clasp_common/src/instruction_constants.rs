@@ -90,3 +90,19 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0009u64 => OutrAddr,
     0x0000_0000_0000_000Au64 => OutrLit
 };
+
+pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u64 {
+    match instruction_type {
+        Nop => 0x0000_0000_0000_0000u64,
+        Mov => 0x0000_0000_0000_0001u64,
+        Add => 0x0000_0000_0000_0002u64,
+        Sub => 0x0000_0000_0000_0003u64,
+        Mul => 0x0000_0000_0000_0004u64,
+        Div => 0x0000_0000_0000_0005u64,
+        Pow => 0x0000_0000_0000_0006u64,
+        End => 0x0000_0000_0000_0007u64,
+        Movr => 0x0000_0000_0000_0008u64,
+        OutrAddr => 0x0000_0000_0000_0009u64,
+        OutrLit => 0x0000_0000_0000_000Au64
+    }
+}
