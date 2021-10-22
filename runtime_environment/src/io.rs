@@ -8,7 +8,6 @@ use std::io;
 
 pub enum ClaspIOError {
     StandardIOError(io::Error),
-    MemoryTooSmall,
     MissingSignature,
     #[allow(dead_code)]
     UnimplementedFeature
@@ -21,16 +20,9 @@ impl From<io::Error> for ClaspIOError {
 }
 
 pub fn read_cclasp_binary_into_memory(
-    memory: &mut Memory,
-    address: MemoryLocation,
     path: &str
-) -> Result<usize, ClaspIOError> {
+) -> Result<Memory, ClaspIOError> {
     let data = fs::read(path)?;
-
-    // Verify that there is enough memory to load the file into
-    if data.len() > memory.len() {
-        return Err(ClaspIOError::MemoryTooSmall);
-    }
 
     // Verify the clasp file signature
     if CCLASP_SIGNATURE.len() > data.len() {
@@ -42,14 +34,8 @@ pub fn read_cclasp_binary_into_memory(
         }
     }
 
-    println!("Loaded data: {:?}", data);
+    let mut memory = Memory::new((data.len() - CCLASP_SIGNATURE.len()) as u64);
+    memory.writes(0u64, &data[(CCLASP_SIGNATURE.len())..data.len()]);
 
-    memory.writes(address, &data[(CCLASP_SIGNATURE.len())..data.len()]);
-
-    println!(
-        "Loaded into memory: {:?}",
-        &data[(CCLASP_SIGNATURE.len())..data.len()]
-    );
-
-    return Ok(data.len() - (CCLASP_SIGNATURE.len()));
+    return Ok(memory);
 }

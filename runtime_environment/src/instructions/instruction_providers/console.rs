@@ -1,8 +1,8 @@
 use super::*;
 use ascii::AsciiChar;
 
-pub fn outr_provider(mem: &mut Memory, pc: &mut MemoryLocation) {
-    let inst_code = match (*mem).read((*pc).clone()) {
+pub fn outr_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
+    let inst_code = match program_memory.read(pc.clone()) {
         MemoryResult::Ok(val) => val,
         MemoryResult::Err(t) => panic!(
             "Could not read instruction from memory at program counter in outr_provider: {:?}",
@@ -14,18 +14,18 @@ pub fn outr_provider(mem: &mut Memory, pc: &mut MemoryLocation) {
     let value_to_print = match inst_code {
         OUTR_ADDR_CODE => {
             // TODO: some sort of generic method to read the address from an address
-            let address = match (*mem).read((*pc).clone()) {
+            let address = match program_memory.read(pc.clone()) {
                 MemoryResult::Ok(val) => val,
                 MemoryResult::Err(t) => panic!("{:?}", t)
             };
 
             // This is the value to print
-            match (*mem).read(address) {
+            match mem.read(address) {
                 MemoryResult::Ok(val) => val,
                 MemoryResult::Err(t) => panic!("{:?}", t)
             }
         }
-        OUTR_LIT_CODE => match (*mem).read((*pc).clone()) {
+        OUTR_LIT_CODE => match program_memory.read(pc.clone()) {
             MemoryResult::Ok(val) => val,
             MemoryResult::Err(t) => panic!("{:?}", t)
         },

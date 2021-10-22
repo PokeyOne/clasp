@@ -57,10 +57,8 @@ fn main() {
         None => panic!("No path provided to read program from.")
     };
 
-    // TODO: Make the program be stored in seperate memory because it will just
-    //       make memory management so much easier.
-    match io::read_cclasp_binary_into_memory(&mut memory, program_counter, &path) {
-        Ok(bytes_read) => println!("Loaded file '{}' into {} bytes of memory", path, bytes_read),
+    let mut program_memory = match io::read_cclasp_binary_into_memory(&path) {
+        Ok(val) => val,
         Err(cioe) => match cioe {
             MemoryTooSmall => {
                 panic!("Memory too small for program; increase memory size to solve.")
@@ -73,15 +71,15 @@ fn main() {
             ),
             StandardIOError(err) => panic!("IO Error occurred while opening file: {:?}", err)
         }
-    }
+    };
 
     loop {
-        let inst = match memory.read(program_counter) {
+        let inst = match program_memory.read(program_counter) {
             memory::types::Result::Ok(val) => val,
             memory::types::Result::Err(t) => panic!("Instruction read error: {:?}", t)
         };
 
-        instructions::perform(inst, &mut memory, &mut program_counter);
+        instructions::perform(inst, &mut memory, &mut program_memory, &mut program_counter);
 
         if program_counter == 0xFFFF_FFFF_FFFF_FFFFu64 {
             break;

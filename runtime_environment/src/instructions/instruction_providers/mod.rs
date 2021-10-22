@@ -5,7 +5,7 @@ mod general;
 mod math;
 mod movement;
 
-type InstructionProvider = fn(&mut Memory, &mut MemoryLocation);
+type InstructionProvider = fn(&mut Memory, &mut Memory, &mut MemoryLocation);
 
 static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
     0x0u64 => general::nop_provider,
@@ -21,9 +21,9 @@ static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
     0xAu64 => console::outr_provider
 };
 
-pub fn perform(inst: u64, memory: &mut Memory, program_counter: &mut MemoryLocation) {
+pub fn perform(inst: u64, memory: &mut Memory, program_memory: &mut Memory, program_counter: &mut MemoryLocation) {
     let method: &InstructionProvider = INSTRUCTION_FUNCTIONS
         .get(&inst)
         .expect("Unimplemented instruction");
-    method(memory, program_counter);
+    method(memory, program_memory, program_counter);
 }
