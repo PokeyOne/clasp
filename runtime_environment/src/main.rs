@@ -8,17 +8,51 @@ use io::ClaspIOError::*;
 use memory::types::MemoryLocation;
 use memory::Memory;
 
-fn main() {
-    // TODO: command line arguments for things like memory size and the like
-    let args: Vec<String> = env::args().collect();
+use clasp_common::command_line::{CLArg, NamedArgSpec, process_args};
 
-    if args.len() != 2 {
-        panic!("Expected command with only one argument with the path of a cclasp file");
+/// The default value if not specified on command line of if the program should
+/// dump all memory out to the standard output upon program completion. Useful
+/// for debugging instruction development. Safe to change. Should be false in
+/// release.
+const DEFAULT_SHOW_DUMP: bool = true;
+
+fn main() {
+    let args: Vec<CLArg> = process_args(vec![
+        NamedArgSpec::new("--nodump", false, None),
+        NamedArgSpec::new("--dump", false, None)
+    ]);
+
+    /// This will be set if the command line argument is supplied, but left as
+    /// an optional so that an error can be thrown later if not given. This is
+    /// the path to the file to read the program from.
+    let mut maybe_path: Option<String> = None;
+
+    /// True when the whole memory should be written to standard output upon
+    /// program completion
+    let mut should_show_dump: bool = DEFAULT_SHOW_DUMP;
+
+    // Loop through the arguments and set thing appropriately
+    for arg in args {
+        if arg.is_anonymous() {
+            maybe_path = Some(arg.value);
+        } else {
+            match arg.name {
+                Some(val) => match val[..] {
+                    "--nodump" => should_show_dump = false,
+                    "--dump" => should_show_dump = true
+                },
+                None => {} // Do nothing because this shouldn't happen
+            };
+        }
     }
 
     let mut memory: Memory = Memory::new(12000);
     let mut program_counter: MemoryLocation = 0;
-    let path: &str = &args[1];
+    // Panic if we were never given a path, and de-optionalize it.
+    let path: String = match maybe_path {
+        Some(val) => val,
+        None => panic!("No path provided to read program from.")
+    };
 
     // TODO: Make the program be stored in seperate memory because it will just
     //       make memory management so much easier.
@@ -51,7 +85,9 @@ fn main() {
         }
     }
 
-    // TODO: Make memory dump a command line arg --nodump
-    // memory.debug_dump();
+    if should_show_dump {
+        memory.debug_dump();
+    }
+
     println!("Hello, world!");
 }
