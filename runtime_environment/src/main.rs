@@ -37,9 +37,12 @@ fn main() {
             maybe_path = Some(arg.value);
         } else {
             match arg.name {
-                Some(val) => match val[..] {
-                    "--nodump" => should_show_dump = false,
-                    "--dump" => should_show_dump = true
+                Some(val) => {
+                    match val.as_str() {
+                        "--nodump" => should_show_dump = false,
+                        "--dump" => should_show_dump = true,
+                        _ => panic!("Unknown argument {}", val)
+                    }
                 },
                 None => {} // Do nothing because this shouldn't happen
             };
