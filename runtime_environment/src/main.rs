@@ -64,9 +64,6 @@ fn main() {
     let mut program_memory = match io::read_cclasp_binary_into_memory(&path) {
         Ok(val) => val,
         Err(cioe) => match cioe {
-            MemoryTooSmall => {
-                panic!("Memory too small for program; increase memory size to solve.")
-            }
             MissingSignature => {
                 panic!("The file you tried to run is either not a cclasp file or is corrupted")
             }

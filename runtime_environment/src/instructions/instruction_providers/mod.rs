@@ -1,4 +1,5 @@
 use super::*;
+use clasp_common::instruction_constants::{INSTRUCTIONS, base_code_from_instruction_type};
 
 mod console;
 mod general;
@@ -22,8 +23,11 @@ static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
 };
 
 pub fn perform(inst: u64, memory: &mut Memory, program_memory: &mut Memory, program_counter: &mut MemoryLocation) {
+    let base_inst = INSTRUCTIONS.get(&inst).unwrap();
+    let base_inst = base_code_from_instruction_type(base_inst);
+
     let method: &InstructionProvider = INSTRUCTION_FUNCTIONS
-        .get(&inst)
+        .get(&base_inst)
         .expect("Unimplemented instruction");
     method(memory, program_memory, program_counter);
 }

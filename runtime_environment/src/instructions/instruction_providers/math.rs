@@ -14,7 +14,7 @@ fn get_arguments(memory: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
         MATH_MOD_CA => [true, false],
         MATH_MOD_AC => [false, true],
         MATH_MOD_AA => [false, false],
-        _ => panic!("Unknown math mod code for operator {} and type {:?}", op_code, inst_type)
+        _ => panic!("Unknown math mod code for operator {} and type (bcfit: {}) {:?}", op_code, bcfit(&inst_type), inst_type)
     };
 
     let mut vals: [u64; 2] = [0u64, 0u64];
@@ -54,7 +54,7 @@ pub fn add_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
 }
 
 pub fn sub_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Sub);
 
     let result = alpha - beta;
 
@@ -62,7 +62,7 @@ pub fn sub_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
 }
 
 pub fn mul_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Mul);
 
     let result = alpha * beta;
 
@@ -70,7 +70,7 @@ pub fn mul_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
 }
 
 pub fn div_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Div);
 
     let result = alpha / beta;
 
@@ -78,7 +78,7 @@ pub fn div_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
 }
 
 pub fn pow_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    let (base, pow, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+    let (base, pow, dest) = get_arguments(memory, program_memory, pc, InstructionType::Pow);
 
     let result = if base == 2 {
         2 << pow-1
