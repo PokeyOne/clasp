@@ -1,5 +1,6 @@
 use super::*;
 use clasp_common::instruction_constants::{base_code_from_instruction_type as bcfit, InstructionType, instruction_codes::*};
+use std::convert::TryInto;
 
 fn get_arguments(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation, inst_type: InstructionType) -> (u64, u64, MemoryLocation) {
     let op_code = match program_memory.read(pc.clone()) {
@@ -39,6 +40,7 @@ fn get_arguments(memory: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
         MemoryResult::Ok(val) => val,
         MemoryResult::Err(t) => panic!("{:?}", t)
     };
+    *pc += WORD_SIZE as u64;
 
     return (vals[0], vals[1], destination);
 }
@@ -51,22 +53,38 @@ pub fn add_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
     memory.write(dest, result);
 }
 
-pub fn sub_provider(_mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
+pub fn sub_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+
+    let result = alpha - beta;
+
+    memory.write(dest, result);
 }
 
-pub fn mul_provider(_mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
+pub fn mul_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+
+    let result = alpha * beta;
+
+    memory.write(dest, result);
 }
 
-pub fn div_provider(_mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
+pub fn div_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
+    let (alpha, beta, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+
+    let result = alpha / beta;
+
+    memory.write(dest, result);
 }
 
-pub fn pow_provider(_mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
-    *pc += WORD_SIZE as u64;
-    return;
+pub fn pow_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
+    let (base, pow, dest) = get_arguments(memory, program_memory, pc, InstructionType::Add);
+
+    let result = if base == 2 {
+        2 << pow-1
+    } else {
+        base.pow(pow.try_into().unwrap())
+    };
+
+    memory.write(dest, result);
 }
