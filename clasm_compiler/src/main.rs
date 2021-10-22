@@ -1,11 +1,18 @@
 use clasp_common::command_line;
-use clasp_common::command_line::CLArg;
+use clasp_common::command_line::{CLArg, NamedArgSpec};
+use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 
 mod text_processing;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let pargs: Vec<CLArg> = command_line::process_args();
+    let pargs: Vec<CLArg> = command_line::process_args(
+        vec![
+            NamedArgSpec::new("--output", true, Some(vec!["-o".to_string()])),
+            NamedArgSpec::new("--hello", false, None),
+            NamedArgSpec::new("--version", false, Some(vec!["-v".to_string()]))
+        ]
+    );
     let mut output_file_location: String = "./a.out".to_string();
     let mut input_path: String = String::new();
 
@@ -17,8 +24,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match parg.name {
                 None => {}
                 Some(n) => {
-                    if n == "--output" || n == "-o" {
+                    if n == "--output" {
                         output_file_location = parg.value;
+                    } else if n == "--hello" {
+                        println!("Hello, World");
+                    } else if n == "--version" {
+                        println!("Clasm Compiler Version {}\n", VERSION_STRING);
+
+                        return Ok(());
                     }
                 }
             }
