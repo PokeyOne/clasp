@@ -4,6 +4,10 @@ The clasp runner is essentially a virtual machine that read byte-code
 executables. Most commonly said executables are created by compiling clasp
 source code, but they can also be compiled from CLASM.
 
+## This Page is Out of Date
+Due to the early stages of this language, the specification is rapidly changing
+so this page is guaranteed out of date and in most cases extremely so.
+
 ## Basic Syntax
 
 As far as assembly languages go this is a pretty standard and simple one. It
@@ -68,7 +72,7 @@ brackets is treated like a raw constant value.
 
 ## Registers
 
-|----------|--------------------|
+This chart is severely out of date.
 | register | description        |
 |----------|--------------------|
 | ga       | General register A |
@@ -97,9 +101,7 @@ brackets is treated like a raw constant value.
 | gx       | General register X |
 | gy       | General register Y |
 | gz       | General register Z |
-|----------|--------------------|
 | pf       | print format: 0 = 1-byte ascii, 1 = 4-byte ascii. Starts on 0 |
-|----------|--------------------|
 
 ## Instructions
 
