@@ -1,0 +1,12 @@
+;; Start the counter at '@'
+mov (0x40) 0x00
+
+;; Loop through all ascii until 0x7A or z.
+:loop_a
+outr 0x00
+add (0x01) 0x00 0x00
+jne 0x00 (0x7B) loop_a
+
+;; Print new line
+outr 0x0A
+end

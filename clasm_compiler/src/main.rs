@@ -4,6 +4,9 @@ use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 
 mod text_processing;
+mod label;
+
+use label::LabelCollection;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pargs: Vec<CLArg> = command_line::process_args(vec![
@@ -48,9 +51,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.push(sig_byte);
     }
 
+    let mut labels = LabelCollection::new();
+
     let mut line_index = 0;
     for line in file_content.lines() {
         line_index += 1;
+
+        if line.chars().nth(0) == Some(':') {
+            labels.insert(resulting_byte_code.len() as u64, line[1..].to_string());
+        }
 
         let mut important_words: Vec<&str> = Vec::new();
 
