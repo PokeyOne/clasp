@@ -13,6 +13,11 @@ pub struct LabelNode<'a> {
     r: Option<&'a mut LabelNode<'a>>
 }
 
+#[derive(Debug)]
+pub struct LabelCollection<'a> {
+    head: Option<Box<LabelNode<'a>>>
+}
+
 impl Label {
     pub fn new(name: String, location: u64) -> Label {
         Label { name: name, location: location }
@@ -42,6 +47,44 @@ impl PartialEq for Label {
 impl<'a> LabelNode<'a> {
     pub fn new(label: Label) -> LabelNode<'a> {
         LabelNode { label: label, l: None, r: None }
+    }
+
+    pub fn size(&self) -> u64 {
+        1 + self.left_size() + self.right_size()
+    }
+
+    fn left_size(&self) -> u64 {
+        match &self.l {
+            None => 0,
+            Some(val) => val.size()
+        }
+    }
+
+    fn right_size(&self) -> u64 {
+        match &self.r {
+            None => 0,
+            Some(val) => val.size()
+        }
+    }
+}
+
+impl<'a> LabelCollection<'a> {
+    pub fn new() -> LabelCollection<'a> {
+        LabelCollection { head: None }
+    }
+
+    pub fn size(&self) -> u64 {
+        match &self.head {
+            None => 0,
+            Some(val) => val.size()
+        }
+    }
+
+    pub fn is_empty(&self) -> bool {
+        match self.head {
+            None => true,
+            Some(_) => false
+        }
     }
 }
 
@@ -85,5 +128,33 @@ mod tests {
         });
 
         assert_eq!(true, match a.cmp(&c) { Greater => true, _ => false });
+    }
+
+    #[test]
+    fn size_of_node() {
+        let la: Label = Label::new("a".to_string(), 24);
+        let lb: Label = Label::new("b".to_string(), 48);
+        let lc: Label = Label::new("c".to_string(), 72);
+
+        let mut lna: LabelNode = LabelNode::new(la);
+        let mut lnb: LabelNode = LabelNode::new(lb);
+        let mut lnc: LabelNode = LabelNode::new(lc);
+
+        assert_eq!(lna.size(), 1);
+        assert_eq!(lnb.size(), 1);
+        assert_eq!(lnc.size(), 1);
+
+        lnc.l = Some(&mut lnb);
+        assert_eq!(lnc.size(), 2);
+        lna.r = Some(&mut lnc);
+        assert_eq!(lna.size(), 3);
+    }
+
+    #[test]
+    fn create_empty_collection() {
+        let c: LabelCollection = LabelCollection::new();
+
+        assert_eq!(true, c.is_empty());
+        assert_eq!(0, c.size());
     }
 }
