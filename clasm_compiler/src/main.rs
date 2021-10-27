@@ -4,6 +4,7 @@ use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 
 mod text_processing;
+mod label;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pargs: Vec<CLArg> = command_line::process_args(vec![
