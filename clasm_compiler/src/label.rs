@@ -15,7 +15,8 @@ pub struct LabelNode<'a> {
 
 #[derive(Debug)]
 pub struct LabelCollection<'a> {
-    head: Option<Box<LabelNode<'a>>>
+    head: Option<Box<LabelNode<'a>>>,
+    label_nodes: Vec<LabelNode<'a>>
 }
 
 impl Label {
@@ -70,7 +71,7 @@ impl<'a> LabelNode<'a> {
 
 impl<'a> LabelCollection<'a> {
     pub fn new() -> LabelCollection<'a> {
-        LabelCollection { head: None }
+        LabelCollection { head: None, label_nodes: Vec::new() }
     }
 
     pub fn size(&self) -> u64 {
