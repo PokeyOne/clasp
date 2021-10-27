@@ -92,7 +92,10 @@ impl<'a> LabelCollection<'a> {
         match &self.head {
             None => {
                 self.head = Some(Box::new(LabelNode::new(Label::new(name, location))));
-            }, _ => panic!("balh")
+            },
+            Some(head_node) => {
+                panic!("head node: {:?}", head_node)
+            }
         }
     }
 }
