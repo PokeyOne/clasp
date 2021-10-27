@@ -26,13 +26,13 @@ fn main() {
         NamedArgSpec::new("--dump", false, None)
     ]);
 
-    /// This will be set if the command line argument is supplied, but left as
-    /// an optional so that an error can be thrown later if not given. This is
-    /// the path to the file to read the program from.
+    // This will be set if the command line argument is supplied, but left as
+    // an optional so that an error can be thrown later if not given. This is
+    // the path to the file to read the program from.
     let mut maybe_path: Option<String> = None;
 
-    /// True when the whole memory should be written to standard output upon
-    /// program completion
+    // True when the whole memory should be written to standard output upon
+    // program completion
     let mut should_show_dump: bool = DEFAULT_SHOW_DUMP;
 
     // Loop through the arguments and set thing appropriately
