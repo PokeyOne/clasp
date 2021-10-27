@@ -43,11 +43,6 @@ impl<'a> LabelNode<'a> {
     pub fn new(label: Label) -> LabelNode<'a> {
         LabelNode { label: label, l: None, r: None }
     }
-
-    /*
-    pub fn insert(&mut self, label: Label) {
-        
-    }*/
 }
 
 #[cfg(test)]
