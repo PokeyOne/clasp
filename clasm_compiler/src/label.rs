@@ -7,16 +7,15 @@ pub struct Label {
 }
 
 #[derive(Debug)]
-pub struct LabelNode<'a> {
+pub struct LabelNode {
     label: Label,
-    l: Option<&'a mut LabelNode<'a>>,
-    r: Option<&'a mut LabelNode<'a>>
+    l: Option<Box<LabelNode>>,
+    r: Option<Box<LabelNode>>
 }
 
 #[derive(Debug)]
-pub struct LabelCollection<'a> {
-    head: Option<Box<LabelNode<'a>>>,
-    label_nodes: Vec<LabelNode<'a>>
+pub struct LabelCollection {
+    head: Option<Box<LabelNode>>
 }
 
 impl Label {
@@ -45,8 +44,8 @@ impl PartialEq for Label {
     }
 }
 
-impl<'a> LabelNode<'a> {
-    pub fn new(label: Label) -> LabelNode<'a> {
+impl LabelNode {
+    pub fn new(label: Label) -> LabelNode {
         LabelNode { label: label, l: None, r: None }
     }
 
@@ -69,9 +68,9 @@ impl<'a> LabelNode<'a> {
     }
 }
 
-impl<'a> LabelCollection<'a> {
-    pub fn new() -> LabelCollection<'a> {
-        LabelCollection { head: None, label_nodes: Vec::new() }
+impl LabelCollection {
+    pub fn new() -> LabelCollection {
+        LabelCollection { head: None }
     }
 
     pub fn size(&self) -> u64 {
@@ -149,16 +148,16 @@ mod tests {
         let lc: Label = Label::new("c".to_string(), 72);
 
         let mut lna: LabelNode = LabelNode::new(la);
-        let mut lnb: LabelNode = LabelNode::new(lb);
+        let lnb: LabelNode = LabelNode::new(lb);
         let mut lnc: LabelNode = LabelNode::new(lc);
 
         assert_eq!(lna.size(), 1);
         assert_eq!(lnb.size(), 1);
         assert_eq!(lnc.size(), 1);
 
-        lnc.l = Some(&mut lnb);
+        lnc.l = Some(Box::new(lnb));
         assert_eq!(lnc.size(), 2);
-        lna.r = Some(&mut lnc);
+        lna.r = Some(Box::new(lnc));
         assert_eq!(lna.size(), 3);
     }
 
