@@ -87,6 +87,14 @@ impl<'a> LabelCollection<'a> {
             Some(_) => false
         }
     }
+
+    pub fn insert(&mut self, name: String, location: u64) {
+        match &self.head {
+            None => {
+                self.head = Some(Box::new(LabelNode::new(Label::new(name, location))));
+            }, _ => panic!("balh")
+        }
+    }
 }
 
 #[cfg(test)]
@@ -124,11 +132,11 @@ mod tests {
         assert_eq!(false, b.eq(&c));
 
         assert_eq!(true, match a.cmp(&b) {
-            Eq => true,
+            Ordering::Equal => true,
             _ => false
         });
 
-        assert_eq!(true, match a.cmp(&c) { Greater => true, _ => false });
+        assert_eq!(true, match a.cmp(&c) { Ordering::Greater => true, _ => false });
     }
 
     #[test]
@@ -157,5 +165,15 @@ mod tests {
 
         assert_eq!(true, c.is_empty());
         assert_eq!(0, c.size());
+    }
+
+    #[test]
+    fn insert_one_element_to_collection() {
+        let mut c = LabelCollection::new();
+
+        c.insert("blah".to_string(), 24);
+
+        assert_eq!(false, c.is_empty());
+        assert_eq!(1, c.size());
     }
 }
