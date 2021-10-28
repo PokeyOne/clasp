@@ -1,8 +1,15 @@
 use super::*;
-use clasp_common::instruction_constants::{base_code_from_instruction_type as bcfit, InstructionType, instruction_codes::*};
+use clasp_common::instruction_constants::{
+    base_code_from_instruction_type as bcfit, instruction_codes::*, InstructionType
+};
 use std::convert::TryInto;
 
-fn get_arguments(memory: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation, inst_type: InstructionType) -> (u64, u64, MemoryLocation) {
+fn get_arguments(
+    memory: &mut Memory,
+    program_memory: &mut Memory,
+    pc: &mut MemoryLocation,
+    inst_type: InstructionType
+) -> (u64, u64, MemoryLocation) {
     let op_code = match program_memory.read(pc.clone()) {
         MemoryResult::Ok(val) => val,
         MemoryResult::Err(t) => panic!("{:?}", t)
@@ -14,7 +21,12 @@ fn get_arguments(memory: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
         MATH_MOD_CA => [true, false],
         MATH_MOD_AC => [false, true],
         MATH_MOD_AA => [false, false],
-        _ => panic!("Unknown math mod code for operator {} and type (bcfit: {}) {:?}", op_code, bcfit(&inst_type), inst_type)
+        _ => panic!(
+            "Unknown math mod code for operator {} and type (bcfit: {}) {:?}",
+            op_code,
+            bcfit(&inst_type),
+            inst_type
+        )
     };
 
     let mut vals: [u64; 2] = [0u64, 0u64];
@@ -81,7 +93,7 @@ pub fn pow_provider(memory: &mut Memory, program_memory: &mut Memory, pc: &mut M
     let (base, pow, dest) = get_arguments(memory, program_memory, pc, InstructionType::Pow);
 
     let result = if base == 2 {
-        2 << pow-1
+        2 << pow - 1
     } else {
         base.pow(pow.try_into().unwrap())
     };

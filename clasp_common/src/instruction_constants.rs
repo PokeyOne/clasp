@@ -60,7 +60,7 @@ pub enum InstructionType {
     End,
     Movr,     // move raw
     OutrAddr, // out raw, address
-    OutrLit,   // out raw, literal
+    OutrLit,  // out raw, literal
     Jmp
 }
 use InstructionType::*;

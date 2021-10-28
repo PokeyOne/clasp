@@ -19,9 +19,7 @@ impl From<io::Error> for ClaspIOError {
     }
 }
 
-pub fn read_cclasp_binary_into_memory(
-    path: &str
-) -> Result<Memory, ClaspIOError> {
+pub fn read_cclasp_binary_into_memory(path: &str) -> Result<Memory, ClaspIOError> {
     let data = fs::read(path)?;
 
     // Verify the clasp file signature

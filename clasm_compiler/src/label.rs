@@ -20,7 +20,10 @@ pub struct LabelCollection {
 
 impl Label {
     pub fn new(name: String, location: u64) -> Label {
-        Label { name: name, location: location }
+        Label {
+            name: name,
+            location: location
+        }
     }
 }
 
@@ -36,7 +39,7 @@ impl PartialOrd for Label {
     }
 }
 
-impl Eq for Label { }
+impl Eq for Label {}
 
 impl PartialEq for Label {
     fn eq(&self, other: &Self) -> bool {
@@ -46,7 +49,11 @@ impl PartialEq for Label {
 
 impl LabelNode {
     pub fn new(label: Label) -> LabelNode {
-        LabelNode { label: label, l: None, r: None }
+        LabelNode {
+            label: label,
+            l: None,
+            r: None
+        }
     }
 
     pub fn size(&self) -> u64 {
@@ -69,14 +76,14 @@ impl LabelNode {
 
     fn print_ordered_list(&self) {
         match &self.r {
-            None => { },
+            None => {}
             Some(val) => val.print_ordered_list()
         };
 
         println!("{} -> {}", &self.label.name, &self.label.location);
 
         match &self.l {
-            None => { },
+            None => {}
             Some(val) => val.print_ordered_list()
         };
     }
@@ -108,7 +115,7 @@ impl LabelCollection {
         match &mut self.head {
             None => {
                 self.head = Some(Box::new(LabelNode::new(Label::new(name, location))));
-            },
+            }
             Some(head_node) => {
                 let mut current_node: &mut LabelNode = &mut *head_node;
 
@@ -119,18 +126,20 @@ impl LabelCollection {
                         Ordering::Equal => {
                             current_node.label.location = location;
                             break;
-                        },
+                        }
                         Ordering::Greater => {
                             if current_node.r.is_none() {
-                                current_node.r = Some(Box::new(LabelNode::new(Label::new(name, location))));
+                                current_node.r =
+                                    Some(Box::new(LabelNode::new(Label::new(name, location))));
                                 break;
                             }
 
                             current_node = &mut *current_node.r.as_mut().unwrap();
-                        },
+                        }
                         Ordering::Less => {
                             if current_node.l.is_none() {
-                                current_node.l = Some(Box::new(LabelNode::new(Label::new(name, location))));
+                                current_node.l =
+                                    Some(Box::new(LabelNode::new(Label::new(name, location))));
                                 break;
                             }
 
@@ -160,7 +169,7 @@ impl LabelCollection {
                             }
 
                             current_node = current_node.r.as_ref().unwrap();
-                        },
+                        }
                         Ordering::Less => {
                             if current_node.l.is_none() {
                                 return None;
@@ -178,7 +187,7 @@ impl LabelCollection {
     //       is a quick implementation for debug purposes.
     pub fn print_ordered_list(&self) {
         match &self.head {
-            None => { },
+            None => {}
             Some(head_node) => head_node.print_ordered_list()
         }
     }
@@ -201,8 +210,20 @@ mod tests {
         let l: Label = Label::new("test_name".to_string(), 24);
         let ln: LabelNode = LabelNode::new(l);
 
-        assert_eq!(true, match ln.l { Some(_) => false, None => true });
-        assert_eq!(true, match ln.r { Some(_) => false, None => true });
+        assert_eq!(
+            true,
+            match ln.l {
+                Some(_) => false,
+                None => true
+            }
+        );
+        assert_eq!(
+            true,
+            match ln.r {
+                Some(_) => false,
+                None => true
+            }
+        );
         assert_eq!(ln.label.name, "test_name");
         assert_eq!(ln.label.location, 24);
     }
@@ -218,12 +239,21 @@ mod tests {
         assert_eq!(false, a.eq(&c));
         assert_eq!(false, b.eq(&c));
 
-        assert_eq!(true, match a.cmp(&b) {
-            Ordering::Equal => true,
-            _ => false
-        });
+        assert_eq!(
+            true,
+            match a.cmp(&b) {
+                Ordering::Equal => true,
+                _ => false
+            }
+        );
 
-        assert_eq!(true, match a.cmp(&c) { Ordering::Greater => true, _ => false });
+        assert_eq!(
+            true,
+            match a.cmp(&c) {
+                Ordering::Greater => true,
+                _ => false
+            }
+        );
     }
 
     #[test]

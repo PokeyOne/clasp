@@ -1,12 +1,12 @@
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
-use clasp_common::version_constants::VERSION_STRING;
 use clasp_common::data_constants::WORD_SIZE;
+use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 use std::time::Instant;
 
-mod text_processing;
 mod label;
+mod text_processing;
 
 use label::LabelCollection;
 
@@ -70,7 +70,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // TODO: Possible run this label check on trimmed line.
         if line.chars().nth(0) == Some(':') {
-            labels.insert(line.to_string(), (resulting_byte_code.len() - WORD_SIZE) as u64);
+            labels.insert(
+                line.to_string(),
+                (resulting_byte_code.len() - WORD_SIZE) as u64
+            );
             continue;
         }
 
@@ -89,9 +92,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
             // If the value matches a previously defined label, replace
             let label_retrieval_name =
-                if trimmed.chars().nth(0) == Some('(')
-                && trimmed.chars().last() == Some(')') {
-                    trimmed[1..(trimmed.len()-1)].to_string()
+                if trimmed.chars().nth(0) == Some('(') && trimmed.chars().last() == Some(')') {
+                    trimmed[1..(trimmed.len() - 1)].to_string()
                 } else {
                     trimmed.to_string()
                 };

@@ -1,11 +1,11 @@
 use super::*;
-use clasp_common::instruction_constants::{INSTRUCTIONS, base_code_from_instruction_type};
+use clasp_common::instruction_constants::{base_code_from_instruction_type, INSTRUCTIONS};
 
 mod console;
 mod general;
+mod jumping;
 mod math;
 mod movement;
-mod jumping;
 
 type InstructionProvider = fn(&mut Memory, &mut Memory, &mut MemoryLocation);
 
@@ -25,7 +25,12 @@ static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
     0xCu64 => jumping::jmp_provider
 };
 
-pub fn perform(inst: u64, memory: &mut Memory, program_memory: &mut Memory, program_counter: &mut MemoryLocation) {
+pub fn perform(
+    inst: u64,
+    memory: &mut Memory,
+    program_memory: &mut Memory,
+    program_counter: &mut MemoryLocation
+) {
     let base_inst = INSTRUCTIONS.get(&inst).unwrap();
     let base_inst = base_code_from_instruction_type(base_inst);
 

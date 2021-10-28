@@ -11,7 +11,7 @@ use io::ClaspIOError::*;
 use memory::types::MemoryLocation;
 use memory::Memory;
 
-use clasp_common::command_line::{CLArg, NamedArgSpec, process_args};
+use clasp_common::command_line::{process_args, CLArg, NamedArgSpec};
 
 /// The default value if not specified on command line of if the program should
 /// dump all memory out to the standard output upon program completion. Useful
@@ -23,7 +23,7 @@ const DEFAULT_SHOW_DUMP: bool = true;
 fn main() {
     let args: Vec<CLArg> = process_args(vec![
         NamedArgSpec::new("--nodump", false, None),
-        NamedArgSpec::new("--dump", false, None)
+        NamedArgSpec::new("--dump", false, None),
     ]);
 
     // This will be set if the command line argument is supplied, but left as
@@ -41,12 +41,10 @@ fn main() {
             maybe_path = Some(arg.value);
         } else {
             match arg.name {
-                Some(val) => {
-                    match val.as_str() {
-                        "--nodump" => should_show_dump = false,
-                        "--dump" => should_show_dump = true,
-                        _ => panic!("Unknown argument {}", val)
-                    }
+                Some(val) => match val.as_str() {
+                    "--nodump" => should_show_dump = false,
+                    "--dump" => should_show_dump = true,
+                    _ => panic!("Unknown argument {}", val)
                 },
                 None => {} // Do nothing because this shouldn't happen
             };
