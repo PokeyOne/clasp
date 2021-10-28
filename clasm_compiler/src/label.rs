@@ -87,6 +87,9 @@ impl LabelCollection {
         }
     }
 
+    // This was hell with lifetimes and references and written on like a month
+    // of Rust experience. Seems to pass test, but definitely review with more
+    // experience
     pub fn insert(&mut self, name: String, location: u64) {
         match &mut self.head {
             None => {
@@ -123,6 +126,38 @@ impl LabelCollection {
                 }
             }
         }
+    }
+
+    /// Retrieve the location of a label. None if not in tree.
+    pub fn retrieve(&self, name: String) -> Option<u64> {
+        match &self.head {
+            None => return None,
+            Some(head_node) => {
+                let mut current_node: &LabelNode = head_node;
+
+                loop {
+                    let label_copy: Label = current_node.label.clone();
+
+                    match label_copy.cmp(&Label::new(name.clone(), 0)) {
+                        Ordering::Equal => return Some(current_node.label.location),
+                        Ordering::Greater => {
+                            if current_node.r.is_none() {
+                                return None;
+                            }
+
+                            current_node = current_node.r.as_ref().unwrap();
+                        },
+                        Ordering::Less => {
+                            if current_node.l.is_none() {
+                                return None;
+                            }
+
+                            current_node = current_node.l.as_ref().unwrap();
+                        }
+                    }
+                }
+            }
+        };
     }
 }
 
@@ -225,5 +260,21 @@ mod tests {
         c.insert("baa".to_string(), 64);
 
         assert_eq!(4, c.size());
+    }
+
+    #[test]
+    fn retrieve_from_empty_label_collection() {
+        let c = LabelCollection::new();
+
+        assert_eq!(true, c.retrieve("some".to_string()).is_none());
+    }
+
+    #[test]
+    fn retrieve_from_single_celled_label_collection() {
+        let mut c = LabelCollection::new();
+
+        c.insert("_main".to_string(), 540);
+
+        assert_eq!(Some(540u64), c.retrieve("_main".to_string()));
     }
 }
