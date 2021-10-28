@@ -1,11 +1,13 @@
 pub mod console_instructions;
 pub mod general_instructions;
 pub mod math_instructions;
+pub mod jump_instructions;
 pub mod utility;
 
 pub use console_instructions::*;
 pub use general_instructions::*;
 pub use math_instructions::*;
+pub use jump_instructions::*;
 
 #[derive(Debug)]
 pub enum OpProcessError {

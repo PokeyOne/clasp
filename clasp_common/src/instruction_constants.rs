@@ -43,6 +43,8 @@ pub mod instruction_codes {
     pub const MOVR_CODE: Word = 0x0000_0000_0000_0008u64;
     pub const OUTR_ADDR_CODE: Word = 0x0000_0000_0000_0009u64;
     pub const OUTR_LIT_CODE: Word = 0x0000_0000_0000_000Au64;
+    pub const JMP_ADDR_CODE: Word = 0x0000_0000_0000_000Bu64;
+    pub const JMP_LIT_CODE: Word = 0x0000_0000_0000_000Cu64;
 }
 pub use instruction_codes::*;
 
@@ -58,7 +60,8 @@ pub enum InstructionType {
     End,
     Movr,     // move raw
     OutrAddr, // out raw, address
-    OutrLit   // out raw, literal
+    OutrLit,   // out raw, literal
+    Jmp
 }
 use InstructionType::*;
 
@@ -88,7 +91,9 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_0007u64 => End,
     0x0000_0000_0000_0008u64 => Movr,
     0x0000_0000_0000_0009u64 => OutrAddr,
-    0x0000_0000_0000_000Au64 => OutrLit
+    0x0000_0000_0000_000Au64 => OutrLit,
+    0x0000_0000_0000_000Bu64 => Jmp,
+    0x0000_0000_0000_000Cu64 => Jmp
 };
 
 pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u64 {
@@ -103,6 +108,7 @@ pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u6
         End => 0x0000_0000_0000_0007u64,
         Movr => 0x0000_0000_0000_0008u64,
         OutrAddr => 0x0000_0000_0000_0009u64,
-        OutrLit => 0x0000_0000_0000_000Au64
+        OutrLit => 0x0000_0000_0000_000Au64,
+        Jmp => 0x0000_0000_0000_000Bu64
     }
 }
