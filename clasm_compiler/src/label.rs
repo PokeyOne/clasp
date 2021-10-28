@@ -276,5 +276,6 @@ mod tests {
         c.insert("_main".to_string(), 540);
 
         assert_eq!(Some(540u64), c.retrieve("_main".to_string()));
+        assert_eq!(true, c.retrieve("_other".to_string()).is_none());
     }
 }
