@@ -5,6 +5,7 @@ mod console;
 mod general;
 mod math;
 mod movement;
+mod jumping;
 
 type InstructionProvider = fn(&mut Memory, &mut Memory, &mut MemoryLocation);
 
@@ -19,7 +20,9 @@ static INSTRUCTION_FUNCTIONS: phf::Map<u64, InstructionProvider> = phf_map! {
     0x7u64 => general::end_provider,
     0x8u64 => movement::movr_provider,
     0x9u64 => console::outr_provider,
-    0xAu64 => console::outr_provider
+    0xAu64 => console::outr_provider,
+    0xBu64 => jumping::jmp_provider,
+    0xCu64 => jumping::jmp_provider
 };
 
 pub fn perform(inst: u64, memory: &mut Memory, program_memory: &mut Memory, program_counter: &mut MemoryLocation) {

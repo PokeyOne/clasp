@@ -1,6 +1,7 @@
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
+use clasp_common::data_constants::WORD_SIZE;
 use std::fs;
 use std::time::Instant;
 
@@ -69,7 +70,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
         // TODO: Possible run this label check on trimmed line.
         if line.chars().nth(0) == Some(':') {
-            labels.insert(line.to_string(), resulting_byte_code.len() as u64);
+            labels.insert(line.to_string(), (resulting_byte_code.len() - WORD_SIZE) as u64);
             continue;
         }
 
