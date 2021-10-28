@@ -94,10 +94,8 @@ impl LabelCollection {
             },
             Some(head_node) => {
                 let mut current_node: &mut LabelNode = &mut *head_node;
-                let mut temp_node: &mut LabelNode = &mut *current_node;
 
                 loop {
-                    //current_node = &mut *temp_node;
                     let label_copy: Label = current_node.label.clone();
 
                     match label_copy.cmp(&Label::new(name.clone(), 0)) {
@@ -111,7 +109,6 @@ impl LabelCollection {
                                 break;
                             }
 
-                            // was temp_node
                             current_node = &mut *current_node.r.as_mut().unwrap();
                         },
                         Ordering::Less => {
@@ -120,7 +117,6 @@ impl LabelCollection {
                                 break;
                             }
 
-                            // was temp_node
                             current_node = &mut *current_node.l.as_mut().unwrap();
                         }
                     };
