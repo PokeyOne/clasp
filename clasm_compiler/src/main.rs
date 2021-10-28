@@ -6,6 +6,8 @@ use std::fs;
 mod text_processing;
 mod label;
 
+use label::LabelCollection;
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pargs: Vec<CLArg> = command_line::process_args(vec![
         NamedArgSpec::new("--output", true, Some(vec!["-o".to_string()])),
