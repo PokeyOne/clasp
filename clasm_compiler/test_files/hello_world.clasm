@@ -1,7 +1,13 @@
+;; a few example nop instructions
 nop
 nop
+
+;; play around with moving stuff
 mov  0x03E8  0x03F0
 mov (0x00FF) 0x03F8
+
+;; print raw ascii stuff
+:hello
 outr (0x48)
 outr (0x65)
 outr (0x6C)

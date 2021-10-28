@@ -51,9 +51,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.push(sig_byte);
     }
 
+    let mut labels = LabelCollection::new();
+
     let mut line_index = 0;
     for line in file_content.lines() {
         line_index += 1;
+
+        if line.chars().nth(0) == Some(':') {
+            labels.insert(line.to_string(), resulting_byte_code.len() as u64);
+            continue;
+        }
 
         let mut important_words: Vec<&str> = Vec::new();
 
@@ -69,6 +76,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             }
 
             important_words.push(trimmed);
+        }
+
+        if important_words.len() == 0 {
+            continue;
         }
 
         let byte_code_result = match important_words[0] {
@@ -101,6 +112,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.len(),
         resulting_byte_code
     );
+
+    println!("Collected {} labels", labels.size());
 
     clasp_common::io::print_binary_vec(&resulting_byte_code);
 
