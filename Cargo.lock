@@ -31,6 +31,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "clasp_compiler"
+version = "0.1.0"
+dependencies = [
+ "clasp_common",
+]
+
+[[package]]
 name = "clasp_runtime_environment"
 version = "0.1.0"
 dependencies = [
