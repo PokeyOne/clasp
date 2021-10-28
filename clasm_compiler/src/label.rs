@@ -1,6 +1,6 @@
 use std::cmp::Ordering;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Label {
     name: String,
     location: u64
@@ -88,12 +88,43 @@ impl LabelCollection {
     }
 
     pub fn insert(&mut self, name: String, location: u64) {
-        match &self.head {
+        match &mut self.head {
             None => {
                 self.head = Some(Box::new(LabelNode::new(Label::new(name, location))));
             },
             Some(head_node) => {
-                panic!("head node: {:?}", head_node)
+                let mut current_node: &mut LabelNode = &mut *head_node;
+                let mut temp_node: &mut LabelNode = &mut *current_node;
+
+                loop {
+                    //current_node = &mut *temp_node;
+                    let label_copy: Label = current_node.label.clone();
+
+                    match label_copy.cmp(&Label::new(name.clone(), 0)) {
+                        Ordering::Equal => {
+                            current_node.label.location = location;
+                            break;
+                        },
+                        Ordering::Greater => {
+                            if current_node.r.is_none() {
+                                current_node.r = Some(Box::new(LabelNode::new(Label::new(name, location))));
+                                break;
+                            }
+
+                            // was temp_node
+                            current_node = &mut *current_node.r.as_mut().unwrap();
+                        },
+                        Ordering::Less => {
+                            if current_node.l.is_none() {
+                                current_node.l = Some(Box::new(LabelNode::new(Label::new(name, location))));
+                                break;
+                            }
+
+                            // was temp_node
+                            current_node = &mut *current_node.l.as_mut().unwrap();
+                        }
+                    };
+                }
             }
         }
     }
@@ -177,5 +208,26 @@ mod tests {
 
         assert_eq!(false, c.is_empty());
         assert_eq!(1, c.size());
+
+        c.insert("blah".to_string(), 48);
+
+        assert_eq!(false, c.is_empty());
+        assert_eq!(1, c.size());
+    }
+
+    #[test]
+    fn insert_several_elements_to_label_collection() {
+        let mut c = LabelCollection::new();
+
+        c.insert("blah".to_string(), 24);
+        c.insert("apples".to_string(), 48);
+
+        assert_eq!(false, c.is_empty());
+        assert_eq!(2, c.size());
+
+        c.insert("bananas".to_string(), 32);
+        c.insert("baa".to_string(), 64);
+
+        assert_eq!(4, c.size());
     }
 }
