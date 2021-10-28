@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+# This is a simple script to count the number of lines in all Rust files in the
+# current repository. It is not meant to be super efficient, and is mostly
+# cobbled together with the help of GitHub CoPilot.
+
 # get all rs files and calculate line count
 def get_rs_files
   Dir.glob("**/*.rs")
