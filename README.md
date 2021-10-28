@@ -1,10 +1,8 @@
 # CLASP
 
-Basically Lisp but compiles into a type of bytecode like JRE and has interpreter.
-
-- No null
-- Every statement has a return type
-- No void return type (Maybe)
+The main idea behind this language is it is a bit of a combination of C, Java,
+and Lisp. The syntax is most like Lisp, the way the language is compiled
+and run is most like Java, and the behaviour and structure is most like like C.
 
 The project is built using Rust and Rust's package manager, Cargo, and is
 divided into three components.
@@ -21,7 +19,8 @@ and running the project.
 
 Currently documentation is light. Below is a list of documentation resources.
 
-1. [CLASM.md](CLASM.md): This file contains documentation on programming for the clasp virtual machine in assembly.
+1. [CLASM.md](CLASM.md): This file contains documentation on programming for the clasp virtual machine in assembly. **out of date**
+2. [hello_world.clasm](clasm_compiler/test_files/hello_world.clasm): This is an example clasm file that will compile with the latest compiler.
 
 more to come
 
