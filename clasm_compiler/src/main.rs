@@ -97,7 +97,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             match labels.retrieve(label_retrieval_name) {
                 None => trimmed,
                 Some(loc) => {
-                    important_words.push(format!("({:#08X})", loc));
+                    // Formats to 18 characters because 8 bytes plus 2 for '0x'
+                    important_words.push(format!("({:#018X})", loc));
                     continue;
                 }
             };

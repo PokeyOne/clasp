@@ -38,4 +38,7 @@ sub 0x0400 0x0408 0x0400
 mov (:hello) 0x00
 mov :hello 0x08
 
+:inf_loop
+jmp :inf_loop
+
 end
