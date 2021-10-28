@@ -66,6 +66,20 @@ impl LabelNode {
             Some(val) => val.size()
         }
     }
+
+    fn print_ordered_list(&self) {
+        match &self.r {
+            None => { },
+            Some(val) => val.print_ordered_list()
+        };
+
+        println!("{} -> {}", &self.label.name, &self.label.location);
+
+        match &self.l {
+            None => { },
+            Some(val) => val.print_ordered_list()
+        };
+    }
 }
 
 impl LabelCollection {
@@ -158,6 +172,15 @@ impl LabelCollection {
                 }
             }
         };
+    }
+
+    // TODO: Implement interator trait and then this is trivial. This method
+    //       is a quick implementation for debug purposes.
+    pub fn print_ordered_list(&self) {
+        match &self.head {
+            None => { },
+            Some(head_node) => head_node.print_ordered_list()
+        }
     }
 }
 

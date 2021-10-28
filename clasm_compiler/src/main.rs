@@ -57,6 +57,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     for line in file_content.lines() {
         line_index += 1;
 
+        // TODO: Possible run this label check on trimmed line.
         if line.chars().nth(0) == Some(':') {
             labels.insert(line.to_string(), resulting_byte_code.len() as u64);
             continue;
@@ -114,6 +115,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     );
 
     println!("Collected {} labels", labels.size());
+    labels.print_ordered_list();
 
     clasp_common::io::print_binary_vec(&resulting_byte_code);
 
