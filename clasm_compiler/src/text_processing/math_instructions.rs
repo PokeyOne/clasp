@@ -4,7 +4,7 @@ use clasp_common::instruction_constants::instruction_codes::*;
 use super::utility::process_arg;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn add_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn add_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("add: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
@@ -13,7 +13,7 @@ pub fn add_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
 }
 
-pub fn sub_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn sub_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("sub: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
@@ -22,7 +22,7 @@ pub fn sub_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
 }
 
-pub fn mul_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn mul_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("mul: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
@@ -31,7 +31,7 @@ pub fn mul_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
 }
 
-pub fn div_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn div_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("div: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
@@ -40,7 +40,7 @@ pub fn div_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
     Ok(construct_byte_code(op_code, alpha_val, beta_val, dest_addr))
 }
 
-pub fn pow_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn pow_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("pow: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
@@ -81,20 +81,20 @@ fn math_mod_code(a: &Argument, b: &Argument) -> u64 {
     );
 }
 
-fn construct_abd(words: &Vec<&str>) -> Result<(Argument, Argument, u64), OpProcessError> {
+fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64), OpProcessError> {
     validate(&words)?;
 
-    let alpha_val: Argument = match process_arg(words[1]) {
+    let alpha_val: Argument = match process_arg(&words[1]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };
 
-    let beta_val: Argument = match process_arg(words[2]) {
+    let beta_val: Argument = match process_arg(&words[2]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };
 
-    let destination_address: u64 = match process_arg(words[3]) {
+    let destination_address: u64 = match process_arg(&words[3]) {
         Some(value) => match value.arg_type {
             ArgType::Literal => return Err(OpProcessError::ExpectedAddress),
             ArgType::Address => value.value
@@ -105,9 +105,9 @@ fn construct_abd(words: &Vec<&str>) -> Result<(Argument, Argument, u64), OpProce
     Ok((alpha_val, beta_val, destination_address))
 }
 
-fn validate(words: &Vec<&str>) -> Result<(), OpProcessError> {
+fn validate(words: &Vec<String>) -> Result<(), OpProcessError> {
     // Must be four: instr name, a, b, where put result;
-    if (*words).len() != 4 {
+    if words.len() != 4 {
         return Err(OpProcessError::WrongNumberOfArguments(
             "Syntax error, expected only 2 arguments for add instruction".to_string()
         ));

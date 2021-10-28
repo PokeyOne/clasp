@@ -94,12 +94,12 @@ impl NamedArgSpec {
 ///
 /// The return result will be a Vec with items of type CLArg.
 pub fn process_args(arg_specs: Vec<NamedArgSpec>) -> Vec<CLArg> {
-    /// The returnable CLArg objects
+    // The returnable CLArg objects
     let mut result: Vec<CLArg> = Vec::new();
-    /// The environment arguments
+    // The environment arguments
     let args: Vec<String> = env::args().collect();
 
-    /// Temp storage for name to be joined with the next argument
+    // Temp storage for name to be joined with the next argument
     let mut name: Option<String> = None;
 
     'arg_loop: for arg in args {

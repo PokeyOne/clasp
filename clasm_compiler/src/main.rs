@@ -2,6 +2,7 @@ use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
+use std::time::Instant;
 
 mod text_processing;
 mod label;
@@ -50,6 +51,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         panic!("Must suply input path");
     }
 
+    let start_time = Instant::now();
+
     let file_content = fs::read_to_string(&input_path)?;
     let mut resulting_byte_code: Vec<u8> = Vec::new();
 
@@ -70,7 +73,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             continue;
         }
 
-        let mut important_words: Vec<&str> = Vec::new();
+        let mut important_words: Vec<String> = Vec::new();
 
         for word in line.split(' ') {
             if word == ";;" {
@@ -83,14 +86,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                 continue;
             }
 
-            important_words.push(trimmed);
+            // If the value matches a previously defined label, replace
+            let label_retrieval_name =
+                if trimmed.chars().nth(0) == Some('(')
+                && trimmed.chars().last() == Some(')') {
+                    trimmed[1..(trimmed.len()-1)].to_string()
+                } else {
+                    trimmed.to_string()
+                };
+            match labels.retrieve(label_retrieval_name) {
+                None => trimmed,
+                Some(loc) => {
+                    important_words.push(format!("({:#08X})", loc));
+                    continue;
+                }
+            };
+
+            important_words.push(trimmed.to_string());
         }
 
         if important_words.len() == 0 {
             continue;
         }
 
-        let byte_code_result = match important_words[0] {
+        let byte_code_result = match (&important_words[0]) as &str {
             "nop" => text_processing::nop_process(important_words),
             "mov" => text_processing::mov_process(important_words),
             "outr" => text_processing::outr_process(important_words),
@@ -114,11 +133,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         resulting_byte_code.append(&mut byte_code);
     }
 
+    let elapsed_time = start_time.elapsed();
     println!(
-        "Compiled to {} ({:X}) raw bytes: {:?}",
+        "Compiled to {} ({:#X}) bytes in {}.{:06}s or {}ms",
         resulting_byte_code.len(),
         resulting_byte_code.len(),
-        resulting_byte_code
+        elapsed_time.as_secs(),
+        elapsed_time.subsec_micros(),
+        elapsed_time.as_millis()
     );
 
     println!("Collected {} labels", labels.size());

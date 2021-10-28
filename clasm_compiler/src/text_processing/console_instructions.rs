@@ -10,7 +10,7 @@ use clasp_common::instruction_constants::instruction_codes::*;
 use super::utility;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn outr_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
+pub fn outr_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
     println!("outr: {:?}", &words);
 
     if words.len() != 2 {
@@ -19,7 +19,7 @@ pub fn outr_process(words: Vec<&str>) -> Result<Vec<u8>, OpProcessError> {
         ));
     }
 
-    let argument: Argument = match utility::process_arg(words[1]) {
+    let argument: Argument = match utility::process_arg(&words[1]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };

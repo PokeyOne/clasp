@@ -32,4 +32,10 @@ mov (0x05) 0x0400
 sub (0x05) (0x04) 0x0408
 sub 0x0400 0x0408 0x0400
 
+;; This just demonstrates writing labels to memory.
+;; Labels are always treated as literal, but syntax can be either way.
+;; Both of the following statements are equivalent other than destination
+mov (:hello) 0x00
+mov :hello 0x08
+
 end
