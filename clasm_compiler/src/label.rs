@@ -278,4 +278,33 @@ mod tests {
         assert_eq!(Some(540u64), c.retrieve("_main".to_string()));
         assert_eq!(true, c.retrieve("_other".to_string()).is_none());
     }
+
+    #[test]
+    fn full_test_of_label_collection() {
+        let mut c = LabelCollection::new();
+
+        assert_eq!(true, c.is_empty());
+        assert_eq!(0, c.size());
+
+        c.insert("banana".to_string(), 64);
+        c.insert("apple".to_string(), 8);
+        c.insert("pear".to_string(), 48);
+        assert_eq!(3, c.size());
+        c.insert("starfruit".to_string(), 40);
+        c.insert("carrot".to_string(), 80);
+
+        assert_eq!(5, c.size());
+
+        assert_eq!(true, c.retrieve("non-existent".to_string()).is_none());
+        assert_eq!(Some(64), c.retrieve("banana".to_string()));
+        assert_eq!(Some(8), c.retrieve("apple".to_string()));
+        assert_eq!(Some(48), c.retrieve("pear".to_string()));
+        assert_eq!(Some(40), c.retrieve("starfruit".to_string()));
+        assert_eq!(Some(80), c.retrieve("carrot".to_string()));
+
+        c.insert("starfruit".to_string(), 4000);
+
+        assert_eq!(5, c.size());
+        assert_eq!(Some(4000), c.retrieve("starfruit".to_string()));
+    }
 }
