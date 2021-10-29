@@ -2,7 +2,9 @@ mod compiling;
 
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
+use clasp_common::version_constants::VERSION_STRING;
 use clasm_compiler::compiling as clasm_compiling;
+use std::fs;
 
 fn read_cl_args() -> Result<(String, String), Option<String>> {
     let args: Vec<CLArg> = command_line::process_args(vec![
@@ -16,7 +18,7 @@ fn read_cl_args() -> Result<(String, String), Option<String>> {
         match arg.name {
             Some(val) => match (&val) as &str {
                 "--version" => {
-                    println!("Version ??");
+                    println!("Clasp Compiler Version {}\n", VERSION_STRING);
                     return Err(None);
                 }
                 _ => {}
@@ -31,14 +33,21 @@ fn read_cl_args() -> Result<(String, String), Option<String>> {
     }
 }
 
-fn main() {
+fn main() -> Result<(), Box<dyn std::error::Error>> {
     let (input_path, output_path) = match read_cl_args() {
         Ok(val) => val,
         Err(msg) => match msg {
             Some(msge) => panic!("{}", msge),
-            None => return
+            None => return Ok(())
         }
     };
 
-    println!("Got input path of {} and output of {}", input_path, output_path);
+    let file_content = fs::read_to_string(input_path)?;
+    let resulting_assembly: String = compiling::compile_text(file_content);
+    // TODO: Stop here if assembly-only option is given
+    let resulting_binary: Vec<u8> = clasm_compiling::compile_text(resulting_assembly);
+
+    fs::write(output_path, &resulting_binary)?;
+
+    Ok(())
 }
