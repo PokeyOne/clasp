@@ -1,15 +1,17 @@
 mod compiling;
 
+use clasm_compiler::compiling as clasm_compiling;
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
-use clasm_compiler::compiling as clasm_compiling;
 use std::fs;
 
 fn read_cl_args() -> Result<(String, String), Option<String>> {
-    let args: Vec<CLArg> = command_line::process_args(vec![
-        NamedArgSpec::new("--version", false, Some(vec!["-v".to_string()]))
-    ]);
+    let args: Vec<CLArg> = command_line::process_args(vec![NamedArgSpec::new(
+        "--version",
+        false,
+        Some(vec!["-v".to_string()])
+    )]);
 
     let mut output_path = "./a.out".to_string();
     let mut input_path: Option<String> = None;
@@ -22,7 +24,7 @@ fn read_cl_args() -> Result<(String, String), Option<String>> {
                     return Err(None);
                 }
                 _ => {}
-            }
+            },
             None => input_path = Some(arg.value)
         };
     }

@@ -5,9 +5,9 @@ use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 use std::time::Instant;
 
+mod compiling;
 mod label;
 mod text_processing;
-mod compiling;
 
 use label::LabelCollection;
 

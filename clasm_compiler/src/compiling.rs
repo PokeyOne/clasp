@@ -1,5 +1,5 @@
-use clasp_common::io::CCLASP_SIGNATURE;
 use clasp_common::data_constants::WORD_SIZE;
+use clasp_common::io::CCLASP_SIGNATURE;
 
 use crate::label::LabelCollection;
 use crate::text_processing;
