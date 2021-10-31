@@ -9,12 +9,12 @@ pub enum RawValue {
 #[derive(Debug)]
 pub struct ASTNode {
     method_name: String,
-    content: Option<Box<ASTNode>>,
+    content: Option<Box<Vec<ASTNode>>>,
     raw: Option<RawValue>,
 }
 
 impl ASTNode {
-    pub fn new(method_name: String, content: ASTNode) -> ASTNode {
+    pub fn new(method_name: String, content: Vec<ASTNode>) -> ASTNode {
         ASTNode {
             method_name: method_name,
             content: Some(Box::new(content)),
@@ -59,6 +59,22 @@ mod tests {
 
     #[test]
     fn create_new() {
-        // TODO: Make content a vector. Easier for arguments and methods and such
+        let mut args: Vec<ASTNode> = Vec::new();
+        args.push(ASTNode::iraw(3));
+        args.push(ASTNode::iraw(5));
+
+        let node = ASTNode::new("add".to_string(), args);
+
+        assert_eq!("add".to_string(), node.method_name);
+        assert_eq!(2, node.content.as_ref().unwrap().len());
+        assert_eq!(true, node.raw.is_none());
+
+        match node.content {
+            Some(vec) => {
+                assert_eq!(3, match vec[0].raw.as_ref().unwrap() { RawValue::Int(val) => **val, _ => panic!("Node was not integer")});
+                assert_eq!(5, match vec[1].raw.as_ref().unwrap() { RawValue::Int(val) => **val, _ => panic!("Node was not integer")});
+            }
+            None => panic!("Node has no content")
+        }
     }
 }

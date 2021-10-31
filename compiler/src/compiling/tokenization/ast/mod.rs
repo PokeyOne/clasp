@@ -1,4 +1,4 @@
-mod nodes;
+pub mod nodes;
 
 use nodes::ASTNode;
 
@@ -8,10 +8,9 @@ pub struct AbstractSyntaxTree {
 
 impl AbstractSyntaxTree {
 
-    // TODO: This need severe work
-    pub fn new() -> AbstractSyntaxTree {
+    pub fn new(head: ASTNode) -> AbstractSyntaxTree {
         AbstractSyntaxTree {
-            head: None
+            head: Some(Box::new(head))
         }
     }
 }
