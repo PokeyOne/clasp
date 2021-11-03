@@ -40,6 +40,8 @@ parameters ::= ...
 ```text
 (include standard_io)
 
+(typedef char* String)
+
 (def name
   (returns char*)
   (return "bob"))
