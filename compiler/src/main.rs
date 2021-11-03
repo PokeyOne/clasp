@@ -17,7 +17,7 @@ fn help_text() -> String {
     //help_text.push_str("  -d, --debug                Enable debug symbols\n");
     //help_text.push_str("  -w, --warnings             Enable warnings\n");
     //help_text.push_str("  -W, --no-warnings          Disable warnings\n");
-    help_text.push_str("  -S, --assembly             Only compile source to assembly, not executable");
+    help_text.push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
 
     help_text
 }
