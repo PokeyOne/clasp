@@ -21,6 +21,8 @@ fn help_text() -> String {
     //help_text.push_str("  -W, --no-warnings          Disable warnings\n");
     help_text
         .push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
+    help_text
+        .push_str("  -T, --tokens               Only output token data, no assembly or binary\n")
 
     help_text
 }
@@ -34,6 +36,7 @@ fn read_cl_args() -> Result<RunOptions, Option<String>> {
             Some(vec!["-h".to_string(), "-?".to_string()])
         ),
         NamedArgSpec::new("--assembly", false, Some(vec!["-S".to_string()])),
+        NamedArgSpec::new("--tokens", false, Some(vec!["-T".to_string()]))
     ]);
 
     let mut run_options_factory = RunOptionsFactory::new();
@@ -48,6 +51,9 @@ fn read_cl_args() -> Result<RunOptions, Option<String>> {
                 }
                 "--assembly" => {
                     run_options_factory.set_output_format(OutputFormat::Assembly);
+                }
+                "--tokens" => {
+                    run_options_factory.set_output_format(OutputFormat::Tokens);
                 }
                 "--help" => {
                     println!("{}", help_text());
@@ -79,6 +85,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let file_content = fs::read_to_string(run_options.input_path())?;
+    // TODO: have a seperate step here for tokenization
+    // TODO: stop here if the tokens only option is given
     let resulting_assembly: String = compiling::compile_text(file_content);
     // TODO: Stop here if assembly-only option is given
     let resulting_binary: Vec<u8> = clasm_compiling::compile_text(resulting_assembly);

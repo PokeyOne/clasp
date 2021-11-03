@@ -5,7 +5,8 @@ pub mod factory;
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum OutputFormat {
     Assembly,
-    Binary
+    Binary,
+    Tokens
 }
 
 /// These are the options that can be passed to the compiler. Usually these are
