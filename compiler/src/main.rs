@@ -5,8 +5,8 @@ use clasm_compiler::compiling as clasm_compiling;
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
+use run_options::{factory::RunOptionsFactory, OutputFormat, RunOptions};
 use std::fs;
-use run_options::{RunOptions, OutputFormat, factory::RunOptionsFactory};
 
 fn help_text() -> String {
     let mut help_text = String::new();
@@ -19,15 +19,20 @@ fn help_text() -> String {
     //help_text.push_str("  -d, --debug                Enable debug symbols\n");
     //help_text.push_str("  -w, --warnings             Enable warnings\n");
     //help_text.push_str("  -W, --no-warnings          Disable warnings\n");
-    help_text.push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
+    help_text
+        .push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
 
     help_text
 }
 
 fn read_cl_args() -> Result<RunOptions, Option<String>> {
     let args: Vec<CLArg> = command_line::process_args(vec![
-        NamedArgSpec::new("--version",false,Some(vec!["-v".to_string()])),
-        NamedArgSpec::new("--help", false, Some(vec!["-h".to_string(), "-?".to_string()])),
+        NamedArgSpec::new("--version", false, Some(vec!["-v".to_string()])),
+        NamedArgSpec::new(
+            "--help",
+            false,
+            Some(vec!["-h".to_string(), "-?".to_string()])
+        ),
         NamedArgSpec::new("--assembly", false, Some(vec!["-S".to_string()])),
     ]);
 

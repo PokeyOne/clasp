@@ -6,7 +6,10 @@ pub struct StringTracker {
 // Haha, why not just use a fucking iterator
 impl StringTracker {
     pub fn new(data: String, index: usize) -> StringTracker {
-        StringTracker { data: data, index: index }
+        StringTracker {
+            data: data,
+            index: index
+        }
     }
 
     pub fn increment(&mut self) {
@@ -102,12 +105,8 @@ mod tests {
     #[test]
     fn read_to_end() {
         let mut tracker = StringTracker::new("this is a message from the overlords".to_string(), 0);
-
-
     }
 
     #[test]
-    fn empty_tracker() {
-
-    }
+    fn empty_tracker() {}
 }

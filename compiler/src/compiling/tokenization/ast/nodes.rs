@@ -10,7 +10,7 @@ pub enum RawValue {
 pub struct ASTNode {
     method_name: String,
     content: Option<Box<Vec<ASTNode>>>,
-    raw: Option<RawValue>,
+    raw: Option<RawValue>
 }
 
 impl ASTNode {
@@ -45,7 +45,13 @@ mod tests {
 
         assert_eq!("raw", node.method_name);
         assert_eq!(true, node.content.is_none());
-        assert_eq!(3, match node.raw.unwrap() { RawValue::Int(val) => *val, _ => panic!("node was not integer") });
+        assert_eq!(
+            3,
+            match node.raw.unwrap() {
+                RawValue::Int(val) => *val,
+                _ => panic!("node was not integer")
+            }
+        );
     }
 
     #[test]
@@ -54,7 +60,13 @@ mod tests {
 
         assert_eq!("raw", node.method_name);
         assert_eq!(true, node.content.is_none());
-        assert_eq!(3, match node.raw.unwrap() { RawValue::Int(val) => *val, _ => panic!("node was not integer") });
+        assert_eq!(
+            3,
+            match node.raw.unwrap() {
+                RawValue::Int(val) => *val,
+                _ => panic!("node was not integer")
+            }
+        );
     }
 
     #[test]
@@ -71,8 +83,20 @@ mod tests {
 
         match node.content {
             Some(vec) => {
-                assert_eq!(3, match vec[0].raw.as_ref().unwrap() { RawValue::Int(val) => **val, _ => panic!("Node was not integer")});
-                assert_eq!(5, match vec[1].raw.as_ref().unwrap() { RawValue::Int(val) => **val, _ => panic!("Node was not integer")});
+                assert_eq!(
+                    3,
+                    match vec[0].raw.as_ref().unwrap() {
+                        RawValue::Int(val) => **val,
+                        _ => panic!("Node was not integer")
+                    }
+                );
+                assert_eq!(
+                    5,
+                    match vec[1].raw.as_ref().unwrap() {
+                        RawValue::Int(val) => **val,
+                        _ => panic!("Node was not integer")
+                    }
+                );
             }
             None => panic!("Node has no content")
         }

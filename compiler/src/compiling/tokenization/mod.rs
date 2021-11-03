@@ -1,8 +1,8 @@
 pub mod ast;
 pub mod string_tracker;
 
-use ast::AbstractSyntaxTree;
 use ast::nodes::ASTNode;
+use ast::AbstractSyntaxTree;
 use string_tracker::StringTracker;
 
 pub fn tokenize_text(input: String) -> AbstractSyntaxTree {
