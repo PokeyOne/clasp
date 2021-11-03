@@ -1,0 +1,8 @@
+{
+  "workbench.editor.enablePreview": false,
+  "editor.rulers": [
+    {
+      "column": 80
+    }
+  ]
+}
