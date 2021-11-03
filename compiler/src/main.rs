@@ -22,7 +22,7 @@ fn help_text() -> String {
     help_text
         .push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
     help_text
-        .push_str("  -T, --tokens               Only output token data, no assembly or binary\n")
+        .push_str("  -T, --tokens               Only output token data, no assembly or binary\n");
 
     help_text
 }
