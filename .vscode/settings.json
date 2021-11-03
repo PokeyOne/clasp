@@ -1,5 +1,6 @@
 {
   "workbench.editor.enablePreview": false,
+  "editor.tabSize": 4,
   "editor.rulers": [
     {
       "column": 80
