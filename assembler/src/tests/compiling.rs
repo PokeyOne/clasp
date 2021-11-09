@@ -42,3 +42,18 @@ fn single_mov_with_address_src() {
 
     assert_eq!(expected, calculated);
 }
+
+#[test]
+fn nop_with_comments() {
+    let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    let mut simple_expected: Vec<u8> = vec![
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0
+    ];
+    expected.append(&mut simple_expected);
+    let input_text = ";; this line is a comment\nnop\n;; haha nope\nnop ;; with comment at end of line\nnop\n;; comment at end of the file\n;; haha, a multiline comment\n\n\n;; blah".to_string();
+    let calculated = compiling::compile_text(input_text);
+
+    assert_eq!(expected, calculated);
+}
