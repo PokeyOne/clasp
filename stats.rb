@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "fileutils"
+require "tempfile"
+
 # This is a simple script to count the number of lines in all Rust files in the
 # current repository. It is not meant to be super efficient, and is mostly
 # cobbled together with the help of GitHub CoPilot.
