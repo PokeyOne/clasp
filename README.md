@@ -1,5 +1,7 @@
 # CLASP
 
+![gpl 3 badge](https://img.shields.io/badge/license-GPL%203.0-blue)
+
 The main idea behind this language is it is a bit of a combination of C, Java,
 and Lisp. The syntax is most like Lisp, the way the language is compiled
 and run is most like Java, and the behaviour and structure is most like like C.
