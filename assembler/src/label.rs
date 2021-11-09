@@ -2,12 +2,12 @@ use std::cmp::Ordering;
 
 #[derive(Debug, Clone)]
 pub struct Label {
-    name: String,
-    location: u64
+    pub name: String,
+    pub location: u64
 }
 
 #[derive(Debug)]
-pub struct LabelNode {
+struct LabelNode {
     label: Label,
     l: Option<Box<LabelNode>>,
     r: Option<Box<LabelNode>>
@@ -48,7 +48,7 @@ impl PartialEq for Label {
 }
 
 impl LabelNode {
-    pub fn new(label: Label) -> LabelNode {
+    fn new(label: Label) -> LabelNode {
         LabelNode {
             label: label,
             l: None,
@@ -56,7 +56,7 @@ impl LabelNode {
         }
     }
 
-    pub fn size(&self) -> u64 {
+    fn size(&self) -> u64 {
         1 + self.left_size() + self.right_size()
     }
 
@@ -190,174 +190,5 @@ impl LabelCollection {
             None => {}
             Some(head_node) => head_node.print_ordered_list()
         }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn create_and_use_label() {
-        let l: Label = Label::new("test_name".to_string(), 24);
-
-        assert_eq!(l.name, "test_name");
-        assert_eq!(l.location, 24);
-    }
-
-    #[test]
-    fn create_and_read_label_node() {
-        let l: Label = Label::new("test_name".to_string(), 24);
-        let ln: LabelNode = LabelNode::new(l);
-
-        assert_eq!(
-            true,
-            match ln.l {
-                Some(_) => false,
-                None => true
-            }
-        );
-        assert_eq!(
-            true,
-            match ln.r {
-                Some(_) => false,
-                None => true
-            }
-        );
-        assert_eq!(ln.label.name, "test_name");
-        assert_eq!(ln.label.location, 24);
-    }
-
-    #[test]
-    fn label_comparisons() {
-        let a: Label = Label::new("test_name".to_string(), 24);
-        let b: Label = Label::new("test_name".to_string(), 48);
-        let c: Label = Label::new("other_test_name".to_string(), 48);
-
-        assert_eq!(true, a.eq(&b));
-        assert_eq!(true, b.eq(&a));
-        assert_eq!(false, a.eq(&c));
-        assert_eq!(false, b.eq(&c));
-
-        assert_eq!(
-            true,
-            match a.cmp(&b) {
-                Ordering::Equal => true,
-                _ => false
-            }
-        );
-
-        assert_eq!(
-            true,
-            match a.cmp(&c) {
-                Ordering::Greater => true,
-                _ => false
-            }
-        );
-    }
-
-    #[test]
-    fn size_of_node() {
-        let la: Label = Label::new("a".to_string(), 24);
-        let lb: Label = Label::new("b".to_string(), 48);
-        let lc: Label = Label::new("c".to_string(), 72);
-
-        let mut lna: LabelNode = LabelNode::new(la);
-        let lnb: LabelNode = LabelNode::new(lb);
-        let mut lnc: LabelNode = LabelNode::new(lc);
-
-        assert_eq!(lna.size(), 1);
-        assert_eq!(lnb.size(), 1);
-        assert_eq!(lnc.size(), 1);
-
-        lnc.l = Some(Box::new(lnb));
-        assert_eq!(lnc.size(), 2);
-        lna.r = Some(Box::new(lnc));
-        assert_eq!(lna.size(), 3);
-    }
-
-    #[test]
-    fn create_empty_collection() {
-        let c: LabelCollection = LabelCollection::new();
-
-        assert_eq!(true, c.is_empty());
-        assert_eq!(0, c.size());
-    }
-
-    #[test]
-    fn insert_one_element_to_collection() {
-        let mut c = LabelCollection::new();
-
-        c.insert("blah".to_string(), 24);
-
-        assert_eq!(false, c.is_empty());
-        assert_eq!(1, c.size());
-
-        c.insert("blah".to_string(), 48);
-
-        assert_eq!(false, c.is_empty());
-        assert_eq!(1, c.size());
-    }
-
-    #[test]
-    fn insert_several_elements_to_label_collection() {
-        let mut c = LabelCollection::new();
-
-        c.insert("blah".to_string(), 24);
-        c.insert("apples".to_string(), 48);
-
-        assert_eq!(false, c.is_empty());
-        assert_eq!(2, c.size());
-
-        c.insert("bananas".to_string(), 32);
-        c.insert("baa".to_string(), 64);
-
-        assert_eq!(4, c.size());
-    }
-
-    #[test]
-    fn retrieve_from_empty_label_collection() {
-        let c = LabelCollection::new();
-
-        assert_eq!(true, c.retrieve("some".to_string()).is_none());
-    }
-
-    #[test]
-    fn retrieve_from_single_celled_label_collection() {
-        let mut c = LabelCollection::new();
-
-        c.insert("_main".to_string(), 540);
-
-        assert_eq!(Some(540u64), c.retrieve("_main".to_string()));
-        assert_eq!(true, c.retrieve("_other".to_string()).is_none());
-    }
-
-    #[test]
-    fn full_test_of_label_collection() {
-        let mut c = LabelCollection::new();
-
-        assert_eq!(true, c.is_empty());
-        assert_eq!(0, c.size());
-
-        c.insert("banana".to_string(), 64);
-        c.insert("apple".to_string(), 8);
-        c.insert("pear".to_string(), 48);
-        assert_eq!(3, c.size());
-        c.insert("starfruit".to_string(), 40);
-        c.insert("carrot".to_string(), 80);
-
-        assert_eq!(5, c.size());
-
-        assert_eq!(true, c.retrieve("non-existent".to_string()).is_none());
-        assert_eq!(Some(64), c.retrieve("banana".to_string()));
-        assert_eq!(Some(8), c.retrieve("apple".to_string()));
-        assert_eq!(Some(48), c.retrieve("pear".to_string()));
-        assert_eq!(Some(40), c.retrieve("starfruit".to_string()));
-        assert_eq!(Some(80), c.retrieve("carrot".to_string()));
-
-        c.insert("starfruit".to_string(), 4000);
-
-        assert_eq!(5, c.size());
-        assert_eq!(Some(4000), c.retrieve("starfruit".to_string()));
     }
 }

@@ -9,6 +9,9 @@ mod compiling;
 mod label;
 mod text_processing;
 
+#[cfg(test)]
+mod tests;
+
 use label::LabelCollection;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
