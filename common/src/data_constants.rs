@@ -62,6 +62,40 @@ pub const GY_LOC: MemoryLocation = RMS + (WORD_SIZE * 24) as u64;
 #[allow(dead_code)]
 pub const GZ_LOC: MemoryLocation = RMS + (WORD_SIZE * 25) as u64;
 
+// TODO: Consider just an enum Register
+
+pub fn get_register_address(name: &str) -> Option<u64> {
+    match name {
+        "ga" => Some(GA_LOC),
+        "gb" => Some(GB_LOC),
+        "gc" => Some(GC_LOC),
+        "gd" => Some(GD_LOC),
+        "ge" => Some(GE_LOC),
+        "gf" => Some(GF_LOC),
+        "gg" => Some(GG_LOC),
+        "gh" => Some(GH_LOC),
+        "gi" => Some(GI_LOC),
+        "gj" => Some(GJ_LOC),
+        "gk" => Some(GK_LOC),
+        "gl" => Some(GL_LOC),
+        "gm" => Some(GM_LOC),
+        "gn" => Some(GN_LOC),
+        "go" => Some(GO_LOC),
+        "gp" => Some(GP_LOC),
+        "gq" => Some(GQ_LOC),
+        "gr" => Some(GR_LOC),
+        "gs" => Some(GS_LOC),
+        "gt" => Some(GT_LOC),
+        "gu" => Some(GU_LOC),
+        "gv" => Some(GV_LOC),
+        "gw" => Some(GW_LOC),
+        "gx" => Some(GX_LOC),
+        "gy" => Some(GY_LOC),
+        "gz" => Some(GZ_LOC),
+        _ => None
+    }
+}
+
 // TODO: OUT and IN registers. Out will be easiest; Both should be buffered and
 //       basically writing to out will just add to buffer until FLO instruction
 //       sent. There should also be a register to configure the functionality of
