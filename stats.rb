@@ -23,7 +23,7 @@ def calculate_file_line_count(file)
 end
 
 def generate_badge_link(total_count)
-  "https://img.shields.io/badge/lines%20of%20rust-#{total_count}-informational"
+  "![lines of code](https://img.shields.io/badge/lines%20of%20rust-#{total_count}-informational)"
 end
 
 total_count = 0
