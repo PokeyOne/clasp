@@ -30,6 +30,11 @@ pub struct Argument {
     value: u64
 }
 
+/// This is an argument in the assembly and represents either an address to a
+/// value, or a literal value. Arguments can also be registers or labels, but
+/// in those cases registers should be reduces to the address of the memory
+/// mapped register, and labels should also be reduced to the address in the
+/// program.
 impl Argument {
     fn new(arg_type: ArgType, value: u64) -> Argument {
         Argument {
