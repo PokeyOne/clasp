@@ -19,6 +19,10 @@ def calculate_file_line_count(file)
   count
 end
 
+def generate_badge_link(total_count)
+  "https://img.shields.io/badge/lines%20of%20rust-#{total_count}-informational"
+end
+
 total_count = 0
 get_rs_files.each do |file|
   intermediate_count = calculate_file_line_count(file)
@@ -27,3 +31,17 @@ get_rs_files.each do |file|
 end
 
 puts "Total: #{total_count}"
+
+puts "updating the readme badge..."
+temp = Tempfile.new "readme_temp.md"
+File.open("README.md", "r") do |f|
+  f.each_line do |line|
+    if line.start_with?("![lines of code]")
+      temp.puts(generate_badge_link(total_count))
+    else
+      temp.puts line
+    end
+  end
+end
+temp.close
+FileUtils.mv(temp.path, "README.md")
