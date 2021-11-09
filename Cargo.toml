@@ -1,8 +1,8 @@
 [workspace]
 
 members = [
-    "runtime_environment",
-    "clasm_compiler",
-    "clasp_common",
+    "runtime",
+    "assembler",
+    "common",
     "compiler"
 ]
