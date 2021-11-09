@@ -1,12 +1,12 @@
 mod compiling;
 mod run_options;
 
-use compiling::tokenization;
-use compiling::tokenization::token::Token;
 use clasm_compiler::compiling as clasm_compiling;
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
+use compiling::tokenization;
+use compiling::tokenization::token::Token;
 use run_options::{factory::RunOptionsFactory, OutputFormat, RunOptions};
 use std::fs;
 
@@ -38,7 +38,7 @@ fn read_cl_args() -> Result<RunOptions, Option<String>> {
             Some(vec!["-h".to_string(), "-?".to_string()])
         ),
         NamedArgSpec::new("--assembly", false, Some(vec!["-S".to_string()])),
-        NamedArgSpec::new("--tokens", false, Some(vec!["-T".to_string()]))
+        NamedArgSpec::new("--tokens", false, Some(vec!["-T".to_string()])),
     ]);
 
     let mut run_options_factory = RunOptionsFactory::new();
