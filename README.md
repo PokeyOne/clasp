@@ -18,6 +18,10 @@ The base of the project is a cargo workspace, and each of the three components
 is a cargo project. All the standard cargo commands work in terms of building
 and running the project.
 
+**note on the lines of code badge above**: Line of code isn't a metric that says
+anything about quality, but I added it none the less because number are fun. Also
+to auto update that badge, run the `stats.rb` script in the base of the project.
+
 ## Documentation
 
 Currently documentation is light. Below is a list of documentation resources.
