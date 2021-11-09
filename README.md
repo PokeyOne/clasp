@@ -55,5 +55,9 @@ parameters ::= ...
   (returns int)
   (printf "This is cool, %s\n" (name))
   (printf "but this is even cooler, %s\n" (name_with_args "boris"))
+  (var int* 'array_a
+    (malloc int* $(sizeof int) * 5$))
+  (var [int] 'array_b
+    (arr 1 2 3 4 5))
   (return 0))
 ```
