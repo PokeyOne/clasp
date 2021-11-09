@@ -1,5 +1,5 @@
 pub mod compiling;
-mod label;
+pub mod label;
 mod text_processing;
 
 #[cfg(test)]

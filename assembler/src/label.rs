@@ -152,6 +152,18 @@ impl LabelCollection {
     }
 
     /// Retrieve the location of a label. None if not in tree.
+    ///
+    /// # Examples
+    ///
+    /// ```rust
+    ///   use clasm_compiler::label::LabelCollection;
+    ///
+    ///   let mut lc = LabelCollection::new();
+    ///   lc.insert("test".to_string(), 540);
+    ///
+    ///   assert_eq!(Some(540u64), lc.retrieve("test".to_string()));
+    ///   assert_eq!(None, lc.retrieve("other".to_string()));
+    /// ```
     pub fn retrieve(&self, name: String) -> Option<u64> {
         match &self.head {
             None => return None,
