@@ -1,5 +1,8 @@
 use std::cmp::Ordering;
 
+#[cfg(test)]
+mod tests;
+
 #[derive(Debug, Clone)]
 pub struct Label {
     pub name: String,

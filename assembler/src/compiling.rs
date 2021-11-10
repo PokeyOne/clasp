@@ -4,6 +4,9 @@ use clasp_common::io::CCLASP_SIGNATURE;
 use crate::label::LabelCollection;
 use crate::text_processing;
 
+#[cfg(test)]
+mod tests;
+
 /// This compiles raw clasm assembly text that you would see in a file into
 /// the raw binary that should be handed to the runtime environment.
 pub fn compile_text(input: String) -> Vec<u8> {

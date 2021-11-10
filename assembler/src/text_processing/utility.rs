@@ -3,6 +3,9 @@ use clasp_common::data_types::{ByteCollection, Word};
 use clasp_common::data_constants;
 use hex;
 
+#[cfg(test)]
+mod tests;
+
 /// Given the string token of the raw assembly code instruction argument, this
 /// will process that and return an argument object.
 ///
