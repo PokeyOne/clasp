@@ -64,3 +64,31 @@ fn process_arg_literal_hex() {
         }
     }
 }
+
+#[test]
+#[ignore = "not implmented yet"]
+fn process_arg_literal_decimal() {
+    let arg = utility::process_arg("(128)");
+
+    match arg {
+        None => panic!("0x4f should produce some value"),
+        Some(arg_value) => {
+            assert!(arg_value.is_literal());
+            assert_eq!(*arg_value.val_ref(), 128u64);
+        }
+    }
+}
+
+#[test]
+#[ignore = "not implmented yet"]
+fn process_arg_address_decimal() {
+    let arg = utility::process_arg("128");
+
+    match arg {
+        None => panic!("0x4f should produce some value"),
+        Some(arg_value) => {
+            assert!(arg_value.is_address());
+            assert_eq!(*arg_value.val_ref(), 128u64);
+        }
+    }
+}
