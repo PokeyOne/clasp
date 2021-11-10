@@ -42,4 +42,22 @@ impl Argument {
             value: value
         }
     }
+
+    pub fn is_literal(&self) -> bool {
+        match self.arg_type {
+            ArgType::Literal => true,
+            _ => false
+        }
+    }
+
+    pub fn is_address(&self) -> bool {
+        match self.arg_type {
+            ArgType::Address => true,
+            _ => false
+        }
+    }
+
+    pub fn val_ref(&self) -> &u64 {
+        &self.value
+    }
 }

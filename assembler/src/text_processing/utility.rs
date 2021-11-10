@@ -1,5 +1,6 @@
 use super::{ArgType, Argument};
 use clasp_common::data_types::{ByteCollection, Word};
+use clasp_common::data_constants;
 use hex;
 
 /// Given the string token of the raw assembly code instruction argument, this
@@ -17,15 +18,16 @@ use hex;
 ///
 /// And finally a register name is just the character string identifier of the
 /// register. Similar to before it can take several forms:
-/// - `reg` = The value in the register is used. (the name is an address)
-/// - `(reg)` = The actual address of the register.
+/// - `reg` = The actual address of the register.
+/// - `(reg)` = The value in the register is used. (the name is an address)
 ///
 /// Essentially anywhere that you see a register name it will be replaced with
 /// the address of the register.
 pub fn process_arg(val: &str) -> Option<Argument> {
-    // TODO: Have a function "get_reg_address" that will return an address if
-    //       the string given to it is a register name, but will return None
-    //       when not given the name of a register. Then just match it here.
+    match data_constants::get_register_address(val) {
+        Some(addr) => return Some(Argument::new(ArgType::Address, addr)),
+        None => {}
+    };
 
     // This is a literal
     if val.chars().nth(0)? == '(' && val.chars().nth(val.len() - 1)? == ')' {
