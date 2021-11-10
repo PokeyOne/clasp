@@ -7,6 +7,7 @@ use crate::text_processing;
 #[cfg(test)]
 mod tests;
 
+// TODO: This should return a result. Errors should be passed up, not panic
 /// This compiles raw clasm assembly text that you would see in a file into
 /// the raw binary that should be handed to the runtime environment.
 pub fn compile_text(input: String) -> Vec<u8> {
