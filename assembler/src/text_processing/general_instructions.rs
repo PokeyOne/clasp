@@ -4,7 +4,7 @@ use clasp_common::instruction_constants::instruction_codes::*;
 use super::utility::process_arg;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn nop_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
+pub fn nop_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("nop: {:?}", &words);
 
     if words.len() > 1 {
@@ -13,16 +13,16 @@ pub fn nop_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
         ));
     }
 
-    Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8])
+    Ok((vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8], Vec::new()))
 }
 
-pub fn end_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
+pub fn end_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("end: {:?}", &words);
 
-    Ok(vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 7u8])
+    Ok((vec![0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 0u8, 7u8], Vec::new()))
 }
 
-pub fn mov_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
+pub fn mov_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("mov: {:?}", &words);
 
     // TODO: Convert these panics into OpProcessErrors
@@ -60,5 +60,5 @@ pub fn mov_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
 
     println!("mov bytes: {:?}", &resulting_byte_code);
 
-    Ok(resulting_byte_code)
+    Ok((resulting_byte_code, Vec::new()))
 }

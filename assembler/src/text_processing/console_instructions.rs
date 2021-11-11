@@ -10,7 +10,7 @@ use clasp_common::instruction_constants::instruction_codes::*;
 use super::utility;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn outr_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
+pub fn outr_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("outr: {:?}", &words);
 
     if words.len() != 2 {
@@ -36,5 +36,5 @@ pub fn outr_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
 
     println!("outr bytes: {:?}", &resulting_byte_code);
 
-    Ok(resulting_byte_code)
+    Ok((resulting_byte_code, Vec::new()))
 }

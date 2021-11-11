@@ -19,6 +19,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
     }
 
     let mut labels = LabelCollection::new();
+    let mut future_label_references: Vec<(String, u64)> = Vec::new();
 
     let mut line_index = 0;
     for line in input.lines() {
@@ -70,26 +71,23 @@ pub fn compile_text(input: String) -> Vec<u8> {
             continue;
         }
 
-        let byte_code_result = match (&important_words[0]) as &str {
-            "nop" => text_processing::nop_process(important_words),
-            "mov" => text_processing::mov_process(important_words),
-            "outr" => text_processing::outr_process(important_words),
-            "end" => text_processing::end_process(important_words),
-            "add" => text_processing::add_process(important_words),
-            "sub" => text_processing::sub_process(important_words),
-            "mul" => text_processing::mul_process(important_words),
-            "div" => text_processing::div_process(important_words),
-            "pow" => text_processing::pow_process(important_words),
-            "jmp" => text_processing::jmp_process(important_words),
-            _ => panic!(
-                "Syntax error, unexpected instruction at line {}",
-                line_index
-            )
-        };
+        let processor = text_processing::get_function_for_instruction_name(
+            &important_words[0]
+        );
+        let mut byte_code: Vec<u8> = match processor {
+            None => panic!("Invalid argument {}", important_words[0]),
+            Some(processor) => match processor(important_words) {
+                Err(reason) => panic!("line {}: {:?}", line_index, reason),
+                Ok(value) => {
+                    let (data, futures) = value;
 
-        let mut byte_code = match byte_code_result {
-            Ok(val) => val,
-            Err(err) => panic!("line {}: {:?}", line_index, err)
+                    for future in futures {
+                        future_label_references.push(future.clone());
+                    }
+
+                    data
+                }
+            }
         };
 
         resulting_byte_code.append(&mut byte_code);

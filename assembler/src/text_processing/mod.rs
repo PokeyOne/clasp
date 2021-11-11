@@ -61,3 +61,22 @@ impl Argument {
         &self.value
     }
 }
+
+pub type InstructionProcessResult = Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError>;
+pub type InstructionProcessor = fn(Vec<String>) -> InstructionProcessResult;
+
+pub fn get_function_for_instruction_name(name: &String) -> Option<InstructionProcessor> {
+    match name.as_str() {
+        "nop" => Some(nop_process),
+        "mov" => Some(mov_process),
+        "outr" => Some(outr_process),
+        "end" => Some(end_process),
+        "add" => Some(add_process),
+        "sub" => Some(sub_process),
+        "mul" => Some(mul_process),
+        "div" => Some(div_process),
+        "pow" => Some(pow_process),
+        "jmp" => Some(jmp_process),
+        _ => None
+    }
+}

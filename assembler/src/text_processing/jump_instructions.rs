@@ -7,7 +7,7 @@ use clasp_common::instruction_constants::instruction_codes::{JMP_ADDR_CODE, JMP_
 use super::utility;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn jmp_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
+pub fn jmp_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("jmp: {:?}", &words);
 
     if words.len() != 2 {
@@ -33,5 +33,6 @@ pub fn jmp_process(words: Vec<String>) -> Result<Vec<u8>, OpProcessError> {
 
     println!("jmp bytes: {:?}", &res);
 
-    Ok(res)
+    // TODO
+    Ok((res, Vec::new()))
 }
