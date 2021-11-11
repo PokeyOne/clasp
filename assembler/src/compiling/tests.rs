@@ -16,6 +16,7 @@ fn single_nop() {
 #[test]
 fn single_mov_with_literal_src() {
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    #[rustfmt::skip]
     let mut simple_expected: Vec<u8> = vec![
         0, 0, 0, 0, 0, 0, 0, 8,
         0, 0, 0, 0, 0, 0, 255, 255,
@@ -31,6 +32,7 @@ fn single_mov_with_literal_src() {
 #[test]
 fn single_mov_with_address_src() {
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    #[rustfmt::skip]
     let mut simple_expected: Vec<u8> = vec![
         0, 0, 0, 0, 0, 0, 0, 1,
         0, 0, 0, 0, 0, 0, 255, 255,
@@ -46,6 +48,7 @@ fn single_mov_with_address_src() {
 #[test]
 fn nop_with_comments() {
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    #[rustfmt::skip]
     let mut simple_expected: Vec<u8> = vec![
         0, 0, 0, 0, 0, 0, 0, 0,
         0, 0, 0, 0, 0, 0, 0, 0,

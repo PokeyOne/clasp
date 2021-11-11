@@ -13,6 +13,7 @@ end");
     let compiled = clasm::compiling::compile_text(source_code);
 
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    #[rustfmt::skip]
     let mut simple_expected: Vec<u8> = vec![
         0, 0, 0, 0, 0, 0, 0, 0, // nop
         0, 0, 0, 0, 0, 0, 0, 0, // nop
