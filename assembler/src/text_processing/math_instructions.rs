@@ -10,7 +10,10 @@ pub fn add_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
     let op_code: u64 = ADD_CODE + math_mod_code(&alpha_val, &beta_val);
 
-    Ok((construct_byte_code(op_code, alpha_val, beta_val, dest_addr), Vec::new()))
+    Ok((
+        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
+        Vec::new()
+    ))
 }
 
 pub fn sub_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
@@ -19,7 +22,10 @@ pub fn sub_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
-    Ok((construct_byte_code(op_code, alpha_val, beta_val, dest_addr), Vec::new()))
+    Ok((
+        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
+        Vec::new()
+    ))
 }
 
 pub fn mul_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
@@ -28,7 +34,10 @@ pub fn mul_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
-    Ok((construct_byte_code(op_code, alpha_val, beta_val, dest_addr), Vec::new()))
+    Ok((
+        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
+        Vec::new()
+    ))
 }
 
 pub fn div_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
@@ -37,7 +46,10 @@ pub fn div_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
-    Ok((construct_byte_code(op_code, alpha_val, beta_val, dest_addr), Vec::new()))
+    Ok((
+        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
+        Vec::new()
+    ))
 }
 
 pub fn pow_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
@@ -46,7 +58,10 @@ pub fn pow_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
-    Ok((construct_byte_code(op_code, alpha_val, beta_val, dest_addr), Vec::new()))
+    Ok((
+        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
+        Vec::new()
+    ))
 }
 
 fn construct_byte_code(op_code: u64, alpha: Argument, beta: Argument, dest_addr: u64) -> Vec<u8> {

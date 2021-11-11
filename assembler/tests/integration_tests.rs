@@ -4,11 +4,13 @@ use clasp_common::io::CCLASP_SIGNATURE;
 
 #[test]
 fn basic_nop_and_mov_no_registers() {
-    let source_code = String::from("nop
+    let source_code = String::from(
+        "nop
 nop
 mov (0x01) 0x00
 mov 0x00 0x08
-end");
+end"
+    );
 
     let compiled = clasm::compiling::compile_text(source_code);
 
@@ -39,7 +41,8 @@ mov (0x02) ga
 mov ga 0x08
 mov (ga) 0x10
 mov 0x00 0x18
-end".to_string();
+end"
+    .to_string();
 
     let compiled = clasm::compiling::compile_text(source_code);
 }
@@ -78,7 +81,8 @@ mov (0x00) ga
 :loop
 add ga (1) ga ;; increment ga
 jmp :loop
-end".to_string();
+end"
+    .to_string();
 
     let compiled = clasm::compiling::compile_text(source_code);
 }

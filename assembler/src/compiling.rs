@@ -56,7 +56,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
                     trimmed.to_string()
                 };
             match labels.retrieve(label_retrieval_name) {
-                None => {},
+                None => {}
                 Some(loc) => {
                     // Formats to 18 characters because 8 bytes plus 2 for '0x'
                     important_words.push(format!("({:#018X})", loc));
@@ -71,9 +71,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
             continue;
         }
 
-        let processor = text_processing::get_function_for_instruction_name(
-            &important_words[0]
-        );
+        let processor = text_processing::get_function_for_instruction_name(&important_words[0]);
         let mut byte_code: Vec<u8> = match processor {
             None => panic!("Invalid argument {}", important_words[0]),
             Some(processor) => match processor(important_words) {

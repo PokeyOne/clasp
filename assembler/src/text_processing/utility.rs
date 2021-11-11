@@ -1,6 +1,6 @@
 use super::{ArgType, Argument};
-use clasp_common::data_types::{ByteCollection, Word};
 use clasp_common::data_constants;
+use clasp_common::data_types::{ByteCollection, Word};
 use hex;
 
 #[cfg(test)]
