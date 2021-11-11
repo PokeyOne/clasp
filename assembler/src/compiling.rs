@@ -80,7 +80,9 @@ pub fn compile_text(input: String) -> Vec<u8> {
                     let (data, futures) = value;
 
                     for future in futures {
-                        future_label_references.push(future.clone());
+                        let mut fut_copy = future.clone();
+                        fut_copy.1 += resulting_byte_code.len() as u64;
+                        future_label_references.push(fut_copy);
                     }
 
                     data
@@ -93,6 +95,8 @@ pub fn compile_text(input: String) -> Vec<u8> {
 
     println!("Collected {} labels", labels.size());
     labels.print_ordered_list();
+
+    // TODO: fill in the future references
 
     return resulting_byte_code;
 }

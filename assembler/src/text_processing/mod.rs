@@ -36,11 +36,19 @@ pub struct Argument {
 /// mapped register, and labels should also be reduced to the address in the
 /// program.
 impl Argument {
-    fn new(arg_type: ArgType, value: u64) -> Argument {
+    pub fn new(arg_type: ArgType, value: u64) -> Argument {
         Argument {
             arg_type: arg_type,
             value: value
         }
+    }
+
+    pub fn literal(value: u64) -> Self {
+        Self::new(ArgType::Literal, value)
+    }
+
+    pub fn address(value: u64) -> Self {
+        Self::new(ArgType::Address, value)
     }
 
     pub fn is_literal(&self) -> bool {
