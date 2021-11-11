@@ -109,7 +109,7 @@ fn validate(words: &Vec<String>) -> Result<(), OpProcessError> {
     // Must be four: instr name, a, b, where put result;
     if words.len() != 4 {
         return Err(OpProcessError::WrongNumberOfArguments(
-            "Syntax error, expected only 2 arguments for add instruction".to_string()
+            "Syntax error, expected only 3 arguments for math instruction".to_string()
         ));
     }
 

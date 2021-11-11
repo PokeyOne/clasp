@@ -47,6 +47,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
             }
 
             // If the value matches a previously defined label, replace
+            // TODO: This would fail if ((double derefs)) are allowed, not sure
             let label_retrieval_name =
                 if trimmed.chars().nth(0) == Some('(') && trimmed.chars().last() == Some(')') {
                     trimmed[1..(trimmed.len() - 1)].to_string()
@@ -54,7 +55,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
                     trimmed.to_string()
                 };
             match labels.retrieve(label_retrieval_name) {
-                None => trimmed,
+                None => {},
                 Some(loc) => {
                     // Formats to 18 characters because 8 bytes plus 2 for '0x'
                     important_words.push(format!("({:#018X})", loc));
