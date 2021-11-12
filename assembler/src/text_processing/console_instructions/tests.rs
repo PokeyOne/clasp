@@ -1,11 +1,9 @@
 use super::*;
+use crate::string_vec;
 
 #[test]
 fn basic_outr_literal_instruction() -> Result<(), OpProcessError> {
-    let tokens: Vec<String> = vec!["outr", "(0x48)"]
-        .iter()
-        .map(|element| element.to_string())
-        .collect();
+    let tokens: Vec<String> = string_vec!["outr", "(0x48)"];
 
     let (data, future_label_references) = outr_process(tokens)?;
 
@@ -22,10 +20,7 @@ fn basic_outr_literal_instruction() -> Result<(), OpProcessError> {
 
 #[test]
 fn basic_outr_address_instruction() -> Result<(), OpProcessError> {
-    let tokens: Vec<String> = vec!["outr", "0x4863"]
-        .iter()
-        .map(|element| element.to_string())
-        .collect();
+    let tokens: Vec<String> = string_vec!["outr", "0x4863"];
 
     let (data, future_label_references) = outr_process(tokens)?;
 
@@ -42,10 +37,7 @@ fn basic_outr_address_instruction() -> Result<(), OpProcessError> {
 
 #[test]
 fn outr_address_max() -> Result<(), OpProcessError> {
-    let tokens: Vec<String> = vec!["outr", "0xffffffffffffffff"]
-        .iter()
-        .map(|element| element.to_string())
-        .collect();
+    let tokens: Vec<String> = string_vec!["outr", "0xffffffffffffffff"];
 
     let (data, future_label_references) = outr_process(tokens)?;
 
@@ -62,10 +54,7 @@ fn outr_address_max() -> Result<(), OpProcessError> {
 
 #[test]
 fn outr_address_overflow() {
-    let tokens: Vec<String> = vec!["outr", "0xffaaffaaffaaffaa1"]
-        .iter()
-        .map(|element| element.to_string())
-        .collect();
+    let tokens: Vec<String> = string_vec!["outr", "0xffaaffaaffaaffaa1"];
 
     match outr_process(tokens) {
         Ok(_) => panic!("an argument greater than 64 bits should cause overflow"),
@@ -75,10 +64,7 @@ fn outr_address_overflow() {
 
 #[test]
 fn outr_with_register() -> Result<(), OpProcessError> {
-    let tokens: Vec<String> = vec!["outr", "ga"]
-        .iter()
-        .map(|element| element.to_string())
-        .collect();
+    let tokens: Vec<String> = string_vec!["outr", "ga"];
 
     let (data, future_label_references) = outr_process(tokens)?;
 

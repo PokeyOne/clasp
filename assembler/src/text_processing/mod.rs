@@ -9,6 +9,9 @@ pub use general_instructions::*;
 pub use jump_instructions::*;
 pub use math_instructions::*;
 
+#[cfg(test)]
+mod test_helpers;
+
 #[derive(Debug)]
 pub enum OpProcessError {
     WrongNumberOfArguments(String),
