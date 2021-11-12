@@ -66,7 +66,6 @@ fn process_arg_literal_hex() {
 }
 
 #[test]
-#[ignore = "not implmented yet"]
 fn process_arg_literal_decimal() {
     let arg = utility::process_arg("(128)");
 
@@ -80,7 +79,6 @@ fn process_arg_literal_decimal() {
 }
 
 #[test]
-#[ignore = "not implmented yet"]
 fn process_arg_address_decimal() {
     let arg = utility::process_arg("128");
 
