@@ -46,6 +46,7 @@ fn data_block_macro_value() {
 
     assert_eq!(16, data_block.len());
 
+    #[rustfmt::skip]
     let expected_data = vec![
         0xFF, 0xEE, 0xDD, 0xCC, 0xBB, 0xAA, 0x99, 0x88,
         0, 0, 0, 0, 0, 0, 15, 255
