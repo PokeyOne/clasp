@@ -32,11 +32,30 @@ mov (0x05) 0x0400
 sub (0x05) (0x04) 0x0408
 sub 0x0400 0x0408 0x0400
 
-;; This just demonstrates writing labels to memory.
-;; Labels are always treated as literal, but syntax can be either way.
-;; Both of the following statements are equivalent other than destination
-mov (:hello) 0x00
-mov :hello 0x08
+jmp :main
+
+:hello_there
+outr (0x64) ;; d
+outr (0x6C) ;; l
+outr (0x72) ;; r
+outr (0x6F) ;; o
+outr (0x77) ;; w
+outr (0x20) ;;
+outr (0x6F) ;; o
+outr (0x6C) ;; l
+outr (0x6C) ;; l
+outr (0x65) ;; e
+outr (0x48) ;; H
+outr (0x0A) ;; \n
+return
+
+:main
+call :hello_there
+call :hello_there
+call :hello_there
+call :hello_there
+call :hello_there
+call :hello_there
 
 :inf_loop
 jmp :inf_loop
