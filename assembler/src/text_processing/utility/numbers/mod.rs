@@ -13,10 +13,6 @@ impl NumberBase {
     const DECIMAL: Self = Self { place_value: 10 };
     const HEX: Self = Self { place_value: 16 };
 
-    fn new(place_value: u8) -> Self {
-        Self { place_value: place_value }
-    }
-
     /// Parses a number assuming this base, returns Err(String) with the reason
     /// if cannot parse. Input **must not** include the base prefix, for that
     /// call the general method `text_processing::utility::parse_number`.
