@@ -85,6 +85,8 @@ pub fn get_function_for_instruction_name(name: &String) -> Option<InstructionPro
         "div" => Some(div_process),
         "pow" => Some(pow_process),
         "jmp" => Some(jmp_process),
+        "call" => Some(call_process),
+        "return" => Some(return_process),
         _ => None
     }
 }

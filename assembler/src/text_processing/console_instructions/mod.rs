@@ -4,6 +4,9 @@
 //! These include:
 //! - outr <some raw ascii byte> : Out put one raw ascii character to the screen
 
+#[cfg(test)]
+mod tests;
+
 use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::*;
 
