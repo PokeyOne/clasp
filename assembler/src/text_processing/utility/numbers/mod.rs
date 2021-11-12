@@ -3,20 +3,26 @@ use ascii::AsciiChar;
 #[cfg(test)]
 mod tests;
 
-struct NumberBase {
+/// Represents a number's base, such as base 10 for regular decimal, or base 16
+/// for hex numbers.
+pub struct NumberBase {
     place_value: u8
 }
 
 impl NumberBase {
-    const BINARY: Self = Self { place_value: 2 };
-    const OCTAL: Self = Self { place_value: 8 };
-    const DECIMAL: Self = Self { place_value: 10 };
-    const HEX: Self = Self { place_value: 16 };
+    /// Base 2 such as 0b10101011
+    pub const BINARY: Self = Self { place_value: 2 };
+    /// Base 8 such as 0o1723
+    pub const OCTAL: Self = Self { place_value: 8 };
+    /// Base 10 such 1503829
+    pub const DECIMAL: Self = Self { place_value: 10 };
+    /// Base 16 such as 0xFE350D
+    pub const HEX: Self = Self { place_value: 16 };
 
     /// Parses a number assuming this base, returns Err(String) with the reason
     /// if cannot parse. Input **must not** include the base prefix, for that
     /// call the general method `text_processing::utility::parse_number`.
-    fn parse_number(&self, val: &str) -> Result<u64, String> {
+    pub fn parse_number(&self, val: &str) -> Result<u64, String> {
         if val == "" {
             return Err(String::from("Empty String"));
         }
@@ -45,7 +51,23 @@ impl NumberBase {
         Ok(result)
     }
 
-    fn digit_value(val: char) -> Option<u8> {
+    /// Given a single alpha numeric digit 0-9 or a-f, this will return its
+    /// value as an unsigned integer.
+    ///
+    /// # Examples
+    /// ```
+    /// # use clasm_compiler::text_processing::utility::numbers::NumberBase;
+    /// let four = NumberBase::digit_value('4');
+    /// let eleven = NumberBase::digit_value('b');
+    /// let fifteen = NumberBase::digit_value('F');
+    /// let none = NumberBase::digit_value('G');
+    ///
+    /// assert_eq!(4, four.unwrap());
+    /// assert_eq!(11, eleven.unwrap());
+    /// assert_eq!(15, fifteen.unwrap());
+    /// assert!(none.is_none());
+    /// ```
+    pub fn digit_value(val: char) -> Option<u8> {
         let ascii_char = AsciiChar::from_ascii(val).ok()?.to_ascii_uppercase();
 
         const a_byte: u8 = AsciiChar::A.as_byte();
