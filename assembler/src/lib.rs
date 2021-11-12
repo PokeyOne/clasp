@@ -1,3 +1,3 @@
 pub mod compiling;
 pub mod label;
-mod text_processing;
+pub mod text_processing;

@@ -2,7 +2,7 @@ use super::{ArgType, Argument};
 use clasp_common::data_constants;
 use clasp_common::data_types::{ByteCollection, Word};
 
-mod numbers;
+pub mod numbers;
 
 #[cfg(test)]
 mod tests;

@@ -69,6 +69,47 @@ impl NumberBase {
 /// decimal, or hexadecimal respectively. No prefix will be assumed decimal.
 /// Suffixes such as the exponential suffix (i.e. `1.2e7`) are not supported,
 /// nor are decimals.
+///
+/// Below is the ebnf that describes the numbers
+/// ```ebnf
+/// number ::= prefixed_number | staight_decimal
+/// prefixed_number ::= '0x' straight_hex | '0b' straight_binary | '0o' straight_octal | '0d' straight_decimal
+/// straight_hex ::= hex_digit+
+/// straight_binary ::= binary_digit+
+/// straight_octal ::= octal_digit+
+/// straight_decimal ::= decimal_digit+
+/// binary_digit ::= '0' | '1'
+/// octal_digit ::= binary_digit | '2' | '3' | '4' | '5' | '6' | '7'
+/// decimal_digit ::= octal_digit | '8' | '9'
+/// hex_digit ::= decimal_digit | lower_hex_digit | upper_hex_digit
+/// lower_hex_digit ::= 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
+/// upper_hex_digit ::= 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+/// ```
+///
+/// # Examples
+///
+/// Passing simple decimals should work.
+/// ```
+/// # use clasm_compiler::text_processing::utility::numbers::parse_number;
+/// let a = parse_number("193");
+/// assert_eq!(193, a.unwrap());
+/// ```
+///
+/// Other types of integers work as well.
+/// ```
+/// # use clasm_compiler::text_processing::utility::numbers::parse_number;
+/// let a = parse_number("0d193");
+/// assert_eq!(193, a.unwrap());
+///
+/// let a = parse_number("0xB4F");
+/// assert_eq!(0xB4F, a.unwrap());
+///
+/// let a = parse_number("0b10101110");
+/// assert_eq!(0b10101110, a.unwrap());
+///
+/// let a = parse_number("0o17");
+/// assert_eq!(0o17, a.unwrap());
+/// ```
 pub fn parse_number(val: &str) -> Result<u64, String> {
     let result: Option<Result<u64, String>> = match val.chars().nth(0) {
         Some('0') => match val.chars().nth(1) {
