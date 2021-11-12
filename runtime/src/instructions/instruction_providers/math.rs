@@ -1,6 +1,6 @@
 use super::*;
 use clasp_common::instruction_constants::{
-    base_code_from_instruction_type as bcfit, instruction_codes::*, InstructionType
+    base_code_from_instruction_type as bcfit, InstructionType
 };
 use std::convert::TryInto;
 
@@ -16,7 +16,7 @@ fn get_arguments(
     };
     *pc += WORD_SIZE as u64;
 
-    let mut is_constant: [bool; 2] = match op_code - bcfit(&inst_type) {
+    let is_constant: [bool; 2] = match op_code - bcfit(&inst_type) {
         MATH_MOD_CC => [true, true],
         MATH_MOD_CA => [true, false],
         MATH_MOD_AC => [false, true],

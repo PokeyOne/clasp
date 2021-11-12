@@ -5,7 +5,7 @@ mod instructions;
 mod io;
 mod memory;
 
-use std::env;
+
 
 use io::ClaspIOError::*;
 use memory::types::MemoryLocation;
