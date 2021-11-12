@@ -23,6 +23,24 @@ fn digit_value_for_base_ten() {
 }
 
 #[test]
+fn digit_value_for_hex() {
+    let units: Vec<(u8, char)> = vec![
+        (10, 'A'),
+        (11, 'B'),
+        (12, 'C'),
+        (13, 'D'),
+        (14, 'E'),
+        (15, 'F')
+    ];
+
+    for unit in units {
+        let result = NumberBase::digit_value(unit.1).unwrap();
+
+        assert_eq!(unit.0, result);
+    }
+}
+
+#[test]
 fn number_base_ideal_decimal() {
     let value = NumberBase::DECIMAL.parse_number("37");
     assert_eq!(Ok(37u64), value);

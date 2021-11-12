@@ -55,7 +55,7 @@ impl NumberBase {
         if ascii_char.is_ascii_hexdigit() {
             match ascii_char.as_byte() {
                 0x30..=0x39 => Some(ascii_char.as_byte() - 0x30),
-                a_byte..=z_byte => Some(ascii_char.as_byte() - AsciiChar::A.as_byte()),
+                a_byte..=z_byte => Some(ascii_char.as_byte() - AsciiChar::A.as_byte() + 10),
                 _ => None
             }
         } else {
