@@ -29,7 +29,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
         if line.chars().nth(0) == Some(':') {
             labels.insert(
                 line.to_string(),
-                (resulting_byte_code.len() - WORD_SIZE) as u64
+                (resulting_byte_code.len()) as u64
             );
             continue;
         }
