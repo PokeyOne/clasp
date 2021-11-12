@@ -1,7 +1,8 @@
 use super::{ArgType, Argument};
 use clasp_common::data_constants;
 use clasp_common::data_types::{ByteCollection, Word};
-use hex;
+
+mod numbers;
 
 #[cfg(test)]
 mod tests;
@@ -42,19 +43,22 @@ pub fn process_arg(val: &str) -> Option<Argument> {
         };
     }
 
-    // Hex value
-    if val.chars().nth(0)? == '0' && val.chars().nth(1)? == 'x' {
-        let raw_value_vec: Vec<u8> = match hex::decode(&val[2..]) {
-            Ok(vec) => vec,
-            Err(err) => panic!("ToHexError: {:?}", err)
-        };
-        let raw_value: u64 = Word::from_bytes_v(&raw_value_vec);
-        return Some(Argument::new(ArgType::Address, raw_value));
+    // Hex/Binary value
+    if val.chars().nth(0)? == '0' {
+        if val.chars().nth(1)? == 'x' {
+            let raw_value_vec: Vec<u8> = match hex::decode(&val[2..]) {
+                Ok(vec) => vec,
+                Err(err) => panic!("ToHexError: {:?}", err)
+            };
+            let raw_value: u64 = Word::from_bytes_v(&raw_value_vec);
+            return Some(Argument::new(ArgType::Address, raw_value));
+        } else if val.chars().nth(1)? == 'b' {
+            panic!("Binary literals are not supported");
+        }
     }
-    println!("[DEBUG] {} does not start with 0x", val);
 
-    // TODO: Currently can only process hex values. Add:
-    //   - register names
-    //   - decimal
-    return None;
+    match numbers::parse_number(val) {
+        Some(val) => Some(Argument::literal(val)),
+        None => None
+    }
 }

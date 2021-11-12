@@ -97,6 +97,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
     labels.print_ordered_list();
 
     // TODO: fill in the future references
+    println!("Collected the following future labels: {:?}", future_label_references);
 
     return resulting_byte_code;
 }
