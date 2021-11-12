@@ -48,7 +48,7 @@ end"
 }
 
 #[test]
-fn full_functionality() {
+fn full_functionality_should_compile() {
     let source_code = "jmp :main
 :print
 outr ga
@@ -82,7 +82,34 @@ mov (0x00) ga
 add ga (1) ga ;; increment ga
 jmp :loop
 end"
-    .to_string();
+        .to_string();
 
     let _compiled = clasm::compiling::compile_text(source_code);
+}
+
+#[test]
+fn future_references_should_be_filled_in() {
+    let source_code = String::from("jmp :main\n:main\nnop");
+    #[rustfmt::skip]
+    let mut expected_data_simple: Vec<u8> = vec![
+        0, 0, 0, 0, 0, 0, 0, 0xB,
+        0, 0, 0, 0, 0, 0, 0, 0x10,
+        0, 0, 0, 0, 0, 0, 0, 0
+    ];
+    let mut expected_data: Vec<u8> = CCLASP_SIGNATURE.to_vec();
+    expected_data.append(&mut expected_data_simple);
+
+    let compiled_code = clasm::compiling::compile_text(source_code);
+    assert_eq!(expected_data, compiled_code);
+}
+
+#[test]
+#[should_panic]
+fn future_references_should_error_if_not_filled() {
+    let source_code = String::from("jmp :main");
+
+    clasm::compiling::compile_text(source_code);
+
+    // TODO: below is for after compiled text is changed to error return
+    // assert!(clasm::compiling::compile_text(source_code).is_err());
 }
