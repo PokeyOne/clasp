@@ -1,4 +1,5 @@
 use clasp_common::data_constants::WORD_SIZE;
+use clasp_common::data_types::{Word, ByteCollection};
 use clasp_common::io::CCLASP_SIGNATURE;
 
 use crate::label::LabelCollection;
@@ -96,8 +97,19 @@ pub fn compile_text(input: String) -> Vec<u8> {
     println!("Collected {} labels", labels.size());
     labels.print_ordered_list();
 
-    // TODO: fill in the future references
-    println!("Collected the following future labels: {:?}", future_label_references);
+    println!("Collected the following future labels: {:?}", &future_label_references);
+    for refer in future_label_references {
+        match labels.retrieve(refer.0.clone()) {
+            Some(val) => {
+                let val_bytes = (val as Word).to_bytes();
+                for i in 0..8 {
+                    let loc = i + refer.1;
+                    resulting_byte_code[loc as usize] = val_bytes[i as usize];
+                }
+            }
+            None => panic!("Undefined label {:?}", refer.0)
+        }
+    }
 
     return resulting_byte_code;
 }

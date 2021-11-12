@@ -93,7 +93,7 @@ fn future_references_should_be_filled_in() {
     #[rustfmt::skip]
     let mut expected_data_simple: Vec<u8> = vec![
         0, 0, 0, 0, 0, 0, 0, 0xB,
-        0, 0, 0, 0, 0, 0, 0, 0x10,
+        0, 0, 0, 0, 0, 0, 0, 0x18,
         0, 0, 0, 0, 0, 0, 0, 0
     ];
     let mut expected_data: Vec<u8> = CCLASP_SIGNATURE.to_vec();
