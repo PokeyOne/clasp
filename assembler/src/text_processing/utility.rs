@@ -58,7 +58,7 @@ pub fn process_arg(val: &str) -> Option<Argument> {
     }
 
     match numbers::parse_number(val) {
-        Some(val) => Some(Argument::literal(val)),
-        None => None
+        Ok(val) => Some(Argument::literal(val)),
+        Err(reason) => panic!("number parse error: {}", reason)
     }
 }

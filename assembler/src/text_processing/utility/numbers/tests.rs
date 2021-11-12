@@ -1,6 +1,28 @@
 use super::*;
 
 #[test]
+fn digit_value_for_base_ten() {
+    let units: Vec<(u8, char)> = vec![
+        (0, '0'),
+        (1, '1'),
+        (2, '2'),
+        (3, '3'),
+        (4, '4'),
+        (5, '5'),
+        (6, '6'),
+        (7, '7'),
+        (8, '8'),
+        (9, '9')
+    ];
+
+    for unit in units {
+        let result = NumberBase::digit_value(unit.1).unwrap();
+
+        assert_eq!(unit.0, result);
+    }
+}
+
+#[test]
 fn number_base_ideal_decimal() {
     let value = NumberBase::DECIMAL.parse_number("37");
     assert_eq!(Ok(37u64), value);
@@ -11,6 +33,7 @@ fn number_base_invalid_decimal() {
     let a = NumberBase::DECIMAL.parse_number("0d40");
     let b = NumberBase::DECIMAL.parse_number("boris");
 
+    println!("a = {:?}, b = {:?}", a, b);
     assert!(a.is_err());
     assert!(b.is_err());
 }

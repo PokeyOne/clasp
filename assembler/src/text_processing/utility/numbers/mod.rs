@@ -8,10 +8,10 @@ struct NumberBase {
 }
 
 impl NumberBase {
-    const BINARY: Self = new(2);
-    const OCTAL: Self = new(8);
-    const DECIMAL: Self = new(10);
-    const HEX: Self = new(16);
+    const BINARY: Self = Self { place_value: 2 };
+    const OCTAL: Self = Self { place_value: 8 };
+    const DECIMAL: Self = Self { place_value: 10 };
+    const HEX: Self = Self { place_value: 16 };
 
     fn new(place_value: u8) -> Self {
         Self { place_value: place_value }
@@ -22,7 +22,7 @@ impl NumberBase {
     /// call the general method `text_processing::utility::parse_number`.
     fn parse_number(&self, val: &str) -> Result<u64, String> {
         if val == "" {
-            return Err("Empty String");
+            return Err(String::from("Empty String"));
         }
 
         let mut result: u64 = 0;
@@ -30,10 +30,10 @@ impl NumberBase {
         let mut i = 0;
         loop {
             match val.chars().nth(i) {
-                Some(val) => match digit_value(val) {
-                    Some(c) if c < self.place_value => {
-                        result *= self.place_value;
-                        result += c as u64;
+                Some(val) => match Self::digit_value(val) {
+                    Some(n) if n < self.place_value => {
+                        result *= self.place_value as u64;
+                        result += n as u64;
                     },
                     _ => return Err(String::from("Invalid digit"))
                 },
@@ -42,15 +42,20 @@ impl NumberBase {
 
             i += 1;
         }
+
+        Ok(result)
     }
 
     fn digit_value(val: char) -> Option<u8> {
-        let ascii_char = AsciiChar::from_ascii(val)?.to_ascii_uppercase();
+        let ascii_char = AsciiChar::from_ascii(val).ok()?.to_ascii_uppercase();
+
+        const a_byte: u8 = AsciiChar::A.as_byte();
+        const z_byte: u8 = AsciiChar::Z.as_byte();
 
         if ascii_char.is_ascii_hexdigit() {
             match ascii_char.as_byte() {
                 0x30..=0x39 => Some(ascii_char.as_byte() - 0x30),
-                AsciiChar::A.as_byte()..=AsciiChar::Z.as_byte() => Some(ascii_char.as_byte() - AsciiChar::A.as_byte()),
+                a_byte..=z_byte => Some(ascii_char.as_byte() - AsciiChar::A.as_byte()),
                 _ => None
             }
         } else {
@@ -65,14 +70,20 @@ impl NumberBase {
 /// decimal, or hexadecimal respectively. No prefix will be assumed decimal.
 /// Suffixes such as the exponential suffix (i.e. `1.2e7`) are not supported,
 /// nor are decimals.
-pub fn parse_number(val: &str) -> Option<u64> {
-    match val.chars().nth(0) {
+pub fn parse_number(val: &str) -> Result<u64, String> {
+    let result: Option<Result<u64, String>> = match val.chars().nth(0) {
         Some('0') => match val.chars().nth(1) {
-            Some('b') => NumberBase::BINARY.parse_number(val[2..]),
-            Some('o') => NumberBase::OCTAL.parse_number(val[2..]),
-            Some('d') => NumberBase::DECIMAL.parse_number(val[2..]),
-            Some('x') => NumberBase::HEX.parse_number(val[2..]),
+            Some('b') => Some(NumberBase::BINARY.parse_number(&val[2..])),
+            Some('o') => Some(NumberBase::OCTAL.parse_number(&val[2..])),
+            Some('d') => Some(NumberBase::DECIMAL.parse_number(&val[2..])),
+            Some('x') => Some(NumberBase::HEX.parse_number(&val[2..])),
+            _ => None
         },
-        _ => NumberBase::BINARY.parse_number(val)
+        _ => None
+    };
+
+    match result {
+        Some(res) => res,
+        None => NumberBase::BINARY.parse_number(val)
     }
 }
