@@ -104,7 +104,7 @@ mod tests {
 
     #[test]
     fn read_to_end() {
-        let mut tracker = StringTracker::new("this is a message from the overlords".to_string(), 0);
+        let _tracker = StringTracker::new("this is a message from the overlords".to_string(), 0);
     }
 
     #[test]

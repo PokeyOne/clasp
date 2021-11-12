@@ -4,7 +4,7 @@ use clasp_common::io::CCLASP_SIGNATURE;
 #[test]
 fn single_nop() {
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
-    for i in 0..8 {
+    for _i in 0..8 {
         expected.push(0);
     }
     let input_text = "nop\n".to_string();

@@ -1,6 +1,6 @@
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
-use clasp_common::data_constants::WORD_SIZE;
+
 use clasp_common::version_constants::VERSION_STRING;
 use std::fs;
 use std::time::Instant;
@@ -9,7 +9,7 @@ mod compiling;
 mod label;
 mod text_processing;
 
-use label::LabelCollection;
+
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pargs: Vec<CLArg> = command_line::process_args(vec![
@@ -56,7 +56,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let start_time = Instant::now();
 
     let file_content = fs::read_to_string(&input_path)?;
-    let mut resulting_byte_code: Vec<u8> = compiling::compile_text(file_content);
+    let resulting_byte_code: Vec<u8> = compiling::compile_text(file_content);
 
     let elapsed_time = start_time.elapsed();
     println!(

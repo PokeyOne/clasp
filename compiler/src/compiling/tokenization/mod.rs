@@ -9,9 +9,9 @@ pub fn tokenize_text(input: String) -> Vec<Token> {
     let mut chars = input.chars();
 
     let mut whitespace_mode: Option<String> = None;
-    let mut identifier: Option<String> = None;
+    let _identifier: Option<String> = None;
     let mut string: Option<String> = None;
-    let mut number: Option<String> = None;
+    let _number: Option<String> = None;
 
     while let Some(c) = chars.next() {
         if c.is_whitespace() {

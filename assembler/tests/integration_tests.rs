@@ -44,7 +44,7 @@ mov 0x00 0x18
 end"
     .to_string();
 
-    let compiled = clasm::compiling::compile_text(source_code);
+    let _compiled = clasm::compiling::compile_text(source_code);
 }
 
 #[test]
@@ -84,5 +84,5 @@ jmp :loop
 end"
     .to_string();
 
-    let compiled = clasm::compiling::compile_text(source_code);
+    let _compiled = clasm::compiling::compile_text(source_code);
 }
