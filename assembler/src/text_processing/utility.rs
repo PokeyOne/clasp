@@ -43,22 +43,11 @@ pub fn process_arg(val: &str) -> Option<Argument> {
         };
     }
 
-    // Hex/Binary value
-    if val.chars().nth(0)? == '0' {
-        if val.chars().nth(1)? == 'x' {
-            let raw_value_vec: Vec<u8> = match hex::decode(&val[2..]) {
-                Ok(vec) => vec,
-                Err(err) => panic!("ToHexError: {:?}", err)
-            };
-            let raw_value: u64 = Word::from_bytes_v(&raw_value_vec);
-            return Some(Argument::new(ArgType::Address, raw_value));
-        } else if val.chars().nth(1)? == 'b' {
-            panic!("Binary literals are not supported");
-        }
-    }
-
     match numbers::parse_number(val) {
-        Ok(val) => Some(Argument::literal(val)),
-        Err(reason) => panic!("number parse error: {}", reason)
+        Ok(val) => Some(Argument::address(val)),
+        Err(reason) => {
+            println!("number {:?} parse error: {}", val, reason);
+            None
+        }
     }
 }

@@ -28,8 +28,11 @@ impl NumberBase {
             match val.chars().nth(i) {
                 Some(val) => match Self::digit_value(val) {
                     Some(n) if n < self.place_value => {
-                        result *= self.place_value as u64;
-                        result += n as u64;
+                        let mul = result.checked_mul(self.place_value as u64);
+                        if mul.is_none() {
+                            return Err(String::from("Integer Overflow"))
+                        }
+                        result = mul.unwrap() + (n as u64);
                     },
                     _ => return Err(String::from("Invalid digit"))
                 },
@@ -80,6 +83,6 @@ pub fn parse_number(val: &str) -> Result<u64, String> {
 
     match result {
         Some(res) => res,
-        None => NumberBase::BINARY.parse_number(val)
+        None => NumberBase::DECIMAL.parse_number(val)
     }
 }

@@ -103,3 +103,28 @@ fn number_base_invalid_hex() {
         assert!(NumberBase::HEX.parse_number(&val).is_err());
     }
 }
+
+#[test]
+fn prefixed_ideal_hex() {
+    assert_eq!(Ok(0xFFu64), parse_number("0xFF"));
+}
+
+#[test]
+fn prefixed_ideal_binary() {
+    assert_eq!(Ok(0xFFu64), parse_number("0b11111111"));
+}
+
+#[test]
+fn prefixed_ideal_octal() {
+    assert_eq!(Ok(0xFFu64), parse_number("0o377"));
+}
+
+#[test]
+fn prefixed_ideal_decimal() {
+    assert_eq!(Ok(0xFFu64), parse_number("0d255"));
+}
+
+#[test]
+fn ideal_decimal() {
+    assert_eq!(Ok(0xFFu64), parse_number("255"));
+}
