@@ -1,5 +1,5 @@
 use super::*;
-use crate::{string_vec, data_block};
+use crate::{data_block, string_vec};
 
 #[test]
 fn basic_jmp_label() -> Result<(), OpProcessError> {

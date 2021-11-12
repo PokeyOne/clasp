@@ -5,7 +5,7 @@ pub const WORD_SIZE: usize = 8;
 
 #[allow(dead_code)]
 mod register_locations {
-    use super::{WORD_SIZE, MemoryLocation};
+    use super::{MemoryLocation, WORD_SIZE};
 
     pub const REGISTER_COUNT: u64 = 26;
     pub const REGISTER_MEMORY_START: MemoryLocation = 0x8000_0000_0000_0000;
