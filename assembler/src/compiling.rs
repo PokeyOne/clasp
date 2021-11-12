@@ -1,5 +1,5 @@
 use clasp_common::data_constants::WORD_SIZE;
-use clasp_common::data_types::{Word, ByteCollection};
+use clasp_common::data_types::{ByteCollection, Word};
 use clasp_common::io::CCLASP_SIGNATURE;
 
 use crate::label::LabelCollection;
@@ -28,10 +28,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
 
         // TODO: Possible run this label check on trimmed line.
         if line.chars().nth(0) == Some(':') {
-            labels.insert(
-                line.to_string(),
-                (resulting_byte_code.len()) as u64
-            );
+            labels.insert(line.to_string(), (resulting_byte_code.len()) as u64);
             continue;
         }
 
@@ -97,7 +94,10 @@ pub fn compile_text(input: String) -> Vec<u8> {
     println!("Collected {} labels", labels.size());
     labels.print_ordered_list();
 
-    println!("Collected the following future labels: {:?}", &future_label_references);
+    println!(
+        "Collected the following future labels: {:?}",
+        &future_label_references
+    );
     for refer in future_label_references {
         match labels.retrieve(refer.0.clone()) {
             Some(val) => {

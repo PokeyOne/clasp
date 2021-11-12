@@ -9,8 +9,6 @@ mod compiling;
 mod label;
 mod text_processing;
 
-
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let pargs: Vec<CLArg> = command_line::process_args(vec![
         NamedArgSpec::new("--output", true, Some(vec!["-o".to_string()])),

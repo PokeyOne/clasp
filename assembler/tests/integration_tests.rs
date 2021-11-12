@@ -82,7 +82,7 @@ mov (0x00) ga
 add ga (1) ga ;; increment ga
 jmp :loop
 end"
-        .to_string();
+    .to_string();
 
     let _compiled = clasm::compiling::compile_text(source_code);
 }

@@ -12,7 +12,7 @@ fn digit_value_for_base_ten() {
         (6, '6'),
         (7, '7'),
         (8, '8'),
-        (9, '9')
+        (9, '9'),
     ];
 
     for unit in units {
@@ -30,7 +30,7 @@ fn digit_value_for_hex() {
         (12, 'C'),
         (13, 'D'),
         (14, 'E'),
-        (15, 'F')
+        (15, 'F'),
     ];
 
     for unit in units {
@@ -57,9 +57,7 @@ fn number_base_invalid_decimal() {
 }
 
 #[test]
-fn number_base_negative_number_should_fail() {
-    
-}
+fn number_base_negative_number_should_fail() {}
 
 #[test]
 fn number_base_empty_string_should_fail() {
@@ -67,7 +65,7 @@ fn number_base_empty_string_should_fail() {
         NumberBase::BINARY,
         NumberBase::OCTAL,
         NumberBase::DECIMAL,
-        NumberBase::HEX
+        NumberBase::HEX,
     ];
 
     for base in bases {
@@ -81,7 +79,7 @@ fn number_base_ideal_hex() {
         NumberBase::HEX.parse_number("4f"),
         NumberBase::HEX.parse_number("4F"),
         NumberBase::HEX.parse_number("2"),
-        NumberBase::HEX.parse_number("0b3F")
+        NumberBase::HEX.parse_number("0b3F"),
     ];
 
     assert_eq!(Ok(0x4f), values[0]);
@@ -96,7 +94,7 @@ fn number_base_invalid_hex() {
         "f34dddeg",
         "g",
         "0xFF",
-        "FFFFFFFFFFFFFFFF0" // overflow
+        "FFFFFFFFFFFFFFFF0", // overflow
     ];
 
     for val in values {

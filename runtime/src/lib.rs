@@ -1,4 +1,4 @@
-pub mod running;
 pub mod memory;
+pub mod running;
 
 mod instructions;

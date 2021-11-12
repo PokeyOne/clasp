@@ -36,10 +36,10 @@ impl NumberBase {
                     Some(n) if n < self.place_value => {
                         let mul = result.checked_mul(self.place_value as u64);
                         if mul.is_none() {
-                            return Err(String::from("Integer Overflow"))
+                            return Err(String::from("Integer Overflow"));
                         }
                         result = mul.unwrap() + (n as u64);
-                    },
+                    }
                     _ => return Err(String::from("Invalid digit"))
                 },
                 None => break

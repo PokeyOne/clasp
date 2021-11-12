@@ -3,7 +3,7 @@
 
 use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::{
-    JMP_ADDR_CODE, JMP_LIT_CODE, CALL_CODE, RETURN_CODE
+    CALL_CODE, JMP_ADDR_CODE, JMP_LIT_CODE, RETURN_CODE
 };
 
 use super::utility;
@@ -76,7 +76,10 @@ pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
 // TODO: Generalize this to the argument processor
 /// This is essentially the common stuff between call and jmp. Possibly worth
 /// generalizing up a level so that other instructions can have labels as arguments.
-fn arg_or_label(words: &Vec<String>, index: usize) -> Result<(Argument, Option<(String, u64)>), OpProcessError> {
+fn arg_or_label(
+    words: &Vec<String>,
+    index: usize
+) -> Result<(Argument, Option<(String, u64)>), OpProcessError> {
     let mut future_label_ref: Option<(String, u64)> = None;
 
     let arg: Argument = match utility::process_arg(&words[index]) {
@@ -90,8 +93,8 @@ fn arg_or_label(words: &Vec<String>, index: usize) -> Result<(Argument, Option<(
                 future_label_ref = Some((words[index].clone(), 8 * index as u64));
                 // The address is temporarily 0 to be filled in later.
                 Argument::address(0)
-            },
-            _ => return Err(OpProcessError::InvalidArgument),
+            }
+            _ => return Err(OpProcessError::InvalidArgument)
         }
     };
 

@@ -117,6 +117,6 @@ pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u6
         OutrLit => 0x0000_0000_0000_000Au64,
         Jmp => 0x0000_0000_0000_000Bu64,
         Call => 0x0000_0000_0000_000Du64,
-        Return => 0x0000_0000_0000_000Eu64,
+        Return => 0x0000_0000_0000_000Eu64
     }
 }
