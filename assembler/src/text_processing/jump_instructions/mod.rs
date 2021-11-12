@@ -76,7 +76,7 @@ pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
     Ok((res, future_label_refs))
 }
 
-// TODO: Generalize this to the argument processor
+// TODO: #2 - Generalize this to the argument processor
 /// This is essentially the common stuff between call and jmp. Possibly worth
 /// generalizing up a level so that other instructions can have labels as arguments.
 fn arg_or_label(

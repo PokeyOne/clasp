@@ -61,5 +61,4 @@ fn nop_with_comments() {
     assert_eq!(expected, calculated);
 }
 
-// TODO: general test method
-// TODO: more tests for all instructions
+// TODO: #3 - more tests for all instructions
