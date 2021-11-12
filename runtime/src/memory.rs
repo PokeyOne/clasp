@@ -53,13 +53,15 @@ impl ByteCollection for Word {
 ///
 /// To initialize a new memory object it would look like this:
 /// ```
-/// let mem = Memory::new(12000); // 12kb memory
+/// # use clasp_runtime_environment::memory::Memory;
+/// # use clasp_runtime_environment::memory;
+/// let mut mem = Memory::new(12000); // 12kb memory
 ///
 /// mem.read(0); // Read word from 0x0000_0000_0000_0000
 /// mem.write(0, 0x1); // Write 0x1 to 0x0000_0000_0000_0000
 ///
-/// let ga = mem.read(Memory::constants::GA_LOC); // Read the ga register
-/// mem.write(Memory::constants::GA_LOC, 0xFF); // Write 0xFF to ga register
+/// let ga = mem.read(memory::constants::GA_LOC); // Read the ga register
+/// mem.write(memory::constants::GA_LOC, 0xFF); // Write 0xFF to ga register
 /// ```
 /// _note_ that the above example does not account for the Result object that
 /// is returned from the read methods, and the Status enum that is returned

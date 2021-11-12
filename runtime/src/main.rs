@@ -4,8 +4,7 @@
 mod instructions;
 mod io;
 mod memory;
-
-
+mod running;
 
 use io::ClaspIOError::*;
 use memory::types::MemoryLocation;
@@ -51,8 +50,6 @@ fn main() {
         }
     }
 
-    let mut memory: Memory = Memory::new(12000);
-    let mut program_counter: MemoryLocation = 0;
     // Panic if we were never given a path, and de-optionalize it.
     let path: String = match maybe_path {
         Some(val) => val,
@@ -72,18 +69,11 @@ fn main() {
         }
     };
 
-    loop {
-        let inst = match program_memory.read(program_counter) {
-            memory::types::Result::Ok(val) => val,
-            memory::types::Result::Err(t) => panic!("Instruction read error: {:?}", t)
-        };
-
-        instructions::perform(inst, &mut memory, &mut program_memory, &mut program_counter);
-
-        if program_counter == 0xFFFF_FFFF_FFFF_FFFFu64 {
-            break;
-        }
-    }
+    // TODO: Variable container size
+    let mut memory = match running::run_program(program_memory, 12000) {
+        Ok(mem) => mem,
+        Err(msg) => panic!("Currupted program")
+    };
 
     if should_show_dump {
         memory.debug_dump();
