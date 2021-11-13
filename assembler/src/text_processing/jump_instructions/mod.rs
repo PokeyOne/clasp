@@ -95,7 +95,7 @@ fn arg_or_label(
                 // be offset by the location of the instruction.
                 future_label_ref = Some((words[index].clone(), 8 * index as u64));
                 // The address is temporarily 0 to be filled in later.
-                Argument::address(0)
+                Argument::literal(0)
             }
             _ => return Err(OpProcessError::InvalidArgument)
         }

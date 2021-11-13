@@ -4,7 +4,7 @@ use crate::{data_block, string_vec};
 #[test]
 fn basic_jmp_label() -> Result<(), OpProcessError> {
     let tokens = string_vec!["jmp", ":main"];
-    let expected_data: Vec<u8> = data_block![11, 0];
+    let expected_data: Vec<u8> = data_block![12, 0];
 
     let (data, future_label_refs) = jmp_process(tokens)?;
 

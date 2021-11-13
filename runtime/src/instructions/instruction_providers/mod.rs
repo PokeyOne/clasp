@@ -31,7 +31,10 @@ pub fn perform(
     program_memory: &mut Memory,
     program_counter: &mut MemoryLocation
 ) {
-    let base_inst = INSTRUCTIONS.get(&inst).unwrap();
+    let base_inst = match INSTRUCTIONS.get(&inst) {
+        Some(val) => val,
+        None => panic!("unknown instruction: {:#X}", inst)
+    };
     let base_inst = base_code_from_instruction_type(base_inst);
 
     let method: &InstructionProvider = INSTRUCTION_FUNCTIONS

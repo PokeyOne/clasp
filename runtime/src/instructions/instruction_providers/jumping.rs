@@ -19,7 +19,8 @@ pub fn jmp_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
     *pc += WORD_SIZE as u64;
 
     let destination: Word = match program_memory.read(pc.clone()) {
-        Ok(val) => val,
+        // TODO: subtact the 8 before hand again
+        Ok(val) => val - 8, // subtract 8 because of stripping the signature
         Err(t) => panic!("{:?}", t)
     };
 
@@ -31,5 +32,6 @@ pub fn jmp_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
         JumpType::Literal => destination
     };
 
+    println!("Going to location {:#X}", &destination);
     *pc = destination;
 }

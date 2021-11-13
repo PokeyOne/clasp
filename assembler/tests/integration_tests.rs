@@ -92,7 +92,7 @@ fn future_references_should_be_filled_in() {
     let source_code = String::from("jmp :main\n:main\nnop");
     #[rustfmt::skip]
     let mut expected_data_simple: Vec<u8> = vec![
-        0, 0, 0, 0, 0, 0, 0, 0xB,
+        0, 0, 0, 0, 0, 0, 0, 0xC,
         0, 0, 0, 0, 0, 0, 0, 0x18,
         0, 0, 0, 0, 0, 0, 0, 0
     ];
