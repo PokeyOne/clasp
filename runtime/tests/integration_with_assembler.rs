@@ -50,3 +50,33 @@ end");
 
     Ok(())
 }
+
+#[test]
+fn basic_jump_behaviour() -> Result<(), String> {
+    let source_code = String::from("nop
+nop
+nop
+jmp :a
+:b
+jmp :c
+:d
+end
+:a
+add (1) 0 0
+jmp :b
+:c
+add (2) 0 0
+jmp :d");
+    let compiled_code = assembler::compiling::compile_text(source_code);
+    let mut program_memory = Memory::new(compiled_code.len() as u64);
+    program_memory.writes(0, &compiled_code[8..]);
+
+    println!("Program Memory:");
+    program_memory.debug_dump();
+
+    let resulting_memory = runner::running::run_program(program_memory, 8)?;
+
+    assert_eq!(Ok(3u64), resulting_memory.read(0));
+
+    Ok(())
+}
