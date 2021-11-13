@@ -1,4 +1,5 @@
 use super::*;
+use clasp_common::data_constants::GA_LOC;
 
 #[test]
 fn word_from_bytes() {
@@ -13,7 +14,7 @@ fn word_from_bytes() {
 fn bytes_from_word() {
     let input_word: Word = 0xBACD93FE0102E493;
     let expected_bytes: [Byte; 8] = [0xBA, 0xCD, 0x93, 0xFE, 0x01, 0x02, 0xE4, 0x93];
-    let result: [Byte; 8] = input_word.get_bytes();
+    let result: [Byte; 8] = input_word.to_bytes();
 
     for i in 0..8 {
         assert_eq!(

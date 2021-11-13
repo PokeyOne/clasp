@@ -1,7 +1,7 @@
 use clasm_compiler as assembler;
 use clasp_runtime_environment as runner;
 
-use runner::memory::{Memory, types::Result::Ok as MemOk};
+use runner::memory::Memory;
 
 #[test]
 fn basic_linear_program() -> Result<(), String> {
@@ -40,12 +40,12 @@ end");
     resulting_memory.debug_dump();
 
     match resulting_memory.read(0) {
-        MemOk(val) => assert_eq!(0x3Au64, val),
-        _ => panic!("Could not read mem zero")
+        Ok(val) => assert_eq!(0x3Au64, val),
+        Err(_) => panic!("Could not read mem zero")
     }
     match resulting_memory.read(1) {
-        MemOk(val) => assert_eq!(0, val),
-        _ => panic!("Could not read mem one")
+        Ok(val) => assert_eq!(0, val),
+        Err(_) => panic!("Could not read mem one")
     }
 
     Ok(())
