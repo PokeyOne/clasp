@@ -43,7 +43,7 @@ end");
         Ok(val) => assert_eq!(0x3Au64, val),
         Err(_) => panic!("Could not read mem zero")
     }
-    match resulting_memory.read(1) {
+    match resulting_memory.read(8) {
         Ok(val) => assert_eq!(0, val),
         Err(_) => panic!("Could not read mem one")
     }
