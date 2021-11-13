@@ -1,5 +1,3 @@
-use super::constants::*;
-
 pub type MemResult<T> = Result<T, MemoryErrorType>;
 
 #[derive(Debug)]

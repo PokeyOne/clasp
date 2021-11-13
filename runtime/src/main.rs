@@ -7,10 +7,10 @@ mod memory;
 mod running;
 
 use io::ClaspIOError::*;
-use memory::types::MemoryLocation;
 use memory::Memory;
 
 use clasp_common::command_line::{process_args, CLArg, NamedArgSpec};
+use clasp_common::data_types::MemoryLocation;
 
 /// The default value if not specified on command line of if the program should
 /// dump all memory out to the standard output upon program completion. Useful

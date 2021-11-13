@@ -1,6 +1,7 @@
 use crate::instructions;
 use crate::memory;
-use crate::memory::{types::MemoryLocation, Memory};
+use crate::memory::Memory;
+use clasp_common::data_types::MemoryLocation;
 
 /// Runs the given compiled program. The binary program must be loaded and
 /// stripped of its file signature, then loaded into a Memory object before
@@ -12,8 +13,8 @@ pub fn run_program(mut program_memory: Memory, container_size: u64) -> Result<Me
 
     loop {
         let inst = match program_memory.read(program_counter) {
-            memory::types::Result::Ok(val) => val,
-            memory::types::Result::Err(t) => {
+            Ok(val) => val,
+            Err(t) => {
                 return Err(format!("Instruction read error: {:?}", t).to_string())
             }
         };
