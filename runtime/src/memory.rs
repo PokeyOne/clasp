@@ -1,50 +1,13 @@
 pub mod constants;
 pub mod types;
 
-use constants::*;
+#[cfg(test)]
+mod tests;
+
 use std::convert::TryInto;
-use types::Result::*;
-use types::*;
-
-// TODO: This has been re-implemented in common file, delete these and update refs
-/// ByteCollection is a trait exclusively meant for the Word type to implement
-/// a couple useful functions/methods.
-///
-/// The main functions of this trait are the from_bytes initializer, and the
-/// get_bytes method that converts a u64 word to 8 bytes.
-trait ByteCollection {
-    /// Convert an array of 8 bytes in to one word.
-    fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word;
-    /// Convert a word into 8 bytes.
-    fn get_bytes(&self) -> [Byte; WORD_SIZE];
-}
-
-impl ByteCollection for Word {
-    fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word {
-        let mut result: u64 = 0;
-
-        for byte in bytes {
-            result <<= 8;
-            result += byte.clone() as Word;
-        }
-
-        result
-    }
-
-    fn get_bytes(&self) -> [Byte; WORD_SIZE] {
-        let temp = self.clone();
-        let mut result: [Byte; WORD_SIZE] = [0 as Byte; WORD_SIZE];
-
-        for i in 0..8 {
-            let value = temp >> (8 * (7 - i));
-            let value = value & 0xFF;
-
-            result[i] = value.try_into().unwrap();
-        }
-
-        result
-    }
-}
+use types::{MemResult, MemoryErrorType};
+use clasp_common::data_types::{Word, Byte, ByteCollection, MemoryLocation, WordByteArray, Alignable};
+use clasp_common::data_constants::{WORD_SIZE, REGISTER_COUNT, RMS};
 
 /// The stored memory for a running VM, including registers and IO. Registers
 /// and IO are memory-mapped and stored here as well.
@@ -92,7 +55,7 @@ impl Memory {
         self.memory_size.try_into().unwrap()
     }
 
-    pub fn read(&self, location: MemoryLocation) -> Result<Word> {
+    pub fn read(&self, location: MemoryLocation) -> MemResult<Word> {
         if location >= RMS {
             self.read_register(location)
         } else {
@@ -112,7 +75,7 @@ impl Memory {
         }
     }
 
-    fn read_register(&self, location: MemoryLocation) -> Result<Word> {
+    fn read_register(&self, location: MemoryLocation) -> MemResult<Word> {
         if location % WORD_SIZE as u64 != 0 {
             return Err(MemoryErrorType::RegLocationNotAligned);
         }
@@ -126,32 +89,32 @@ impl Memory {
         Ok(self.registers[index as usize])
     }
 
-    pub fn writes(&mut self, location: MemoryLocation, value: &[u8]) -> Status {
+    pub fn writes(&mut self, location: MemoryLocation, value: &[u8]) -> MemResult<()> {
         if location >= RMS {
-            return Status::Err(MemoryErrorType::CannotWriteArrayToRegister);
+            return Err(MemoryErrorType::CannotWriteArrayToRegister);
         }
 
         // If the bytes to write would go out of bounds, then return error
         if location + (value.len() as u64) > (self.memory.len() as u64) {
-            return Status::Err(MemoryErrorType::LocationOutOfBounds);
+            return Err(MemoryErrorType::LocationOutOfBounds);
         }
 
         for i in 0..(value.len()) {
             self.memory[location as usize + i] = value[i];
         }
-        Status::Ok
+        Ok(())
     }
 
-    pub fn write(&mut self, location: MemoryLocation, value: Word) -> Status {
+    pub fn write(&mut self, location: MemoryLocation, value: Word) -> MemResult<()> {
         if !location.is_aligned() {
-            return Status::Err(MemoryErrorType::LocationNotAligned);
+            return Err(MemoryErrorType::LocationNotAligned);
         }
 
         if location >= RMS {
             self.write_register(location, value)
         } else {
             if location > (self.memory.len() as u64) {
-                return Status::Err(MemoryErrorType::LocationOutOfBounds);
+                return Err(MemoryErrorType::LocationOutOfBounds);
             }
 
             let bytes: WordByteArray = value.get_bytes();
@@ -159,27 +122,27 @@ impl Memory {
                 self.memory[(location + i) as usize] = bytes[i as usize];
             }
 
-            Status::Ok
+            Ok(())
         }
     }
 
-    fn write_register(&mut self, location: MemoryLocation, value: Word) -> Status {
+    fn write_register(&mut self, location: MemoryLocation, value: Word) -> MemResult<()> {
         if !location.is_aligned() {
-            return Status::Err(MemoryErrorType::RegLocationNotAligned);
+            return Err(MemoryErrorType::RegLocationNotAligned);
         }
 
         let index = (location - RMS) / WORD_SIZE as u64;
 
         if index > REGISTER_COUNT {
-            return Status::Err(MemoryErrorType::LocationOutOfBounds);
+            return Err(MemoryErrorType::LocationOutOfBounds);
         }
 
         self.registers[index as usize] = value;
 
-        Status::Ok
+        Ok(())
     }
 
-    pub fn debug_dump(&mut self) {
+    pub fn debug_dump(&self) {
         for i in 0..self.memory.len() {
             if i % 8 == 0 {
                 print!("\n{:016X} | ", i);
@@ -264,8 +227,8 @@ mod tests {
 
         let test_value = 0x0123456789ABCDEF;
         match memory.write(GA_LOC, test_value) {
-            Status::Ok => {}
-            Status::Err(err_type) => {
+            Ok(_) => {}
+            Err(err_type) => {
                 panic!("Could not write to memory with error: {:?}", err_type);
             }
         };

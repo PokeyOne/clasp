@@ -9,6 +9,16 @@ pub type Word = u64;
 pub type Byte = u8;
 pub type WordByteArray = [Byte; WORD_SIZE];
 
+pub trait Alignable {
+    fn is_aligned(&self) -> bool;
+}
+
+impl Alignable for MemoryLocation {
+    fn is_aligned(&self) -> bool {
+        self % 8 == 0
+    }
+}
+
 /// ByteCollection is a trait exclusively meant for the Word type to implement
 /// a couple useful functions/methods.
 ///

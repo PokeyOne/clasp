@@ -44,6 +44,7 @@ name = "clasp_runtime_environment"
 version = "0.1.0"
 dependencies = [
  "ascii",
+ "clasm_compiler",
  "clasp_common",
  "phf",
 ]
