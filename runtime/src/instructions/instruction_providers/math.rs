@@ -11,8 +11,8 @@ fn get_arguments(
     inst_type: InstructionType
 ) -> (u64, u64, MemoryLocation) {
     let op_code = match program_memory.read(pc.clone()) {
-        MemoryResult::Ok(val) => val,
-        MemoryResult::Err(t) => panic!("{:?}", t)
+        Ok(val) => val,
+        Err(t) => panic!("{:?}", t)
     };
     *pc += WORD_SIZE as u64;
 
@@ -34,23 +34,23 @@ fn get_arguments(
         // This is the actual value if this is a constants, but it is the
         // address if we are not dealing with an constant.
         let initial_value = match program_memory.read(pc.clone()) {
-            MemoryResult::Ok(val) => val,
-            MemoryResult::Err(t) => panic!("{:?}", t)
+            Ok(val) => val,
+            Err(t) => panic!("{:?}", t)
         };
         *pc += WORD_SIZE as u64;
 
         vals[i] = match is_constant[i] {
             true => initial_value,
             false => match memory.read(initial_value) {
-                MemoryResult::Ok(val) => val,
-                MemoryResult::Err(t) => panic!("{:?}", t)
+                Ok(val) => val,
+                Err(t) => panic!("{:?}", t)
             }
         };
     }
 
     let destination = match program_memory.read(pc.clone()) {
-        MemoryResult::Ok(val) => val,
-        MemoryResult::Err(t) => panic!("{:?}", t)
+        Ok(val) => val,
+        Err(t) => panic!("{:?}", t)
     };
     *pc += WORD_SIZE as u64;
 

@@ -3,8 +3,8 @@ use ascii::AsciiChar;
 
 pub fn outr_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut MemoryLocation) {
     let inst_code = match program_memory.read(pc.clone()) {
-        MemoryResult::Ok(val) => val,
-        MemoryResult::Err(t) => panic!(
+        Ok(val) => val,
+        Err(t) => panic!(
             "Could not read instruction from memory at program counter in outr_provider: {:?}",
             t
         )
@@ -15,19 +15,19 @@ pub fn outr_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut Mem
         OUTR_ADDR_CODE => {
             // TODO: some sort of generic method to read the address from an address
             let address = match program_memory.read(pc.clone()) {
-                MemoryResult::Ok(val) => val,
-                MemoryResult::Err(t) => panic!("{:?}", t)
+                Ok(val) => val,
+                Err(t) => panic!("{:?}", t)
             };
 
             // This is the value to print
             match mem.read(address) {
-                MemoryResult::Ok(val) => val,
-                MemoryResult::Err(t) => panic!("{:?}", t)
+                Ok(val) => val,
+                Err(t) => panic!("{:?}", t)
             }
         }
         OUTR_LIT_CODE => match program_memory.read(pc.clone()) {
-            MemoryResult::Ok(val) => val,
-            MemoryResult::Err(t) => panic!("{:?}", t)
+            Ok(val) => val,
+            Err(t) => panic!("{:?}", t)
         },
         _ => panic!("unexpected op code for outr method")
     };

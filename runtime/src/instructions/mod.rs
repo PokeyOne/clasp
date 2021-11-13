@@ -1,10 +1,10 @@
-use crate::memory::constants::*;
-use crate::memory::types::Result as MemoryResult;
-use crate::memory::types::Status as MemoryStatus;
-use crate::memory::types::{MemoryLocation, Word};
 use crate::memory::Memory;
 
-pub use clasp_common::instruction_constants::*;
+use clasp_common::{
+    instruction_constants::*,
+    data_constants::*,
+    data_types::*
+};
 
 use phf::phf_map;
 
