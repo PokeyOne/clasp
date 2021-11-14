@@ -1,3 +1,4 @@
+pub mod comparison_instructions;
 pub mod console_instructions;
 pub mod general_instructions;
 pub mod jump_instructions;
@@ -8,6 +9,7 @@ pub use console_instructions::*;
 pub use general_instructions::*;
 pub use jump_instructions::*;
 pub use math_instructions::*;
+pub use comparison_instructions::*;
 
 #[cfg(test)]
 mod test_helpers;
@@ -86,7 +88,8 @@ pub fn get_function_for_instruction_name(name: &String) -> Option<InstructionPro
         "mov" => Some(mov_process),
         "outr" => Some(outr_process),
         "end" => Some(end_process),
-        "add" | "sub" | "mul" | "div" | "pow" | "cmp" => Some(general_math),
+        "add" | "sub" | "mul" | "div" | "pow" => Some(general_math),
+        "cmp" => Some(cmp_process),
         "jmp" => Some(jmp_process),
         "call" => Some(call_process),
         "return" => Some(return_process),
