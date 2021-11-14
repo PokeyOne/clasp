@@ -22,8 +22,19 @@ pub fn outr_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
         ));
     }
 
+    let mut flrs: Vec<(String, u64)> = Vec::new();
+
     let argument: Argument = match utility::process_arg(&words[1]) {
-        Some(value) => value,
+        Some(value) => {
+            let (arg, flr) = value;
+
+            match flr {
+                Some(thing) => flrs.push(thing),
+                None => {}
+            }
+
+            arg
+        },
         None => return Err(OpProcessError::InvalidArgument)
     };
 
@@ -39,5 +50,5 @@ pub fn outr_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
 
     println!("outr bytes: {:?}", &resulting_byte_code);
 
-    Ok((resulting_byte_code, Vec::new()))
+    Ok((resulting_byte_code, flrs))
 }
