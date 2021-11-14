@@ -66,10 +66,9 @@ fn single_call() {
     let input_text = "nop
 :main
 call :main
-end".to_string();
-    let expected: Vec<u8> = data_block![
-        CCLASP_SIGNATURE_WORD, 0x00, 0x0D, 0x10, 0x07
-    ];
+end"
+    .to_string();
+    let expected: Vec<u8> = data_block![CCLASP_SIGNATURE_WORD, 0x00, 0x0D, 0x10, 0x07];
 
     let calculated = compiling::compile_text(input_text);
 
@@ -79,9 +78,7 @@ end".to_string();
 #[test]
 fn single_return() {
     let input_text = "return".to_string();
-    let expected: Vec<u8> = data_block![
-        CCLASP_SIGNATURE_WORD, 0x0E
-    ];
+    let expected: Vec<u8> = data_block![CCLASP_SIGNATURE_WORD, 0x0E];
 
     let calculated = compiling::compile_text(input_text);
 

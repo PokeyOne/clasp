@@ -100,7 +100,9 @@ fn math_mod_code(a: &Argument, b: &Argument) -> u64 {
     );
 }
 
-fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(String, u64)>), OpProcessError> {
+fn construct_abd(
+    words: &Vec<String>
+) -> Result<(Argument, Argument, u64, Vec<(String, u64)>), OpProcessError> {
     validate(&words)?;
 
     let (alpha_val, mut alpha_flr) = match process_arg(&words[1]) {
@@ -133,7 +135,7 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(S
                 ArgType::Literal => return Err(OpProcessError::ExpectedAddress),
                 ArgType::Address => arg.value()
             }
-        },
+        }
         None => return Err(OpProcessError::InvalidArgument)
     };
 

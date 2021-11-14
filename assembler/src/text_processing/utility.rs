@@ -1,7 +1,6 @@
 use super::{ArgType, Argument};
 use clasp_common::data_constants;
 
-
 pub mod numbers;
 
 #[cfg(test)]

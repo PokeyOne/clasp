@@ -3,10 +3,12 @@ pub mod types;
 #[cfg(test)]
 mod tests;
 
+use clasp_common::data_constants::{REGISTER_COUNT, RMS, WORD_SIZE};
+use clasp_common::data_types::{
+    Alignable, Byte, ByteCollection, MemoryLocation, Word, WordByteArray
+};
 use std::convert::TryInto;
 use types::{MemResult, MemoryErrorType};
-use clasp_common::data_types::{Word, Byte, ByteCollection, MemoryLocation, WordByteArray, Alignable};
-use clasp_common::data_constants::{WORD_SIZE, REGISTER_COUNT, RMS};
 
 /// The stored memory for a running VM, including registers and IO. Registers
 /// and IO are memory-mapped and stored here as well.

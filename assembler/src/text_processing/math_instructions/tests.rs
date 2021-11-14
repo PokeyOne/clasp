@@ -1,5 +1,5 @@
 use super::*;
-use crate::{string_vec, data_block};
+use crate::{data_block, string_vec};
 use clasp_common::instruction_constants::*;
 
 #[test]
@@ -8,7 +8,10 @@ fn simple_add() {
     let expected = data_block![ADD_CODE_CA, 1, 0x20, 0x20];
 
     match add_process(source.clone()) {
-        Err(err) => panic!("Failed to process add instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process add instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 
@@ -25,11 +28,14 @@ fn label_add() {
     let expected_flrs = vec![
         (String::from(":some_data"), 8),
         (String::from(":other_data"), 16),
-        (String::from(":other_data"), 24)
+        (String::from(":other_data"), 24),
     ];
 
     match add_process(source.clone()) {
-        Err(err) => panic!("Failed to process add instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process add instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 
@@ -48,7 +54,10 @@ fn simple_sub() {
     let expected = data_block![SUB_CODE_CA, 1, 0x20, 0x20];
 
     match sub_process(source.clone()) {
-        Err(err) => panic!("Failed to process sub instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process sub instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 
@@ -67,7 +76,10 @@ fn simple_mul() {
     let expected = data_block![MUL_CODE_CA, 1, 0x20, 0x20];
 
     match mul_process(source.clone()) {
-        Err(err) => panic!("Failed to process mul instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process mul instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 
@@ -86,7 +98,10 @@ fn simple_div() {
     let expected = data_block![DIV_CODE_CA, 1, 0x20, 0x20];
 
     match div_process(source.clone()) {
-        Err(err) => panic!("Failed to process div instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process div instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 
@@ -105,7 +120,10 @@ fn simple_pow() {
     let expected = data_block![POW_CODE_CA, 1, 0x20, 0x20];
 
     match pow_process(source.clone()) {
-        Err(err) => panic!("Failed to process pow instruction {:?} bc: {:?}", source, err),
+        Err(err) => panic!(
+            "Failed to process pow instruction {:?} bc: {:?}",
+            source, err
+        ),
         Ok(ret) => {
             let (data, flrs) = ret;
 

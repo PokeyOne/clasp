@@ -34,7 +34,7 @@ pub fn outr_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
             }
 
             arg
-        },
+        }
         None => return Err(OpProcessError::InvalidArgument)
     };
 

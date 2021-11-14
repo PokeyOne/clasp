@@ -4,8 +4,8 @@
 #[cfg(test)]
 mod tests;
 
-use clasp_common::data_types::ByteCollection;
 use clasp_common::data_constants::WORD_SIZE;
+use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::{
     CALL_CODE, JMP_ADDR_CODE, JMP_LIT_CODE, RETURN_CODE
 };

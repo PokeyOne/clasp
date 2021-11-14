@@ -5,7 +5,8 @@ use runner::memory::Memory;
 
 #[test]
 fn basic_linear_program() -> Result<(), String> {
-    let source_code = String::from("nop
+    let source_code = String::from(
+        "nop
 nop
 mov (0x30) 0
 outr 0        ;; 0
@@ -30,7 +31,8 @@ outr 0        ;; 9
 add (1) 0 0
 outr 0        ;; :
 outr (0x0A)   ;; \n
-end");
+end"
+    );
     let compiled_code = assembler::compiling::compile_text(source_code);
     let mut program_memory = Memory::new(compiled_code.len() as u64);
     program_memory.writes(0, &compiled_code[8..]);
@@ -53,7 +55,8 @@ end");
 
 #[test]
 fn basic_jump_behaviour() -> Result<(), String> {
-    let source_code = String::from("nop
+    let source_code = String::from(
+        "nop
 nop
 nop
 jmp :a
@@ -66,7 +69,8 @@ add (1) 0 0
 jmp :b
 :c
 add (2) 0 0
-jmp :d");
+jmp :d"
+    );
     let compiled_code = assembler::compiling::compile_text(source_code);
     let mut program_memory = Memory::new(compiled_code.len() as u64);
     program_memory.writes(0, &compiled_code[8..]);

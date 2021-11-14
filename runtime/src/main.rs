@@ -8,9 +8,7 @@ mod running;
 
 use io::ClaspIOError::*;
 
-
 use clasp_common::command_line::{process_args, CLArg, NamedArgSpec};
-
 
 /// The default value if not specified on command line of if the program should
 /// dump all memory out to the standard output upon program completion. Useful

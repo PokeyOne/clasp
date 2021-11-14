@@ -14,9 +14,7 @@ pub fn run_program(mut program_memory: Memory, container_size: u64) -> Result<Me
     loop {
         let inst = match program_memory.read(program_counter) {
             Ok(val) => val,
-            Err(t) => {
-                return Err(format!("Instruction read error: {:?}", t).to_string())
-            }
+            Err(t) => return Err(format!("Instruction read error: {:?}", t).to_string())
         };
 
         instructions::perform(inst, &mut memory, &mut program_memory, &mut program_counter);

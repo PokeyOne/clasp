@@ -45,7 +45,7 @@ pub fn mov_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
             };
 
             arg
-        },
+        }
         None => panic!("Syntax error, argument 1 is not processable")
     };
 
@@ -62,7 +62,7 @@ pub fn mov_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
                 ArgType::Address => arg,
                 ArgType::Literal => panic!("Syntax error, destination must be address")
             }
-        },
+        }
         None => panic!("Syntax error, argument 2 is not processable")
     };
 
