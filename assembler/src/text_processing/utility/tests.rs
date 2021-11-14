@@ -34,7 +34,7 @@ fn process_arg_address_hex() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_address());
             assert_eq!(*arg_value.val_ref(), 0x4Fu64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 
@@ -44,7 +44,7 @@ fn process_arg_address_hex() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_address());
             assert_eq!(*arg_value.val_ref(), 0x4Fu64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 }
@@ -60,7 +60,7 @@ fn process_arg_literal_hex() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_literal());
             assert_eq!(*arg_value.val_ref(), 0x4Fu64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 
@@ -70,7 +70,7 @@ fn process_arg_literal_hex() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_literal());
             assert_eq!(*arg_value.val_ref(), 0x4Fu64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 }
@@ -85,7 +85,7 @@ fn process_arg_literal_decimal() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_literal());
             assert_eq!(*arg_value.val_ref(), 128u64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 }
@@ -100,7 +100,7 @@ fn process_arg_address_decimal() {
             let (arg_value, flr) = tup;
             assert!(arg_value.is_address());
             assert_eq!(*arg_value.val_ref(), 128u64);
-            assert!(tup.is_none());
+            assert!(flr.is_none());
         }
     }
 }
@@ -115,7 +115,7 @@ fn process_arg_label() {
             let (val, flr) = tup;
             assert!(val.is_literal());
             assert_eq!(val.value(), 0);
-            assert_eq!(1, flr.len());
+            assert!(flr.is_some());
             assert_eq!((String::from(":label"), 0), flr.unwrap());
         }
     }
