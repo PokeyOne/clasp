@@ -71,6 +71,10 @@ impl Argument {
     pub fn val_ref(&self) -> &u64 {
         &self.value
     }
+
+    pub fn value(&self) -> u64 {
+        self.value
+    }
 }
 
 pub type InstructionProcessResult = Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError>;
