@@ -57,7 +57,7 @@ pub fn compile_text(input: String) -> Vec<u8> {
                 None => {}
                 Some(loc) => {
                     // Formats to 18 characters because 8 bytes plus 2 for '0x'
-                    important_words.push(format!("({:#018X})", loc));
+                    important_words.push(format!("{:#018X}", loc));
                     continue;
                 }
             };

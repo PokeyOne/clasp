@@ -25,11 +25,11 @@ pub fn jmp_provider(mem: &mut Memory, program_memory: &mut Memory, pc: &mut Memo
     };
 
     let destination: Word = match t {
-        JumpType::Address => match mem.read(destination) {
+        JumpType::Literal => match mem.read(destination) {
             Ok(val) => val,
             Err(t) => panic!("{:?}", t)
         },
-        JumpType::Literal => destination
+        JumpType::Address => destination
     };
 
     println!("Going to location {:#X}", &destination);
