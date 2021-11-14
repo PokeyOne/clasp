@@ -7,10 +7,10 @@ mod memory;
 mod running;
 
 use io::ClaspIOError::*;
-use memory::Memory;
+
 
 use clasp_common::command_line::{process_args, CLArg, NamedArgSpec};
-use clasp_common::data_types::MemoryLocation;
+
 
 /// The default value if not specified on command line of if the program should
 /// dump all memory out to the standard output upon program completion. Useful
@@ -56,7 +56,7 @@ fn main() {
         None => panic!("No path provided to read program from.")
     };
 
-    let mut program_memory = match io::read_cclasp_binary_into_memory(&path) {
+    let program_memory = match io::read_cclasp_binary_into_memory(&path) {
         Ok(val) => val,
         Err(cioe) => match cioe {
             MissingSignature => {
@@ -70,9 +70,9 @@ fn main() {
     };
 
     // TODO: Variable container size
-    let mut memory = match running::run_program(program_memory, 12000) {
+    let memory = match running::run_program(program_memory, 12000) {
         Ok(mem) => mem,
-        Err(msg) => panic!("Currupted program")
+        Err(_msg) => panic!("Currupted program")
     };
 
     if should_show_dump {

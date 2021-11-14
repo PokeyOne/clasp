@@ -1,5 +1,5 @@
 use crate::instructions;
-use crate::memory;
+
 use crate::memory::Memory;
 use clasp_common::data_types::MemoryLocation;
 

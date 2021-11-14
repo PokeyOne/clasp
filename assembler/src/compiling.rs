@@ -1,4 +1,4 @@
-use clasp_common::data_constants::WORD_SIZE;
+
 use clasp_common::data_types::{ByteCollection, Word};
 use clasp_common::io::CCLASP_SIGNATURE;
 

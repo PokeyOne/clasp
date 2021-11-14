@@ -109,7 +109,7 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(S
     };
 
     match alpha_flr {
-        Some(ref mut val) => val.1 += (WORD_SIZE as u64),
+        Some(ref mut val) => val.1 += WORD_SIZE as u64,
         None => {}
     };
 
