@@ -1,3 +1,4 @@
+use clasp_common::data_constants::WORD_SIZE;
 use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::*;
 
@@ -99,23 +100,23 @@ fn math_mod_code(a: &Argument, b: &Argument) -> u64 {
 fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(String, u64)>), OpProcessError> {
     validate(&words)?;
 
-    let mut (alpha_val, alpha_flr) = match process_arg(&words[1]) {
+    let (alpha_val, mut alpha_flr) = match process_arg(&words[1]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };
 
     match alpha_flr {
-        Some(mut val) => val.1 += WORD_SIZE,
+        Some(ref mut val) => val.1 += (WORD_SIZE as u64),
         None => {}
     };
 
-    let mod (beta_val, beta_flr) = match process_arg(&words[2]) {
+    let (beta_val, mut beta_flr) = match process_arg(&words[2]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };
 
     match beta_flr {
-        Some(mut val) => val.1 += WORD_SIZE * 2,
+        Some(ref mut val) => val.1 += (WORD_SIZE as u64) * 2,
         None => {}
     };
 
@@ -134,7 +135,7 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(S
     };
 
     match dest_flr {
-        Some(mut val) => val.1 += WORD_SIZE * 3,
+        Some(ref mut val) => val.1 += (WORD_SIZE as u64) * 3,
         None => {}
     };
 

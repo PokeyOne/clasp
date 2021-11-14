@@ -33,15 +33,35 @@ pub fn mov_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
         );
     }
 
+    let mut flrs: Vec<(String, u64)> = Vec::new();
+
     let origin_arg: Argument = match process_arg(&words[1]) {
-        Some(value) => value,
+        Some(value) => {
+            let (arg, flr) = value;
+
+            match flr {
+                Some(thing) => flrs.push(thing),
+                None => {}
+            };
+
+            arg
+        },
         None => panic!("Syntax error, argument 1 is not processable")
     };
 
     let destination_arg: Argument = match process_arg(&words[2]) {
-        Some(value) => match value.arg_type {
-            ArgType::Address => value,
-            ArgType::Literal => panic!("Syntax error, destination must be address")
+        Some(value) => {
+            let (arg, flr) = value;
+
+            match flr {
+                Some(thing) => flrs.push(thing),
+                None => {}
+            };
+
+            match arg.arg_type {
+                ArgType::Address => arg,
+                ArgType::Literal => panic!("Syntax error, destination must be address")
+            }
         },
         None => panic!("Syntax error, argument 2 is not processable")
     };
@@ -60,5 +80,5 @@ pub fn mov_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
 
     println!("mov bytes: {:?}", &resulting_byte_code);
 
-    Ok((resulting_byte_code, Vec::new()))
+    Ok((resulting_byte_code, flrs))
 }
