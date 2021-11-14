@@ -7,60 +7,60 @@ use super::{ArgType, Argument, OpProcessError};
 pub fn add_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("add: {:?}", &words);
 
-    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
     let op_code: u64 = ADD_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        Vec::new()
+        flrs
     ))
 }
 
 pub fn sub_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("sub: {:?}", &words);
 
-    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        Vec::new()
+        flrs
     ))
 }
 
 pub fn mul_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("mul: {:?}", &words);
 
-    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        Vec::new()
+        flrs
     ))
 }
 
 pub fn div_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("div: {:?}", &words);
 
-    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        Vec::new()
+        flrs
     ))
 }
 
 pub fn pow_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("pow: {:?}", &words);
 
-    let (alpha_val, beta_val, dest_addr) = construct_abd(&words)?;
+    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
     let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        Vec::new()
+        flrs
     ))
 }
 
@@ -96,17 +96,27 @@ fn math_mod_code(a: &Argument, b: &Argument) -> u64 {
     );
 }
 
-fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64), OpProcessError> {
+fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(String, u64)>), OpProcessError> {
     validate(&words)?;
 
-    let alpha_val: Argument = match process_arg(&words[1]) {
+    let mut (alpha_val, alpha_flr) = match process_arg(&words[1]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
     };
 
-    let beta_val: Argument = match process_arg(&words[2]) {
+    match alpha_flr {
+        Some(mut val) => val.1 += WORD_SIZE,
+        None => {}
+    };
+
+    let mod (beta_val, beta_flr) = match process_arg(&words[2]) {
         Some(value) => value,
         None => return Err(OpProcessError::InvalidArgument)
+    };
+
+    match beta_flr {
+        Some(mut val) => val.1 += WORD_SIZE * 2,
+        None => {}
     };
 
     let destination_address: u64 = match process_arg(&words[3]) {
@@ -117,7 +127,17 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64), OpPro
         None => return Err(OpProcessError::InvalidArgument)
     };
 
-    Ok((alpha_val, beta_val, destination_address))
+    let mut flrs: Vec<(String, u64)> = Vec::new();
+    match alpha_flr {
+        Some(val) => flrs.push(val),
+        None => {}
+    }
+    match beta_flr {
+        Some(val) => flrs.push(val),
+        None => {}
+    }
+
+    Ok((alpha_val, beta_val, destination_address, flrs))
 }
 
 fn validate(words: &Vec<String>) -> Result<(), OpProcessError> {
