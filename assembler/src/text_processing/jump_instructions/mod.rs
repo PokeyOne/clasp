@@ -5,6 +5,7 @@
 mod tests;
 
 use clasp_common::data_types::ByteCollection;
+use clasp_common::data_constants::WORD_SIZE;
 use clasp_common::instruction_constants::instruction_codes::{
     CALL_CODE, JMP_ADDR_CODE, JMP_LIT_CODE, RETURN_CODE
 };
@@ -76,30 +77,16 @@ pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
     Ok((res, future_label_refs))
 }
 
-// TODO: #2 - Generalize this to the argument processor
-/// This is essentially the common stuff between call and jmp. Possibly worth
-/// generalizing up a level so that other instructions can have labels as arguments.
+/// This is essentially the common stuff between call and jmp
 fn arg_or_label(
     words: &Vec<String>,
     index: usize
 ) -> Result<(Argument, Option<(String, u64)>), OpProcessError> {
-    let mut future_label_ref: Option<(String, u64)> = None;
-
-    let arg: Argument = match utility::process_arg(&words[index]) {
-        Some(value) => value,
-        None => match words[index].chars().nth(0) {
-            Some(':') => {
-                // add a reference to be filled in later. The location is
-                // temporarily 8, which is the location relative to this
-                // instruction. After this method call, all the references will
-                // be offset by the location of the instruction.
-                future_label_ref = Some((words[index].clone(), 8 * index as u64));
-                // The address is temporarily 0 to be filled in later.
-                Argument::literal(0)
-            }
-            _ => return Err(OpProcessError::InvalidArgument)
+    match utility::process_arg(&words[index]) {
+        None => Err(OpProcessError::InvalidArgument),
+        Some(res) => match res.1 {
+            Some(flr) => Ok((res.0, Some(flr.0, index * WORD_SIZE))),
+            None => Ok(res)
         }
-    };
-
-    Ok((arg, future_label_ref))
+    }
 }
