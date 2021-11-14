@@ -119,12 +119,23 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(S
         None => {}
     };
 
+    let mut dest_flr: Option<(String, u64)> = None;
     let destination_address: u64 = match process_arg(&words[3]) {
-        Some(value) => match value.arg_type {
-            ArgType::Literal => return Err(OpProcessError::ExpectedAddress),
-            ArgType::Address => value.value
+        Some(value) => {
+            let (arg, maybe_flr) = value;
+            dest_flr = maybe_flr;
+
+            match arg.arg_type {
+                ArgType::Literal => return Err(OpProcessError::ExpectedAddress),
+                ArgType::Address => arg.value()
+            }
         },
         None => return Err(OpProcessError::InvalidArgument)
+    };
+
+    match dest_flr {
+        Some(mut val) => val.1 += WORD_SIZE * 3,
+        None => {}
     };
 
     let mut flrs: Vec<(String, u64)> = Vec::new();
@@ -133,6 +144,10 @@ fn construct_abd(words: &Vec<String>) -> Result<(Argument, Argument, u64, Vec<(S
         None => {}
     }
     match beta_flr {
+        Some(val) => flrs.push(val),
+        None => {}
+    }
+    match dest_flr {
         Some(val) => flrs.push(val),
         None => {}
     }

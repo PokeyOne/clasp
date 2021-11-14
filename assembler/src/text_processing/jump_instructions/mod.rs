@@ -85,7 +85,7 @@ fn arg_or_label(
     match utility::process_arg(&words[index]) {
         None => Err(OpProcessError::InvalidArgument),
         Some(res) => match res.1 {
-            Some(flr) => Ok((res.0, Some(flr.0, index * WORD_SIZE))),
+            Some(flr) => Ok((res.0, Some((flr.0, (index * WORD_SIZE) as u64)))),
             None => Ok(res)
         }
     }
