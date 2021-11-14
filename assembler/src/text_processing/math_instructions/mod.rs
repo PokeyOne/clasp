@@ -8,59 +8,19 @@ use clasp_common::instruction_constants::instruction_codes::*;
 use super::utility::process_arg;
 use super::{ArgType, Argument, OpProcessError};
 
-pub fn add_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
-    println!("add: {:?}", &words);
+pub fn general_math(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
+    let base_op_code = match words[0].as_str() {
+        "add" => ADD_CODE,
+        "sub" => SUB_CODE,
+        "div" => DIV_CODE,
+        "mul" => MUL_CODE,
+        "pow" => POW_CODE,
+        "cmp" => CMP_CODE,
+        _ => panic!("Non math instruction code {:?}", words)
+    };
 
     let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = ADD_CODE + math_mod_code(&alpha_val, &beta_val);
-
-    Ok((
-        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        flrs
-    ))
-}
-
-pub fn sub_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
-    println!("sub: {:?}", &words);
-
-    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
-
-    Ok((
-        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        flrs
-    ))
-}
-
-pub fn mul_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
-    println!("mul: {:?}", &words);
-
-    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = MUL_CODE + math_mod_code(&alpha_val, &beta_val);
-
-    Ok((
-        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        flrs
-    ))
-}
-
-pub fn div_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
-    println!("div: {:?}", &words);
-
-    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = DIV_CODE + math_mod_code(&alpha_val, &beta_val);
-
-    Ok((
-        construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
-        flrs
-    ))
-}
-
-pub fn pow_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
-    println!("pow: {:?}", &words);
-
-    let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = POW_CODE + math_mod_code(&alpha_val, &beta_val);
+    let op_code: u64 = base_op_code + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),

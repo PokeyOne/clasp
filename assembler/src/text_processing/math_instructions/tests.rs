@@ -7,7 +7,7 @@ fn simple_add() {
     let source = string_vec!["add", "(1)", "0x20", "0x20"];
     let expected = data_block![ADD_CODE_CA, 1, 0x20, 0x20];
 
-    match add_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process add instruction {:?} bc: {:?}",
             source, err
@@ -31,7 +31,7 @@ fn label_add() {
         (String::from(":other_data"), 24),
     ];
 
-    match add_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process add instruction {:?} bc: {:?}",
             source, err
@@ -53,7 +53,7 @@ fn simple_sub() {
     let source = string_vec!["sub", "(1)", "0x20", "0x20"];
     let expected = data_block![SUB_CODE_CA, 1, 0x20, 0x20];
 
-    match sub_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process sub instruction {:?} bc: {:?}",
             source, err
@@ -75,7 +75,7 @@ fn simple_mul() {
     let source = string_vec!["mul", "(1)", "0x20", "0x20"];
     let expected = data_block![MUL_CODE_CA, 1, 0x20, 0x20];
 
-    match mul_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process mul instruction {:?} bc: {:?}",
             source, err
@@ -97,7 +97,7 @@ fn simple_div() {
     let source = string_vec!["div", "(1)", "0x20", "0x20"];
     let expected = data_block![DIV_CODE_CA, 1, 0x20, 0x20];
 
-    match div_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process div instruction {:?} bc: {:?}",
             source, err
@@ -119,7 +119,7 @@ fn simple_pow() {
     let source = string_vec!["pow", "(1)", "0x20", "0x20"];
     let expected = data_block![POW_CODE_CA, 1, 0x20, 0x20];
 
-    match pow_process(source.clone()) {
+    match general_math(source.clone()) {
         Err(err) => panic!(
             "Failed to process pow instruction {:?} bc: {:?}",
             source, err

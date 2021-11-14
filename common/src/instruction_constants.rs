@@ -7,6 +7,7 @@ use phf::phf_map;
 pub mod instruction_codes {
     use super::Word;
 
+    // TODO: L instead of C to match terminology elsewhere
     pub const MATH_MOD_CC: Word = 0x0000_0000_0000_0000u64; // 2 constants
     pub const MATH_MOD_CA: Word = 0x1000_0000_0000_0000u64; // address, constant
     pub const MATH_MOD_AC: Word = 0x2000_0000_0000_0000u64; // constant, address
@@ -47,6 +48,11 @@ pub mod instruction_codes {
     pub const JMP_LIT_CODE: Word = 0x0000_0000_0000_000Cu64;
     pub const CALL_CODE: Word = 0x0000_0000_0000_0000_000Du64;
     pub const RETURN_CODE: Word = 0x0000_0000_0000_0000_000Eu64;
+    pub const CMP_CODE: Word = 0x0000_0000_0000_0000_000Fu64;
+    pub const CMP_CODE_CC: Word = CMP_CODE + MATH_MOD_CC;
+    pub const CMP_CODE_CA: Word = CMP_CODE + MATH_MOD_CA;
+    pub const CMP_CODE_AC: Word = CMP_CODE + MATH_MOD_AC;
+    pub const CMP_CODE_AA: Word = CMP_CODE + MATH_MOD_AA;
 }
 pub use instruction_codes::*;
 
@@ -65,7 +71,8 @@ pub enum InstructionType {
     OutrLit,  // out raw, literal
     Jmp,
     Call,
-    Return
+    Return,
+    Cmp
 }
 use InstructionType::*;
 
@@ -99,7 +106,11 @@ pub static INSTRUCTIONS: phf::Map<u64, InstructionType> = phf_map! {
     0x0000_0000_0000_000Bu64 => Jmp,
     0x0000_0000_0000_000Cu64 => Jmp,
     0x0000_0000_0000_000Du64 => Call,
-    0x0000_0000_0000_000Eu64 => Return
+    0x0000_0000_0000_000Eu64 => Return,
+    0x0000_0000_0000_000Fu64 => Cmp,
+    0x1000_0000_0000_000Fu64 => Cmp,
+    0x2000_0000_0000_000Fu64 => Cmp,
+    0x3000_0000_0000_000Fu64 => Cmp,
 };
 
 pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u64 {
@@ -117,6 +128,7 @@ pub fn base_code_from_instruction_type(instruction_type: &InstructionType) -> u6
         OutrLit => 0x0000_0000_0000_000Au64,
         Jmp => 0x0000_0000_0000_000Bu64,
         Call => 0x0000_0000_0000_000Du64,
-        Return => 0x0000_0000_0000_000Eu64
+        Return => 0x0000_0000_0000_000Eu64,
+        Cmp => CMP_CODE
     }
 }
