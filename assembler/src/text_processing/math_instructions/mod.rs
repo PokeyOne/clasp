@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use clasp_common::data_constants::WORD_SIZE;
 use clasp_common::data_types::ByteCollection;
 use clasp_common::instruction_constants::instruction_codes::*;
@@ -33,7 +36,7 @@ pub fn mul_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     println!("mul: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+    let op_code: u64 = MUL_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
@@ -45,7 +48,7 @@ pub fn div_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     println!("div: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+    let op_code: u64 = DIV_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),
@@ -57,7 +60,7 @@ pub fn pow_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), 
     println!("pow: {:?}", &words);
 
     let (alpha_val, beta_val, dest_addr, flrs) = construct_abd(&words)?;
-    let op_code: u64 = SUB_CODE + math_mod_code(&alpha_val, &beta_val);
+    let op_code: u64 = POW_CODE + math_mod_code(&alpha_val, &beta_val);
 
     Ok((
         construct_byte_code(op_code, alpha_val, beta_val, dest_addr),

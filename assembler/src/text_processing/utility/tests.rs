@@ -113,7 +113,7 @@ fn process_arg_label() {
         None => panic!(":label should produce some value"),
         Some(tup) => {
             let (val, flr) = tup;
-            assert!(val.is_literal());
+            assert!(val.is_address());
             assert_eq!(val.value(), 0);
             assert!(flr.is_some());
             assert_eq!((String::from(":label"), 0), flr.unwrap());

@@ -52,7 +52,7 @@ pub fn process_arg(val: &str) -> Option<(Argument, Option<(String, u64)>)> {
     // Detect a label argument
     if val.chars().nth(0) == Some(':') {
         // Temp zero to be filled later.
-        let arg = Argument::literal(0);
+        let arg = Argument::address(0);
         // zero is the offset, which is zero relative to what this function
         // is written around.
         let future_label_ref = (val.to_string(), 0);
