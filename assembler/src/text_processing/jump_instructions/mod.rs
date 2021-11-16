@@ -77,6 +77,13 @@ pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>),
     Ok((res, future_label_refs))
 }
 
+// TODO: it would be nice to have this return type as a struct so it could be
+//       created and readable easier
+pub fn conditional_jump_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
+    // TODO: use ConditionalType to get instruction code and call the jmp_process to process all the arguments and then overwrite instruction codex3
+    return Err(OpProcessError::UnimplementedFeature)
+}
+
 /// This is essentially the common stuff between call and jmp
 fn arg_or_label(
     words: &Vec<String>,
