@@ -49,6 +49,21 @@ pub enum TokenKind {
     Bracket(BracketKind)
 }
 
+impl TokenKind {
+    pub fn try_name(&self) -> Option<String> {
+        use TokenKind::*;
+
+        match &self {
+            Lt => Some("<".to_string()),
+            Gt => Some(">".to_string()),
+            Le => Some("<=".to_string()),
+            Ge => Some("<=".to_string()),
+            Eq => Some("=".to_string()),
+            _ => None
+        }
+    }
+}
+
 #[derive(PartialEq, Clone)]
 pub struct Token {
     value: String,
@@ -67,6 +82,13 @@ impl fmt::Debug for Token {
 impl Token {
     pub fn new(kind: TokenKind, value: String) -> Self {
         Token { kind, value }
+    }
+
+    pub fn try_from_kind(kind: TokenKind) -> Option<Self> {
+        match kind.try_name() {
+            Some(name) => Some(Self::new(kind, name)),
+            None => None
+        }
     }
 
     pub fn value(&self) -> &String {
