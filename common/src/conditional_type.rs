@@ -21,11 +21,6 @@ impl ConditionalType {
     }
 }
 
-// TODO: If needed later while making the compiler, a struct that was a
-//       conditional element would be nice, then you could store conditional
-//       math in a tree. Could always go with a the stack option like in train
-//       yard algorithm
-
 // Tests are put within the file because it's so small
 #[cfg(test)]
 mod tests {
