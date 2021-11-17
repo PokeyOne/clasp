@@ -48,3 +48,7 @@ File.open("README.md", "r") do |f|
 end
 temp.close
 FileUtils.mv(temp.path, "README.md")
+
+puts "checking git"
+git_status = `git status --porcelain`
+puts "got git status of #{git_status} #{git_status.length}"
