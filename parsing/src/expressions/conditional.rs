@@ -106,10 +106,15 @@ impl Shuntable for Vec<ConditionalToken> {
             }
         }
 
+        while let Some(op) = operator_stack.pop() {
+            output_stack.push(op);
+        }
+
         return output_stack;
     }
 }
 
+/* This was an idea
 struct ConditionalNodeFactory {
     literal: Option<ConditionalLiteral>,
     operation: Option<ConditionalOperation>,
@@ -120,6 +125,20 @@ struct ConditionalNodeFactory {
 
 impl ConditionalNodeFactory {
     // TODO
+}*/
+
+// TODO: Recursive function
+fn construct_node(tokens: &Vec<ConditionalToken>) -> Option<ConditionalNode> {
+    use ConditionalToken as Ct;
+
+    match tokens.pop() {
+        None => None,
+        Some(t) => match t {
+            Ct::Operator,
+            Ct::Bracket,
+            Ct::Literal
+        }
+    }
 }
 
 impl ConditionalExpression {
