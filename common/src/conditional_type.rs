@@ -7,10 +7,52 @@ pub enum ConditionalType {
 
 impl ConditionalType {
     pub fn perform(&self, a: u64, b: u64) -> bool {
-        match self {
-            Equal => a == b,
-            Greater => a > b,
-            Lesser => a < b
+        println!("performing: {:?}", &self);
+
+        match &self {
+            ConditionalType::Equal => a == b,
+            ConditionalType::Greater => a > b,
+            ConditionalType::Lesser => a < b
         }
+    }
+}
+
+// TODO: If needed later while making the compiler, a struct that was a
+//       conditional element would be nice, then you could store conditional
+//       math in a tree. Could always go with a the stack option like in train
+//       yard algorithm
+
+// Tests are put within the file because it's so small
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn equal() {
+        let ct = ConditionalType::Equal;
+
+        assert!(ct.perform(4, 4));
+        assert!(ct.perform(0, 0));
+        assert!(!ct.perform(6, 92));
+    }
+
+    #[test]
+    fn greater() {
+        let ct = ConditionalType::Greater;
+
+        assert!(ct.perform(5, 4));
+        assert!(ct.perform(63041, 0));
+        assert!(!ct.perform(6, 92));
+        assert!(!ct.perform(92, 92));
+    }
+
+    #[test]
+    fn lesser() {
+        let ct = ConditionalType::Lesser;
+
+        assert!(ct.perform(4, 5));
+        assert!(ct.perform(0, 63041));
+        assert!(!ct.perform(92, 6));
+        assert!(!ct.perform(92, 92));
     }
 }
