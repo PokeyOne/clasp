@@ -15,7 +15,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
-name = "clasm_compiler"
+name = "clasp_assembler"
 version = "0.2.0"
 dependencies = [
  "ascii",
@@ -35,7 +35,7 @@ dependencies = [
 name = "clasp_compiler"
 version = "0.1.0"
 dependencies = [
- "clasm_compiler",
+ "clasp_assembler",
  "clasp_common",
 ]
 
@@ -44,7 +44,7 @@ name = "clasp_runtime_environment"
 version = "0.1.0"
 dependencies = [
  "ascii",
- "clasm_compiler",
+ "clasp_assembler",
  "clasp_common",
  "phf",
 ]

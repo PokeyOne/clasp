@@ -1,5 +1,4 @@
-// TODO: In the future the crate should just be called clasm
-use clasm_compiler as clasm;
+use clasp_assembler as assembler;
 use clasp_common::io::CCLASP_SIGNATURE;
 
 #[test]
@@ -12,7 +11,7 @@ mov 0x00 0x08
 end"
     );
 
-    let compiled = clasm::compiling::compile_text(source_code);
+    let compiled = assembler::compiling::compile_text(source_code);
 
     let mut expected: Vec<u8> = CCLASP_SIGNATURE.to_vec();
     #[rustfmt::skip]
@@ -44,7 +43,7 @@ mov 0x00 0x18
 end"
     .to_string();
 
-    let _compiled = clasm::compiling::compile_text(source_code);
+    let _compiled = assembler::compiling::compile_text(source_code);
 }
 
 #[test]
@@ -84,7 +83,7 @@ jmp :loop
 end"
     .to_string();
 
-    let _compiled = clasm::compiling::compile_text(source_code);
+    let _compiled = assembler::compiling::compile_text(source_code);
 }
 
 #[test]
@@ -99,7 +98,7 @@ fn future_references_should_be_filled_in() {
     let mut expected_data: Vec<u8> = CCLASP_SIGNATURE.to_vec();
     expected_data.append(&mut expected_data_simple);
 
-    let compiled_code = clasm::compiling::compile_text(source_code);
+    let compiled_code = assembler::compiling::compile_text(source_code);
     assert_eq!(expected_data, compiled_code);
 }
 
@@ -108,8 +107,8 @@ fn future_references_should_be_filled_in() {
 fn future_references_should_error_if_not_filled() {
     let source_code = String::from("jmp :main");
 
-    clasm::compiling::compile_text(source_code);
+    assembler::compiling::compile_text(source_code);
 
     // TODO: below is for after compiled text is changed to error return
-    // assert!(clasm::compiling::compile_text(source_code).is_err());
+    // assert!(assembler::compiling::compile_text(source_code).is_err());
 }

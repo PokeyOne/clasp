@@ -1,7 +1,7 @@
 mod compiling;
 mod run_options;
 
-use clasm_compiler::compiling as clasm_compiling;
+use clasp_assembler::compiling as assembling;
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
@@ -91,7 +91,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // TODO: stop here if the tokens only option is given
     let resulting_assembly: String = compiling::compile_tokens(tokens);
     // TODO: Stop here if assembly-only option is given
-    let resulting_binary: Vec<u8> = clasm_compiling::compile_text(resulting_assembly);
+    let resulting_binary: Vec<u8> = assembling::compile_text(resulting_assembly);
 
     fs::write(run_options.output_path(), &resulting_binary)?;
 

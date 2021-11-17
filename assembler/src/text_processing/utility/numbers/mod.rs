@@ -56,7 +56,7 @@ impl NumberBase {
     ///
     /// # Examples
     /// ```
-    /// # use clasm_compiler::text_processing::utility::numbers::NumberBase;
+    /// # use clasp_assembler::text_processing::utility::numbers::NumberBase;
     /// let four = NumberBase::digit_value('4');
     /// let eleven = NumberBase::digit_value('b');
     /// let fifteen = NumberBase::digit_value('F');
@@ -112,14 +112,14 @@ impl NumberBase {
 ///
 /// Passing simple decimals should work.
 /// ```
-/// # use clasm_compiler::text_processing::utility::numbers::parse_number;
+/// # use clasp_assembler::text_processing::utility::numbers::parse_number;
 /// let a = parse_number("193");
 /// assert_eq!(193, a.unwrap());
 /// ```
 ///
 /// Other types of integers work as well.
 /// ```
-/// # use clasm_compiler::text_processing::utility::numbers::parse_number;
+/// # use clasp_assembler::text_processing::utility::numbers::parse_number;
 /// let a = parse_number("0d193");
 /// assert_eq!(193, a.unwrap());
 ///

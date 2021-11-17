@@ -1,4 +1,4 @@
-use clasm_compiler as assembler;
+use clasp_assembler as assembler;
 use clasp_runtime_environment as runner;
 
 use runner::memory::Memory;

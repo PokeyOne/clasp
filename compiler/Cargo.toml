@@ -7,4 +7,4 @@ edition = "2021"
 
 [dependencies]
 clasp_common = { path = "../common" }
-clasm_compiler = { path = "../assembler" }
+clasp_assembler = { path = "../assembler" }

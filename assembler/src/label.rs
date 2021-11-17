@@ -159,7 +159,7 @@ impl LabelCollection {
     /// # Examples
     ///
     /// ```rust
-    ///   use clasm_compiler::label::LabelCollection;
+    ///   use clasp_assembler::label::LabelCollection;
     ///
     ///   let mut lc = LabelCollection::new();
     ///   lc.insert("test".to_string(), 540);
