@@ -4,18 +4,24 @@ pub struct ConditionalExpression {
     value: ConditionalNode
 }
 
+impl ConditionalExpression {
+    fn new(value: ConditionalNode) -> Self {
+        ConditionalExpression { value: value }
+    }
+}
+
 pub enum ConditionalNode {
     Literal(ConditionalLiteral),
     Operation(ConditionalOperation),
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum ConditionalLiteral {
     Bool(bool),
     Identifier(Token)
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum ConditionalOperationKind {
     Eq,
     Gt,
@@ -29,6 +35,12 @@ pub struct ConditionalOperation {
     kind: ConditionalOperationKind,
     left: Box<ConditionalNode>,
     right: Box<ConditionalNode>
+}
+
+impl ConditionalOperation {
+    fn new(kind: Cok, left: ConditionalNode, right: ConditionalNode) -> Self {
+        Self { kind: kind, left: Box::new(left), right: Box::new(right) }
+    }
 }
 
 /// This is just an individual element that has no idea about context or trees.
@@ -128,15 +140,22 @@ impl ConditionalNodeFactory {
 }*/
 
 // TODO: Recursive function
-fn construct_node(tokens: &Vec<ConditionalToken>) -> Option<ConditionalNode> {
+fn construct_node(tokens: &mut Vec<ConditionalToken>) -> Option<ConditionalNode> {
     use ConditionalToken as Ct;
 
     match tokens.pop() {
         None => None,
         Some(t) => match t {
-            Ct::Operator,
-            Ct::Bracket,
-            Ct::Literal
+            Ct::Operator(k) => {
+                let right = construct_node(tokens)?;
+                let left = construct_node(tokens)?;
+
+                let cop = ConditionalOperation::new(k, left, right);
+
+                Some(ConditionalNode::Operation(cop))
+            },
+            Ct::Literal(lit) => {panic!("not implemented: {:?}", lit)},
+            Ct::Bracket(k) => panic!("There should not be brackets")
         }
     }
 }
@@ -145,6 +164,11 @@ impl ConditionalExpression {
     pub fn from_tokens(tokens: &Vec<Token>) -> Result<Self, &'static str> {
         let mut processed_tokens = map_tokens(tokens)?.shunting_yard();
 
-        return Err("not implemented");
+        assert_eq!(0, processed_tokens.len());
+
+        match construct_node(&mut processed_tokens) {
+            Some(val) => Ok(ConditionalExpression::new(val)),
+            None => Err("could not construct node")
+        }
     }
 }

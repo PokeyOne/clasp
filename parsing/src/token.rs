@@ -1,4 +1,6 @@
-#[derive(PartialEq, Clone)]
+use std::fmt;
+
+#[derive(PartialEq, Clone, Debug)]
 pub enum BinOpToken {
     Plus,
     Minus,
@@ -12,7 +14,7 @@ pub enum BinOpToken {
     ShiftRight
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum LiteralKind {
     Identifier,
     Bool,
@@ -22,20 +24,20 @@ pub enum LiteralKind {
     Double(u16)
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum BracketDirection {
     Opening,
     Closing
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum BracketKind {
     Round(BracketDirection),
     Square(BracketDirection),
     Squigly(BracketDirection)
 }
 
-#[derive(PartialEq, Clone)]
+#[derive(PartialEq, Clone, Debug)]
 pub enum TokenKind {
     Lt,
     Gt,
@@ -51,6 +53,15 @@ pub enum TokenKind {
 pub struct Token {
     value: String,
     kind: TokenKind
+}
+
+impl fmt::Debug for Token {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_tuple("Token")
+            .field(&self.kind)
+            .field(&self.value)
+            .finish()
+    }
 }
 
 impl Token {
