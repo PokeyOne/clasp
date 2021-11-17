@@ -51,4 +51,13 @@ FileUtils.mv(temp.path, "README.md")
 
 puts "checking git"
 git_status = `git status --porcelain`
-puts "got git status of #{git_status} #{git_status.length}"
+if git_status.length == 0
+  puts "nothing to commit"
+else
+  puts "staging..."
+  puts "git add ."
+  puts `git add .`
+  puts "committing..."
+  puts "git commit -m stats.rb"
+  puts `git commit -m stats.rb`
+end
