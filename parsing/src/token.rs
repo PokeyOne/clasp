@@ -66,7 +66,7 @@ impl fmt::Debug for Token {
 
 impl Token {
     pub fn new(kind: TokenKind, value: String) -> Self {
-        Token { kind: kind, value: value }
+        Token { kind, value }
     }
 
     pub fn value(&self) -> &String {

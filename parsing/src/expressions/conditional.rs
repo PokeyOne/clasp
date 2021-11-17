@@ -6,7 +6,7 @@ pub struct ConditionalExpression {
 
 impl ConditionalExpression {
     fn new(value: ConditionalNode) -> Self {
-        ConditionalExpression { value: value }
+        ConditionalExpression { value }
     }
 }
 
@@ -39,7 +39,7 @@ pub struct ConditionalOperation {
 
 impl ConditionalOperation {
     fn new(kind: Cok, left: ConditionalNode, right: ConditionalNode) -> Self {
-        Self { kind: kind, left: Box::new(left), right: Box::new(right) }
+        Self { kind, left: Box::new(left), right: Box::new(right) }
     }
 }
 
@@ -83,7 +83,7 @@ fn map_tokens(tokens: &Vec<Token>) -> Result<Vec<ConditionalToken>, &'static str
         result.push(ct);
     }
 
-    return Ok(result);
+    Ok(result)
 }
 
 pub trait Shuntable {
@@ -122,7 +122,7 @@ impl Shuntable for Vec<ConditionalToken> {
             output_stack.push(op);
         }
 
-        return output_stack;
+        output_stack
     }
 }
 
@@ -155,7 +155,7 @@ fn construct_node(tokens: &mut Vec<ConditionalToken>) -> Option<ConditionalNode>
                 Some(ConditionalNode::Operation(cop))
             },
             Ct::Literal(lit) => {panic!("not implemented: {:?}", lit)},
-            Ct::Bracket(k) => panic!("There should not be brackets")
+            Ct::Bracket(_k) => panic!("There should not be brackets")
         }
     }
 }
