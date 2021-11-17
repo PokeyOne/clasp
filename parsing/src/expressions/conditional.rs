@@ -126,20 +126,6 @@ impl Shuntable for Vec<ConditionalToken> {
     }
 }
 
-/* This was an idea
-struct ConditionalNodeFactory {
-    literal: Option<ConditionalLiteral>,
-    operation: Option<ConditionalOperation>,
-    operation_kind: Option<ConditionalOperationKind>,
-    left: Option<Box<ConditionalOperation>>,
-    right: Option<Box<ConditionalOperation>>
-}
-
-impl ConditionalNodeFactory {
-    // TODO
-}*/
-
-// TODO: Recursive function
 fn construct_node(tokens: &mut Vec<ConditionalToken>) -> Option<ConditionalNode> {
     use ConditionalToken as Ct;
 
