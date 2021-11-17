@@ -2,7 +2,9 @@
 pub enum ConditionalType {
     Equal,
     Greater,
-    Lesser
+    Lesser,
+    GreaterEqual,
+    LesserEqual
 }
 
 impl ConditionalType {
@@ -12,7 +14,9 @@ impl ConditionalType {
         match &self {
             ConditionalType::Equal => a == b,
             ConditionalType::Greater => a > b,
-            ConditionalType::Lesser => a < b
+            ConditionalType::GreaterEqual => a >= b,
+            ConditionalType::Lesser => a < b,
+            ConditionalType::LesserEqual => a <= b
         }
     }
 }
@@ -47,6 +51,16 @@ mod tests {
     }
 
     #[test]
+    fn greater_or_equal() {
+        let ct = ConditionalType::GreaterEqual;
+
+        assert!(ct.perform(5, 4));
+        assert!(ct.perform(63041, 0));
+        assert!(!ct.perform(6, 92));
+        assert!(ct.perform(92, 92));
+    }
+
+    #[test]
     fn lesser() {
         let ct = ConditionalType::Lesser;
 
@@ -54,5 +68,15 @@ mod tests {
         assert!(ct.perform(0, 63041));
         assert!(!ct.perform(92, 6));
         assert!(!ct.perform(92, 92));
+    }
+
+    #[test]
+    fn lesser_or_equal() {
+        let ct = ConditionalType::LesserEqual;
+
+        assert!(ct.perform(4, 5));
+        assert!(ct.perform(0, 63041));
+        assert!(!ct.perform(92, 6));
+        assert!(ct.perform(92, 92));
     }
 }
