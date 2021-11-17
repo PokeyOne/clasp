@@ -4,5 +4,6 @@ members = [
     "runtime",
     "assembler",
     "common",
-    "compiler"
+    "compiler",
+    "parsing"
 ]
