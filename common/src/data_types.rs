@@ -4,6 +4,8 @@ mod tests;
 use super::data_constants::WORD_SIZE;
 use std::convert::TryInto;
 
+// FIXME: These types feel messy... tempted to rip them apart.
+
 /// Just an alias for word to be more descriptive when referring to a location
 pub type MemoryLocation = u64;
 /// The standard unit of the system == 8 bytes == 64 bit
