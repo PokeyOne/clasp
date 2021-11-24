@@ -44,6 +44,8 @@ pub trait ByteCollection {
 }
 
 impl ByteCollection for Word {
+    // u64.from_be_bytes
+    // also parsing see: u64.from_str_radix
     fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word {
         let mut result: u64 = 0;
 
