@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use super::data_constants::WORD_SIZE;
 use std::convert::TryInto;
 
