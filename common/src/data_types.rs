@@ -22,6 +22,9 @@ impl Alignable for MemoryLocation {
     }
 }
 
+// FIXME: Honestly can probably get rid of this whole trait because it essentially
+//        just implements already built in functions of u64
+
 /// ByteCollection is a trait exclusively meant for the Word type to implement
 /// a couple useful functions/methods.
 ///
