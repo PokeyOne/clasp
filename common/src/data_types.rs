@@ -69,16 +69,6 @@ impl ByteCollection for Word {
     }
 
     fn to_bytes(&self) -> [Byte; WORD_SIZE] {
-        let temp = self.clone();
-        let mut result: [Byte; WORD_SIZE] = [0 as Byte; WORD_SIZE];
-
-        for i in 0..8 {
-            let value = temp >> (8 * (7 - i));
-            let value = value & 0xFF;
-
-            result[i] = value.try_into().unwrap();
-        }
-
-        result
+        self.to_be_bytes()
     }
 }
