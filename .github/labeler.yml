@@ -1,1 +1,6 @@
 Assembler: assembler/**/*
+Common: common/**/*
+Compiler: compiler/**/*
+Parsing: parsing/**/*
+Runtime: runtime/**/*
+Feature Consideratio: fc/**/*
