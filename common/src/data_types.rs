@@ -43,9 +43,8 @@ pub trait ByteCollection {
     fn to_bytes(&self) -> [Byte; WORD_SIZE];
 }
 
+// TODO: for parsing see: u64.from_str_radix
 impl ByteCollection for Word {
-    // u64.from_be_bytes
-    // also parsing see: u64.from_str_radix
     fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word {
         u64::from_be_bytes(*bytes)
     }
