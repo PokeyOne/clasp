@@ -47,32 +47,13 @@ impl ByteCollection for Word {
     // u64.from_be_bytes
     // also parsing see: u64.from_str_radix
     fn from_bytes(bytes: &[Byte; WORD_SIZE]) -> Word {
-        let mut result: u64 = 0;
-
-        for byte in bytes {
-            result <<= 8;
-            result += byte.clone() as Word;
-        }
-
-        result
+        u64::from_be_bytes(*bytes)
     }
 
     fn from_bytes_v(bytes: &Vec<Byte>) -> Word {
-        let mut result: u64 = 0;
-
-        let mut i = 0;
-        for byte in bytes {
-            if i >= 8 {
-                break;
-            }
-
-            result <<= 8;
-            result += byte.clone() as Word;
-
-            i += 1;
-        }
-
-        result
+        let mut bytes_array = [0u8; WORD_SIZE];
+        bytes_array.copy_from_slice(&bytes[..WORD_SIZE]);
+        Self::from_bytes(&bytes_array)
     }
 
     fn to_bytes(&self) -> [Byte; WORD_SIZE] {
