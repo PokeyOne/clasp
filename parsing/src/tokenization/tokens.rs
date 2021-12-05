@@ -1,7 +1,13 @@
 /// The base type of all tokens.
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
-    Literal(Literal)
+    Literal(Literal),
+    OpenBracket,
+    CloseBracket,
+    OpenSquareBracket,
+    CloseSquareBracket,
+    OpenCurlyBracket,
+    CloseCurlyBracket,
 }
 
 /// The base type of all literals.
