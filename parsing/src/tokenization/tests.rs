@@ -84,3 +84,23 @@ fn parse_a_bunch_of_symbols_stringed_together() {
     let result = tokenize(&input).unwrap();
     assert_eq!(result, expected);
 }
+
+#[test]
+fn ideal_case_main_function() {
+    let input = String::from(
+        "(fn say_hello (println \"Hello, World!\"))"
+    );
+    let expected: Vec<Token> = vec![
+        Token::OpenBracket,
+        Token::Keyword(Keyword::Fn),
+        Token::Identifier("say_hello".to_string()),
+        Token::OpenBracket,
+        Token::Identifier("println".to_string()),
+        Token::Literal(Literal::String("Hello, World!".to_string())),
+        Token::CloseBracket,
+        Token::CloseBracket
+    ];
+
+    let result = tokenize(&input).unwrap();
+    assert_eq!(result, expected);
+}
