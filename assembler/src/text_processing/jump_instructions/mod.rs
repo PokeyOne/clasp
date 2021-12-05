@@ -55,6 +55,21 @@ pub fn return_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>
     Ok((RETURN_CODE.to_bytes().to_vec(), Vec::new()))
 }
 
+/// This function handles the call instruction.
+///
+/// Call instrucitons are used like a jump instruction, but they push all
+/// registers onto the stack and push a return address onto the stack. The next
+/// return instruction can be used to return to the calling function.
+///
+/// # Instruction Examples
+/// ```asm
+/// :some_label
+/// ;; do something
+/// return
+///
+/// :main
+/// call :some_label
+/// ```
 pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("call: {:?}", &words);
 
