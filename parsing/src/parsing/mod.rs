@@ -38,6 +38,7 @@ pub fn parse_tree(tokens: Vec<Token>) -> Result<Ast, AstConstructionError> {
 pub fn parse_expression(tokens: &mut IntoIter<Token>) -> Result<Expression, AstConstructionError> {
     let token = tokens.next().ok_or(AstConstructionError::IteratorEmpty)?;
 
+    // TODO: Implement function calls
     match &token {
         // force unwrap because we know we are passing in a literal
         Token::Literal(_) => Ok(Expression::Literal(AstLiteral::from_literal_token(token).unwrap())),
