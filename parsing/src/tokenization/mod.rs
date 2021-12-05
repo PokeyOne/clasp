@@ -48,7 +48,15 @@ fn preprocess_strings(input: &String) -> (Vec<String>, String) {
                 string_literal_buffer.push(c);
             }
         } else {
-            output.push(c);
+            match c {
+                '(' | ')' | '{' | '}' | '[' | ']' => {
+                    // Extra space around brackets to make parsing easier
+                    output.push(' ');
+                    output.push(c);
+                    output.push(' ');
+                }
+                _ => output.push(c)
+            };
         }
 
         last_char = c;
