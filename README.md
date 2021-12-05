@@ -19,7 +19,7 @@ is a cargo project. All the standard cargo commands work in terms of building
 and running the project.
 
 **note on the lines of code badge above**: Line of code isn't a metric that says
-anything about quality, but I added it none the less because number are fun. Also
+anything about quality, but I added it nonetheless because number are fun. Also,
 to auto update that badge, run the `stats.rb` script in the base of the project.
 
 ## Feature Requests and Proposals
@@ -37,7 +37,7 @@ be assigned.
 Currently documentation is light. Below is a list of documentation resources.
 
 1. [CLASM.md](CLASM.md): This file contains documentation on programming for the clasp virtual machine in assembly. **out of date**
-2. [hello_world.clasm](clasm_compiler/test_files/hello_world.clasm): This is an example clasm file that will compile with the latest compiler.
+2. [hello_world.clasm](assembler/test_files/hello_world.clasm): This is an example clasm file that will compile with the latest compiler.
 
 more to come
 
