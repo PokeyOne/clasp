@@ -121,12 +121,36 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             None => {}
         }
 
-        return Err(TokenizeError::InvalidToken(word.to_string()));
+        if is_valid_identifier(word) {
+            tokens.push(Token::Identifier(word.to_string()));
+        } else {
+            return Err(TokenizeError::InvalidToken(word.to_string()));
+        }
     }
 
     return Ok(tokens);
     // IDEA: After tokenizing, have modular layers that cleanup the tokens
     // for example, combining '<' and '=' into '<=', etc.
+}
+
+fn is_valid_identifier(word: &str) -> bool {
+    let mut i = 0;
+    for c in word.chars() {
+        if !is_valid_identifier_char(c, i == 0) {
+            return false;
+        }
+        i += 1;
+    }
+
+    return true;
+}
+
+fn is_valid_identifier_char(c: char, is_first_char: bool) -> bool {
+    match c {
+        'a'..='z' | 'A'..='Z' | '_' => true,
+        '0'..='9' if !is_first_char => true,
+        _ => false
+    }
 }
 
 fn parse_symbol(word: &str) -> Option<Token> {

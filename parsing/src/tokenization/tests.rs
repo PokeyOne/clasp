@@ -59,7 +59,7 @@ fn preprocess_string_should_separate_brackets() {
 fn parse_a_bunch_of_symbols_stringed_together() {
     // TODO: Eventually there should be another test with this same thing wiht
     //       no spaces in between.
-    let input = "fn (3 + 4) , { fn true} | fn || false ? ;".to_string();
+    let input = "fn (3 + 4) , { fn true} | fn || false ? this_is_a_variable ;".to_string();
     let expected: Vec<Token> = vec![
         Token::Keyword(Keyword::Fn),
         Token::OpenBracket,
@@ -77,7 +77,8 @@ fn parse_a_bunch_of_symbols_stringed_together() {
         Token::Symbol(Symbol::Or),
         boolean_literal!(false),
         Token::Symbol(Symbol::QuestionMark),
-        Token::Symbol(Symbol::Semicolon),
+        Token::Identifier("this_is_a_variable".to_string()),
+        Token::Symbol(Symbol::Semicolon)
     ];
 
     let result = tokenize(&input).unwrap();
