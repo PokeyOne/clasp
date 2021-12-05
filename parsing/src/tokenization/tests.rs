@@ -1,6 +1,7 @@
 use super::*;
 
 mod literals;
+mod brackets;
 
 #[test]
 fn preprocess_strings_should_not_change_when_no_strings() {

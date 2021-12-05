@@ -1,3 +1,5 @@
+// TODO: The contents of the string_vec macro have been moved to common/test_helpers.rs.
+
 #[macro_export]
 macro_rules! string_vec {
     ( $( $x:expr ),* ) => {

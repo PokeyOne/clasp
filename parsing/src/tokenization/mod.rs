@@ -72,6 +72,14 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
     let (strings, input) = preprocess_strings(input);
 
     for word in input.split_whitespace() {
+        match parse_bracket(word) {
+            Some(token) => {
+                tokens.push(token);
+                continue;
+            },
+            None => {}
+        }
+
         match parse_string(word) {
             Some(index) => {
                 tokens.push(string_literal!(strings[index]));
@@ -100,6 +108,18 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
     }
 
     return Ok(tokens);
+}
+
+fn parse_bracket(word: &str) -> Option<Token> {
+    match word {
+        "(" => Some(Token::OpenBracket),
+        ")" => Some(Token::CloseBracket),
+        "{" => Some(Token::OpenCurlyBracket),
+        "}" => Some(Token::CloseCurlyBracket),
+        "[" => Some(Token::OpenSquareBracket),
+        "]" => Some(Token::CloseSquareBracket),
+        _ => None
+    }
 }
 
 fn parse_string(word: &str) -> Option<usize> {
