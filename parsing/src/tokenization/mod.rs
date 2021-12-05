@@ -10,6 +10,7 @@ use tokens::{
 use crate::boolean_literal;
 use crate::string_literal;
 use crate::number_literal;
+use crate::tokenization::tokens::{Keyword, Symbol};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenizeError {
@@ -104,10 +105,61 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Err(_) => {}
         }
 
+        match parse_keyword(word) {
+            Some(token) => {
+                tokens.push(token);
+                continue;
+            },
+            None => {}
+        }
+
+        match parse_symbol(word) {
+            Some(token) => {
+                tokens.push(token);
+                continue;
+            },
+            None => {}
+        }
+
         return Err(TokenizeError::InvalidToken(word.to_string()));
     }
 
     return Ok(tokens);
+    // IDEA: After tokenizing, have modular layers that cleanup the tokens
+    // for example, combining '<' and '=' into '<=', etc.
+}
+
+fn parse_symbol(word: &str) -> Option<Token> {
+    match word {
+        "+" => Some(Token::Symbol(Symbol::Plus)),
+        "-" => Some(Token::Symbol(Symbol::Minus)),
+        "*" => Some(Token::Symbol(Symbol::Multiply)),
+        "/" => Some(Token::Symbol(Symbol::Divide)),
+        "=" => Some(Token::Symbol(Symbol::Equal)),
+        "!=" => Some(Token::Symbol(Symbol::NotEqual)),
+        "<" => Some(Token::Symbol(Symbol::LessThan)),
+        "<=" => Some(Token::Symbol(Symbol::LessThanOrEqual)),
+        ">" => Some(Token::Symbol(Symbol::GreaterThan)),
+        ">=" => Some(Token::Symbol(Symbol::GreaterThanOrEqual)),
+        "!" => Some(Token::Symbol(Symbol::Not)),
+        "&&" => Some(Token::Symbol(Symbol::And)),
+        "||" => Some(Token::Symbol(Symbol::Or)),
+        "." => Some(Token::Symbol(Symbol::Dot)),
+        "," => Some(Token::Symbol(Symbol::Comma)),
+        ":" => Some(Token::Symbol(Symbol::Colon)),
+        ";" => Some(Token::Symbol(Symbol::Semicolon)),
+        "?" => Some(Token::Symbol(Symbol::QuestionMark)),
+        "|" => Some(Token::Symbol(Symbol::Bar)),
+        "&" => Some(Token::Symbol(Symbol::Ampersand)),
+        _ => None
+    }
+}
+
+fn parse_keyword(word: &str) -> Option<Token> {
+    match word {
+        "fn" => Some(Token::Keyword(Keyword::Fn)),
+        _ => None
+    }
 }
 
 fn parse_bracket(word: &str) -> Option<Token> {

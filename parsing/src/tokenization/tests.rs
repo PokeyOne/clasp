@@ -1,7 +1,10 @@
+use crate::tokenization::tokens::Keyword;
 use super::*;
 
 mod literals;
 mod brackets;
+mod keywords;
+mod symbols;
 
 #[test]
 fn preprocess_strings_should_not_change_when_no_strings() {
@@ -50,4 +53,33 @@ fn preprocess_string_should_separate_brackets() {
     let result = preprocess_strings(&input);
     assert_eq!(result.0, vec!["cool".to_string(), "test".to_string()]);
     assert_eq!(result.1, expected);
+}
+
+#[test]
+fn parse_a_bunch_of_symbols_stringed_together() {
+    // TODO: Eventually there should be another test with this same thing wiht
+    //       no spaces in between.
+    let input = "fn (3 + 4) , { fn true} | fn || false ? ;".to_string();
+    let expected: Vec<Token> = vec![
+        Token::Keyword(Keyword::Fn),
+        Token::OpenBracket,
+        Token::Literal(Literal::Number(3.0)),
+        Token::Symbol(Symbol::Plus),
+        Token::Literal(Literal::Number(4.0)),
+        Token::CloseBracket,
+        Token::Symbol(Symbol::Comma),
+        Token::OpenCurlyBracket,
+        Token::Keyword(Keyword::Fn),
+        boolean_literal!(true),
+        Token::CloseCurlyBracket,
+        Token::Symbol(Symbol::Bar),
+        Token::Keyword(Keyword::Fn),
+        Token::Symbol(Symbol::Or),
+        boolean_literal!(false),
+        Token::Symbol(Symbol::QuestionMark),
+        Token::Symbol(Symbol::Semicolon),
+    ];
+
+    let result = tokenize(&input).unwrap();
+    assert_eq!(result, expected);
 }

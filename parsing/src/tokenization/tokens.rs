@@ -8,6 +8,37 @@ pub enum Token {
     CloseSquareBracket,
     OpenCurlyBracket,
     CloseCurlyBracket,
+    Keyword(Keyword),
+    Symbol(Symbol)
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum Keyword {
+    Fn
+}
+
+#[derive(Debug, Clone, PartialEq)]
+pub enum Symbol {
+    Plus,
+    Minus,
+    Multiply,
+    Divide,
+    Equal,
+    NotEqual,
+    LessThan,
+    GreaterThan,
+    LessThanOrEqual,
+    GreaterThanOrEqual,
+    And,
+    Or,
+    Not,
+    Dot,
+    Comma,
+    Semicolon,
+    Colon,
+    QuestionMark,
+    Bar,
+    Ampersand,
 }
 
 /// The base type of all literals.
