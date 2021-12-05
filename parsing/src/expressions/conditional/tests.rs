@@ -28,6 +28,9 @@ fn single_op() -> Result<(), &'static str> {
     Ok(())
 }
 
+
+// TODO: Putting this on hold for now because might combine conditionals with math
+//       and just make 0 be false and everything else true
 #[test]
 #[ignore = "Not implemented"]
 fn multi_op_with_brackets() -> Result<(), &'static str> {
