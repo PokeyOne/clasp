@@ -1,4 +1,3 @@
-mod compiling;
 mod run_options;
 
 use clasp_assembler::compiling as assembling;
