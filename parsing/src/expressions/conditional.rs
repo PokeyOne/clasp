@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::token::{BracketKind, BracketDirection, LiteralKind, Token, TokenKind};
+use crate::token::{BracketKind, BracketDirection, LiteralKind, Token, TokenKind, BinOpToken};
 
 #[derive(Debug)]
 pub struct ConditionalExpression {
@@ -28,6 +28,8 @@ pub enum ConditionalLiteral {
 
 #[derive(PartialEq, Clone, Debug)]
 pub enum ConditionalOperationKind {
+    And,
+    Or,
     Eq,
     Gt,
     Ge,
@@ -82,6 +84,11 @@ fn map_tokens(tokens: &Vec<Token>) -> Result<Vec<ConditionalToken>, &'static str
             TokenKind::Bracket(bk) => match bk {
                 BracketKind::Round(dir) => ConditionalToken::Bracket(dir.clone()),
                 _ => return Err("Only round brackets allowed in conditional")
+            },
+            TokenKind::BinOp(bin_op_t) => match bin_op_t {
+                BinOpToken::And => ConditionalToken::Operator(Cok::And),
+                BinOpToken::Or => ConditionalToken::Operator(Cok::Or),
+                _ => return Err("Unsupported bin op type")
             }
             _ => return Err("Unsupported token in conditional expression")
         };
@@ -103,10 +110,14 @@ impl Shuntable for Vec<ConditionalToken> {
         let mut output_stack: Vec<ConditionalToken> = Vec::new();
         let mut operator_stack: Vec<ConditionalToken> = Vec::new();
 
+        // TODO: There should be some sort of precedence: "and"/"or" should be
+        //       higher than gt, lt, eq, le, ge
         while let Some(current) = queue.pop() {
             use ConditionalToken::*;
 
             match current {
+                // TODO: I think for op precedence can just pop from operator
+                //       stack while the top of the stack is higher/lower precedence.
                 Operator(_) => operator_stack.push(current),
                 Literal(_) => output_stack.push(current),
                 Bracket(ref dir) => match dir {
