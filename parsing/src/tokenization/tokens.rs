@@ -21,3 +21,24 @@ pub enum Literal {
     Number(f64),
     Boolean(bool)
 }
+
+#[macro_export]
+macro_rules! string_literal {
+    ($s:expr) => {
+        Token::Literal(Literal::String($s.to_string()))
+    };
+}
+
+#[macro_export]
+macro_rules! number_literal {
+    ($n:expr) => {
+        Token::Literal(Literal::Number($n as f64))
+    };
+}
+
+#[macro_export]
+macro_rules! boolean_literal {
+    ($b:expr) => {
+        Token::Literal(Literal::Boolean($b))
+    };
+}
