@@ -8,3 +8,4 @@ edition = "2021"
 [dependencies]
 clasp_common = { path = "../common" }
 clasp_assembler = { path = "../assembler" }
+clasp_parsing = { path = "../parsing" }

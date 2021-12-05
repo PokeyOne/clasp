@@ -3,14 +3,15 @@ mod tests;
 
 mod tokens;
 
+pub use tokens::Token;
 use tokens::{
-    Token,
     Literal,
+    Keyword,
+    Symbol
 };
 use crate::boolean_literal;
 use crate::string_literal;
 use crate::number_literal;
-use crate::tokenization::tokens::{Keyword, Symbol};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenizeError {

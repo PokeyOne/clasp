@@ -5,8 +5,7 @@ use clasp_assembler::compiling as assembling;
 use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
-use compiling::tokenization;
-use compiling::tokenization::token::Token;
+use clasp_parsing::tokenization::{self, Token};
 use run_options::{factory::RunOptionsFactory, OutputFormat, RunOptions};
 use std::fs;
 
@@ -81,19 +80,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let run_options = match read_cl_args() {
         Ok(val) => val,
         Err(msg) => match msg {
-            Some(msge) => panic!("{}", msge),
+            Some(msg) => panic!("{}", msg),
             None => return Ok(())
         }
     };
 
     let file_content = fs::read_to_string(run_options.input_path())?;
-    let tokens: Vec<Token> = tokenization::tokenize_text(file_content);
-    // TODO: stop here if the tokens only option is given
-    let resulting_assembly: String = compiling::compile_tokens(tokens);
-    // TODO: Stop here if assembly-only option is given
-    let resulting_binary: Vec<u8> = assembling::compile_text(resulting_assembly);
+    let tokens: Vec<Token> = match tokenization::tokenize(&file_content) {
+        Ok(val) => val,
+        Err(msg) => panic!("{:?}", msg)
+    };
+    if *run_options.output_format() == OutputFormat::Tokens {
+        for token in tokens {
+            println!("{:?}", token);
+        }
+        return Ok(());
+    }
 
-    fs::write(run_options.output_path(), &resulting_binary)?;
+    // TODO: Use parsing crate to parse tokens into AST.
+
+    // TODO: Use AST to compile to assembly.
+
+    // TODO: Use assembly to compile to binary.
+
+    // TODO: fs::write(run_options.output_path(), &resulting_binary)?;
 
     Ok(())
 }

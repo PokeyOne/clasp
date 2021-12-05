@@ -37,6 +37,7 @@ version = "0.1.0"
 dependencies = [
  "clasp_assembler",
  "clasp_common",
+ "clasp_parsing",
 ]
 
 [[package]]
