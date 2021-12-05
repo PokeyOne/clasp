@@ -1,19 +1,23 @@
 use crate::tokenization::{Token, Literal as TLiteral};
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Ast {
     expressions: Vec<Expression>,
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum Expression {
     Statement(Statement),
     Literal(Literal)
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub struct Statement {
     identifier: String,
     expressions: Vec<Expression>
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum Literal {
     Number(f64),
     String(String),

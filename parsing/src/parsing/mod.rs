@@ -1,10 +1,14 @@
 mod ast;
+#[cfg(test)]
+mod tests;
 
 use std::vec::IntoIter;
-use crate::tokenization::Token;
+use crate::tokenization::{Token, Literal as TokenLiteral};
 use ast::{Ast, Expression, Statement, Literal as AstLiteral};
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum AstConstructionError {
+    UnexpectedToken(Token),
     IteratorEmpty,
     #[allow(dead_code)]
     Unimplemented,
@@ -37,6 +41,6 @@ pub fn parse_expression(tokens: &mut IntoIter<Token>) -> Result<Expression, AstC
     match &token {
         // force unwrap because we know we are passing in a literal
         Token::Literal(_) => Ok(Expression::Literal(AstLiteral::from_literal_token(token).unwrap())),
-        _ => Err(AstConstructionError::Unimplemented)
+        _ => Err(AstConstructionError::UnexpectedToken(token.clone()))
     }
 }
