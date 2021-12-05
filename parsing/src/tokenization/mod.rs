@@ -3,8 +3,8 @@ mod tests;
 
 mod tokens;
 
-pub use tokens::Token;
-use tokens::{
+pub use tokens::{
+    Token,
     Literal,
     Keyword,
     Symbol
