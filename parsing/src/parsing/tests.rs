@@ -76,6 +76,31 @@ fn parse_named_addition_expression() -> Result<(), AstConstructionError> {
 }
 
 #[test]
+fn parse_fn_definition() -> Result<(), AstConstructionError> {
+    let input = tokenization::tokenize(
+        &"(fn main (println \"Hello, World!\"))".to_string()
+    ).expect("Failed to tokenize test input");
+    let expected = Ast::new(vec![
+        Expression::Statement(Statement::new(
+            "fn".to_string(),
+            vec![
+                Expression::Identifier("main".to_string()),
+                Expression::Statement(Statement::new(
+                    "println".to_string(),
+                    vec![
+                        Expression::Literal(AstLiteral::String("Hello, World!".to_string()))
+                    ]
+                ))
+            ]
+        ))
+    ]);
+
+    assert_eq!(expected, parse_tree(input)?);
+
+    Ok(())
+}
+
+#[test]
 fn parse_complex_math_expression() -> Result<(), AstConstructionError> {
     let input = tokenization::tokenize(
         &"(+ (+ 1 2) 2 (* 5 -6.3 (^ 2 3)))".to_string()

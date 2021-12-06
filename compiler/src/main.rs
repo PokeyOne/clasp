@@ -5,6 +5,7 @@ use clasp_common::command_line;
 use clasp_common::command_line::{CLArg, NamedArgSpec};
 use clasp_common::version_constants::VERSION_STRING;
 use clasp_parsing::tokenization::{self, Token};
+use clasp_parsing::parsing;
 use run_options::{factory::RunOptionsFactory, OutputFormat, RunOptions};
 use std::fs;
 
@@ -37,6 +38,7 @@ fn read_cl_args() -> Result<RunOptions, Option<String>> {
         ),
         NamedArgSpec::new("--assembly", false, Some(vec!["-S".to_string()])),
         NamedArgSpec::new("--tokens", false, Some(vec!["-T".to_string()])),
+        NamedArgSpec::new("--ast", false, None)
     ]);
 
     let mut run_options_factory = RunOptionsFactory::new();
@@ -54,6 +56,9 @@ fn read_cl_args() -> Result<RunOptions, Option<String>> {
                 }
                 "--tokens" => {
                     run_options_factory.set_output_format(OutputFormat::Tokens);
+                }
+                "--ast" => {
+                    run_options_factory.set_output_format(OutputFormat::Ast);
                 }
                 "--help" => {
                     println!("{}", help_text());
@@ -96,7 +101,15 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    // TODO: Use parsing crate to parse tokens into AST.
+    let ast = match parsing::parse_tree(tokens) {
+        Ok(val) => val,
+        Err(msg) => panic!("{:?}", msg)
+    };
+    if *run_options.output_format() == OutputFormat::Ast {
+        println!("{:?}", ast);
+        println!("Reconstructed code: \n{}", ast.reconstruct_code());
+        return Ok(());
+    }
 
     // TODO: Use AST to compile to assembly.
 

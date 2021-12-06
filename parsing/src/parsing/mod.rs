@@ -48,6 +48,7 @@ pub fn parse_expression(tokens: &mut IntoIter<Token>) -> Result<Expression, AstC
         Token::OpenBracket => {
             Ok(Expression::Statement(parse_statement(tokens)?))
         },
+        Token::Identifier(val) => Ok(Expression::Identifier(val.clone())),
         _ => Err(AstConstructionError::UnexpectedToken(token.clone()))
     }
 }
@@ -57,7 +58,8 @@ pub fn parse_statement(tokens: &mut IntoIter<Token>) -> Result<Statement, AstCon
     println!("Parsing a statement from token: {:?}", &first_token);
     let statement_identifier = match first_token {
         Token::Identifier(identifier) => identifier,
-        Token::Symbol(sym) => sym.string_name(),
+        Token::Symbol(sym) => sym.functional_name(),
+        Token::Keyword(kw) => kw.functional_name(),
         _ => return Err(AstConstructionError::UnexpectedToken(first_token.clone()))
     };
     println!("Identifier: {}", statement_identifier);

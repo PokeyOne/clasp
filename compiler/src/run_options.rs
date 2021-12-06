@@ -6,7 +6,8 @@ pub mod factory;
 pub enum OutputFormat {
     Assembly,
     Binary,
-    Tokens
+    Tokens,
+    Ast
 }
 
 /// These are the options that can be passed to the compiler. Usually these are

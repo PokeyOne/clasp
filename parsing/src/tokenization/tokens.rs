@@ -62,7 +62,7 @@ pub enum Literal {
 }
 
 impl Symbol {
-    pub fn string_name(&self) -> String {
+    pub fn functional_name(&self) -> String {
         match self {
             Symbol::Plus => "+".to_string(),
             Symbol::Minus => "-".to_string(),
@@ -85,6 +85,14 @@ impl Symbol {
             Symbol::Bar => "|".to_string(),
             Symbol::Ampersand => "&".to_string(),
             Symbol::Caret => "^".to_string()
+        }
+    }
+}
+
+impl Keyword {
+    pub fn functional_name(&self) -> String {
+        match self {
+            Keyword::Fn => "fn".to_string()
         }
     }
 }
