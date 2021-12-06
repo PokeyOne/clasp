@@ -48,3 +48,17 @@ impl Literal {
         }
     }
 }
+
+impl Statement {
+    pub fn new(identifier: String, expressions: Vec<Expression>) -> Statement {
+        Statement { identifier, expressions }
+    }
+
+    pub fn get_identifier(&self) -> &String {
+        &self.identifier
+    }
+
+    pub fn get_expressions(&self) -> &Vec<Expression> {
+        &self.expressions
+    }
+}

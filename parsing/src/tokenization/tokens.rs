@@ -40,6 +40,7 @@ pub enum Symbol {
     QuestionMark,
     Bar,
     Ampersand,
+    Caret
 }
 
 /// The base type of all literals.
@@ -58,6 +59,34 @@ pub enum Literal {
     String(String),
     Number(f64),
     Boolean(bool)
+}
+
+impl Symbol {
+    pub fn string_name(&self) -> String {
+        match self {
+            Symbol::Plus => "+".to_string(),
+            Symbol::Minus => "-".to_string(),
+            Symbol::Multiply => "*".to_string(),
+            Symbol::Divide => "/".to_string(),
+            Symbol::Equal => "=".to_string(),
+            Symbol::NotEqual => "!=".to_string(),
+            Symbol::LessThan => "<".to_string(),
+            Symbol::GreaterThan => ">".to_string(),
+            Symbol::LessThanOrEqual => "<=".to_string(),
+            Symbol::GreaterThanOrEqual => ">=".to_string(),
+            Symbol::And => "&&".to_string(),
+            Symbol::Or => "||".to_string(),
+            Symbol::Not => "!".to_string(),
+            Symbol::Dot => ".".to_string(),
+            Symbol::Comma => ",".to_string(),
+            Symbol::Semicolon => ";".to_string(),
+            Symbol::Colon => ":".to_string(),
+            Symbol::QuestionMark => "?".to_string(),
+            Symbol::Bar => "|".to_string(),
+            Symbol::Ampersand => "&".to_string(),
+            Symbol::Caret => "^".to_string()
+        }
+    }
 }
 
 #[macro_export]

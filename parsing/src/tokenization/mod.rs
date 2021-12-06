@@ -176,6 +176,7 @@ fn parse_symbol(word: &str) -> Option<Token> {
         "?" => Some(Token::Symbol(Symbol::QuestionMark)),
         "|" => Some(Token::Symbol(Symbol::Bar)),
         "&" => Some(Token::Symbol(Symbol::Ampersand)),
+        "^" => Some(Token::Symbol(Symbol::Caret)),
         _ => None
     }
 }
