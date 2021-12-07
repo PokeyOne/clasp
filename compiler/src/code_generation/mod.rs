@@ -7,6 +7,7 @@ use crate::parsing::ast::{Ast, Expression, Literal, Statement};
 pub enum AssemblyGenerationError {
     ExpectedStatement,
     ExpectedSpecificStatement(String),
+    ExpectedIdentifierForFunctionName,
     #[allow(dead_code)]
     NotImplemented
 }
@@ -77,6 +78,21 @@ impl AssemblyBuilder {
         if statement.get_identifier() != "fn" {
             return Err(AssemblyGenerationError::ExpectedSpecificStatement("fn".to_string()));
         }
+
+        let mut expression_iter = statement.get_expressions().clone().into_iter();
+
+        // Get the function name
+        let name = match expression_iter.next() {
+            Some(expression) => match expression {
+                Expression::Identifier(s) => s,
+                _ => return Err(AssemblyGenerationError::ExpectedIdentifierForFunctionName)
+            },
+            None => return Err(AssemblyGenerationError::ExpectedIdentifierForFunctionName)
+        };
+        println!("name: {}", name);
+
+        // TODO: Figure out parameters
+        // TODO: for the rest of the expressions, generate assembly
 
         Err(AssemblyGenerationError::NotImplemented)
     }
