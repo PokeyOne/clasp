@@ -6,6 +6,7 @@ use crate::parsing::ast::{Ast, Expression, Literal, Statement};
 #[derive(Debug, Clone, PartialEq)]
 pub enum AssemblyGenerationError {
     ExpectedStatement,
+    ExpectedSpecificStatement(String),
     #[allow(dead_code)]
     NotImplemented
 }
@@ -63,7 +64,7 @@ impl AssemblyBuilder {
         &mut self,
         statement: Statement
     ) -> Result<(), AssemblyGenerationError> {
-        match &statement.get_identifier().as_str() {
+        match statement.get_identifier().as_str() {
             "fn" => self.generate_function_assembly(statement),
             _ => Err(AssemblyGenerationError::NotImplemented)
         }
@@ -74,7 +75,7 @@ impl AssemblyBuilder {
         statement: Statement
     ) -> Result<(), AssemblyGenerationError> {
         if statement.get_identifier() != "fn" {
-            return Err(AssemblyGenerationError::ExpectedSpecificStatement("fn"));
+            return Err(AssemblyGenerationError::ExpectedSpecificStatement("fn".to_string()));
         }
 
         Err(AssemblyGenerationError::NotImplemented)
