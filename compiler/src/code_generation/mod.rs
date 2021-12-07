@@ -1,7 +1,7 @@
 #[cfg(test)]
 mod tests;
 
-use crate::parsing::ast::{Expression, Statement, Ast, Literal};
+use crate::parsing::ast::{Ast, Expression, Literal, Statement};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum AssemblyGenerationError {
@@ -54,7 +54,10 @@ impl AssemblyBuilder {
         }
     }
 
-    fn generate_statement_assembly(&mut self, statement: Statement) -> Result<(), AssemblyGenerationError> {
+    fn generate_statement_assembly(
+        &mut self,
+        statement: Statement
+    ) -> Result<(), AssemblyGenerationError> {
         Err(AssemblyGenerationError::NotImplemented)
     }
 }
@@ -71,9 +74,7 @@ impl InstructionBuilder {
 
 impl DataSegmentBuilder {
     pub fn new() -> DataSegmentBuilder {
-        DataSegmentBuilder {
-            data: Vec::new()
-        }
+        DataSegmentBuilder { data: Vec::new() }
     }
 
     pub fn add_data(&mut self, name: String, value: String) {
@@ -110,4 +111,3 @@ pub fn generate_assembly(ast: Ast) -> Result<AssemblyBuilder, AssemblyGeneration
 
     Ok(builder)
 }
-

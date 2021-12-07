@@ -5,11 +5,11 @@ pub mod jump_instructions;
 pub mod math_instructions;
 pub mod utility;
 
+pub use comparison_instructions::*;
 pub use console_instructions::*;
 pub use general_instructions::*;
 pub use jump_instructions::*;
 pub use math_instructions::*;
-pub use comparison_instructions::*;
 
 #[cfg(test)]
 mod test_helpers;

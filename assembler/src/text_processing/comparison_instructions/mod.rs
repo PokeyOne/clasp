@@ -1,9 +1,9 @@
 #[cfg(test)]
 mod tests;
 
-use clasp_common::data_constants::WORD_SIZE;
-use crate::text_processing::InstructionProcessResult;
 use crate::text_processing::math_instructions::general_math;
+use crate::text_processing::InstructionProcessResult;
+use clasp_common::data_constants::WORD_SIZE;
 
 pub fn cmp_process(words: Vec<String>) -> InstructionProcessResult {
     // TODO: Error instead of panic

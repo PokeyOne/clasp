@@ -1,5 +1,5 @@
 use super::cmp_process;
-use crate::{string_vec, data_block};
+use crate::{data_block, string_vec};
 use clasp_common::instruction_constants::instruction_codes::*;
 
 #[test]
