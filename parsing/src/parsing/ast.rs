@@ -38,6 +38,10 @@ impl Ast {
         &self.expressions
     }
 
+    pub fn into_expressions(self) -> Vec<Expression> {
+        self.expressions
+    }
+
     pub fn reconstruct_code(&self) -> String {
         let mut code = String::new();
         for expression in &self.expressions {

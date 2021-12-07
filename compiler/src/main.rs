@@ -1,4 +1,5 @@
 mod run_options;
+mod code_generation;
 
 use clasp_assembler::compiling as assembling;
 use clasp_common::command_line;
@@ -106,12 +107,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(msg) => panic!("{:?}", msg)
     };
     if *run_options.output_format() == OutputFormat::Ast {
-        println!("{:?}", ast);
+        println!("{:#?}", ast);
         println!("Reconstructed code: \n{}", ast.reconstruct_code());
         return Ok(());
     }
 
-    // TODO: Use AST to compile to assembly.
+    let assembly = match code_generation::generate_assembly(ast) {
+        Ok(val) => val,
+        Err(msg) => panic!("{:?}", msg)
+    };
+    if *run_options.output_format() == OutputFormat::Assembly {
+        println!("{}", assembly);
+        return Ok(());
+    }
 
     // TODO: Use assembly to compile to binary.
 
