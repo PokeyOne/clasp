@@ -6,6 +6,7 @@ require "tempfile"
 
 do_commit = true
 do_change = true
+do_csv = false
 for arg in ARGV do
   if arg == "--nocommit" || arg == "-nc"
     do_commit = false
@@ -14,6 +15,8 @@ for arg in ARGV do
   elsif arg == "--help" || arg == "-h"
     puts "Usage: stats.rb [--nocommit] [--nochange]"
     exit
+  elsif arg == "--csv"
+    do_csv = true
   end
 end
 
@@ -44,6 +47,7 @@ end
 
 total_count = 0
 total_char_count = 0
+entries = []
 get_rs_files.each do |file|
   next if file.include?("target")
 
@@ -52,10 +56,24 @@ get_rs_files.each do |file|
   intermediate_char_count = calculated_counts[:char_count]
   total_count += intermediate_count
   total_char_count += intermediate_char_count
+  entries << { file: file, line_count: intermediate_count, char_count: intermediate_char_count }
   puts "#{file} #{intermediate_count} (#{intermediate_char_count} chars)"
 end
 
 puts "Total: #{total_count} (#{total_char_count} chars)"
+
+if do_csv
+  csv_content = "file,line_count,char_count\n"
+  entries.each do |entry|
+    csv_content += "#{entry[:file]},#{entry[:line_count]},#{entry[:char_count]}\n"
+  end
+
+  # Create new file in stats directory
+  file_name = "stats.csv"
+  file_path = File.join(Dir.pwd, "stats", file_name)
+  FileUtils.mkdir_p(File.dirname(file_path))
+  File.write(file_path, csv_content)
+end
 
 unless do_change
   puts "Skipping change"
