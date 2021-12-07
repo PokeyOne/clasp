@@ -27,13 +27,15 @@ def get_rs_files
 end
 
 def calculate_file_line_count(file)
-  count = 0
+  line_count = 0
+  char_count = 0
   File.open(file, "r") do |f|
     f.each_line do |line|
-      count += 1
+      line_count += 1
+      char_count += line.length
     end
   end
-  count
+  { line_count: line_count, char_count: char_count }
 end
 
 def generate_badge_link(total_count)
@@ -41,15 +43,19 @@ def generate_badge_link(total_count)
 end
 
 total_count = 0
+total_char_count = 0
 get_rs_files.each do |file|
   next if file.include?("target")
 
-  intermediate_count = calculate_file_line_count(file)
+  calculated_counts = calculate_file_line_count(file)
+  intermediate_count = calculated_counts[:line_count]
+  intermediate_char_count = calculated_counts[:char_count]
   total_count += intermediate_count
-  puts "#{file} #{intermediate_count}"
+  total_char_count += intermediate_char_count
+  puts "#{file} #{intermediate_count} (#{intermediate_char_count} chars)"
 end
 
-puts "Total: #{total_count}"
+puts "Total: #{total_count} (#{total_char_count} chars)"
 
 unless do_change
   puts "Skipping change"
