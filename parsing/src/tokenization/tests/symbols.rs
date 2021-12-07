@@ -10,14 +10,14 @@ fn tokenize_simple_addition_statement() -> Result<(), TokenizeError> {
         Token::Symbol(Symbol::Plus),
         Token::Literal(Literal::Number(1.0)),
         Token::Literal(Literal::Number(2.0)),
-        Token::CloseBracket
+        Token::CloseBracket,
     ];
     let expected_b = vec![
         Token::OpenBracket,
         Token::Identifier("add".to_string()),
         Token::Literal(Literal::Number(1.0)),
         Token::Literal(Literal::Number(2.0)),
-        Token::CloseBracket
+        Token::CloseBracket,
     ];
 
     assert_eq!(expected_a, tokenize(&input_a)?);

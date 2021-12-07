@@ -10,7 +10,7 @@ pub enum Token {
     CloseCurlyBracket,
     Keyword(Keyword),
     Symbol(Symbol),
-    Identifier(String),
+    Identifier(String)
 }
 
 #[derive(Debug, Clone, PartialEq)]

@@ -1,15 +1,15 @@
-use crate::tokenization::{Token, Literal as TLiteral};
+use crate::tokenization::{Literal as TLiteral, Token};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct Ast {
-    expressions: Vec<Expression>,
+    expressions: Vec<Expression>
 }
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum Expression {
     Statement(Statement),
     Literal(Literal),
-    Identifier(String),
+    Identifier(String)
 }
 
 #[derive(Debug, Clone, PartialEq)]
@@ -75,10 +75,12 @@ impl Literal {
         match self {
             Literal::Number(value) => value.to_string(),
             Literal::String(value) => format!("\"{}\"", value),
-            Literal::Boolean(value) => if *value {
-                "true".to_string()
-            } else {
-                "false".to_string()
+            Literal::Boolean(value) => {
+                if *value {
+                    "true".to_string()
+                } else {
+                    "false".to_string()
+                }
             }
         }
     }
@@ -86,7 +88,10 @@ impl Literal {
 
 impl Statement {
     pub fn new(identifier: String, expressions: Vec<Expression>) -> Statement {
-        Statement { identifier, expressions }
+        Statement {
+            identifier,
+            expressions
+        }
     }
 
     pub fn get_identifier(&self) -> &String {

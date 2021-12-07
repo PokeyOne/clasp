@@ -3,15 +3,10 @@ mod tests;
 
 mod tokens;
 
-pub use tokens::{
-    Token,
-    Literal,
-    Keyword,
-    Symbol
-};
 use crate::boolean_literal;
-use crate::string_literal;
 use crate::number_literal;
+use crate::string_literal;
+pub use tokens::{Keyword, Literal, Symbol, Token};
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenizeError {
@@ -44,7 +39,7 @@ fn preprocess_strings(input: &String) -> (Vec<String>, String) {
                     't' => string_literal_buffer.push('\t'),
                     '\\' => string_literal_buffer.push('\\'),
                     '"' => string_literal_buffer.push('"'),
-                    _ => string_literal_buffer.push(c),
+                    _ => string_literal_buffer.push(c)
                 }
             } else {
                 string_literal_buffer.push(c);
@@ -78,7 +73,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Some(token) => {
                 tokens.push(token);
                 continue;
-            },
+            }
             None => {}
         }
 
@@ -86,7 +81,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Some(index) => {
                 tokens.push(string_literal!(strings[index]));
                 continue;
-            },
+            }
             None => {}
         }
 
@@ -94,7 +89,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Some(token) => {
                 tokens.push(token);
                 continue;
-            },
+            }
             None => {}
         }
 
@@ -102,7 +97,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Ok(number) => {
                 tokens.push(number_literal!(number));
                 continue;
-            },
+            }
             Err(_) => {}
         }
 
@@ -110,7 +105,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Some(token) => {
                 tokens.push(token);
                 continue;
-            },
+            }
             None => {}
         }
 
@@ -118,7 +113,7 @@ pub fn tokenize(input: &String) -> Result<Vec<Token>, TokenizeError> {
             Some(token) => {
                 tokens.push(token);
                 continue;
-            },
+            }
             None => {}
         }
 
@@ -205,13 +200,13 @@ fn parse_string(word: &str) -> Option<usize> {
         return None;
     }
 
-    word[1..(word.len() -1)].parse::<usize>().ok()
+    word[1..(word.len() - 1)].parse::<usize>().ok()
 }
 
 fn parse_bool(word: &str) -> Option<Token> {
     match word {
         "true" => Some(boolean_literal!(true)),
         "false" => Some(boolean_literal!(false)),
-        _ => None,
+        _ => None
     }
 }

@@ -1,9 +1,9 @@
-use crate::tokenization::tokens::Keyword;
 use super::*;
+use crate::tokenization::tokens::Keyword;
 
-mod literals;
 mod brackets;
 mod keywords;
+mod literals;
 mod symbols;
 
 #[test]
@@ -31,7 +31,14 @@ fn preprocess_string_should_change_multiple_token_string() {
     let expected = "this is a  \"0\"   \"1\"   \"2\" ".to_string();
 
     let result = preprocess_strings(&input);
-    assert_eq!(result.0, vec!["cool".to_string(), "test".to_string(), "of the system".to_string()]);
+    assert_eq!(
+        result.0,
+        vec![
+            "cool".to_string(),
+            "test".to_string(),
+            "of the system".to_string()
+        ]
+    );
     assert_eq!(result.1, expected);
 }
 
@@ -41,7 +48,14 @@ fn preprocess_string_with_spaces_and_escaped_characters() {
     let expected = "this is a  \"0\"   \"1\"   \"2\" ".to_string();
 
     let result = preprocess_strings(&input);
-    assert_eq!(result.0, vec!["cool".to_string(), "test".to_string(), " of \"the\"\n system".to_string()]);
+    assert_eq!(
+        result.0,
+        vec![
+            "cool".to_string(),
+            "test".to_string(),
+            " of \"the\"\n system".to_string()
+        ]
+    );
     assert_eq!(result.1, expected);
 }
 
@@ -78,7 +92,7 @@ fn parse_a_bunch_of_symbols_stringed_together() {
         boolean_literal!(false),
         Token::Symbol(Symbol::QuestionMark),
         Token::Identifier("this_is_a_variable".to_string()),
-        Token::Symbol(Symbol::Semicolon)
+        Token::Symbol(Symbol::Semicolon),
     ];
 
     let result = tokenize(&input).unwrap();
@@ -87,9 +101,7 @@ fn parse_a_bunch_of_symbols_stringed_together() {
 
 #[test]
 fn ideal_case_main_function() {
-    let input = String::from(
-        "(fn say_hello (println \"Hello, World!\"))"
-    );
+    let input = String::from("(fn say_hello (println \"Hello, World!\"))");
     let expected: Vec<Token> = vec![
         Token::OpenBracket,
         Token::Keyword(Keyword::Fn),
@@ -98,7 +110,7 @@ fn ideal_case_main_function() {
         Token::Identifier("println".to_string()),
         Token::Literal(Literal::String("Hello, World!".to_string())),
         Token::CloseBracket,
-        Token::CloseBracket
+        Token::CloseBracket,
     ];
 
     let result = tokenize(&input).unwrap();

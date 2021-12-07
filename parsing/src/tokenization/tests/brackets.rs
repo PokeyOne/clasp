@@ -11,7 +11,7 @@ fn test_single_brackets() {
         vec![Token::OpenSquareBracket],
         vec![Token::CloseSquareBracket],
         vec![Token::OpenCurlyBracket],
-        vec![Token::CloseCurlyBracket]
+        vec![Token::CloseCurlyBracket],
     ];
 
     let calculated: Vec<Vec<Token>> = input.iter().map(|ele| tokenize(&ele).unwrap()).collect();
@@ -26,7 +26,7 @@ fn test_simple_number_surrounded_by_brackets() {
         Token::OpenBracket,
         number_literal!(1),
         Token::CloseBracket,
-        Token::CloseBracket
+        Token::CloseBracket,
     ];
 
     let calculated: Vec<Token> = tokenize(&input).unwrap();

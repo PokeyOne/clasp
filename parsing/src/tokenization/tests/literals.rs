@@ -1,5 +1,5 @@
-use super::*;
 use super::tokens::*;
+use super::*;
 
 #[test]
 fn parse_empty_string() -> Result<(), TokenizeError> {
@@ -96,7 +96,7 @@ fn parse_sequence_of_booleans() -> Result<(), TokenizeError> {
     let expected = vec![
         Token::Literal(Literal::Boolean(true)),
         Token::Literal(Literal::Boolean(false)),
-        Token::Literal(Literal::Boolean(true))
+        Token::Literal(Literal::Boolean(true)),
     ];
     let actual = tokenize(&input)?;
     assert_eq!(expected, actual);
@@ -111,7 +111,7 @@ fn parse_many_literals() -> Result<(), TokenizeError> {
         Token::Literal(Literal::Boolean(true)),
         Token::Literal(Literal::Boolean(false)),
         Token::Literal(Literal::Number(123.456e7)),
-        Token::Literal(Literal::String("test string".to_string()))
+        Token::Literal(Literal::String("test string".to_string())),
     ];
     let actual = tokenize(&input)?;
     assert_eq!(expected, actual);

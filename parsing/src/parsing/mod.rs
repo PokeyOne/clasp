@@ -2,9 +2,9 @@ pub mod ast;
 #[cfg(test)]
 mod tests;
 
-use std::vec::IntoIter;
 use crate::tokenization::Token;
-use ast::{Ast, Expression, Statement, Literal as AstLiteral};
+use ast::{Ast, Expression, Literal as AstLiteral, Statement};
+use std::vec::IntoIter;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum AstConstructionError {
@@ -12,7 +12,7 @@ pub enum AstConstructionError {
     IteratorEmpty,
     UnexpectedEOF,
     #[allow(dead_code)]
-    Unimplemented,
+    Unimplemented
 }
 
 pub fn parse_tree(tokens: Vec<Token>) -> Result<Ast, AstConstructionError> {
@@ -44,10 +44,10 @@ pub fn parse_expression(tokens: &mut IntoIter<Token>) -> Result<Expression, AstC
 
     match &token {
         // force unwrap because we know we are passing in a literal
-        Token::Literal(_) => Ok(Expression::Literal(AstLiteral::from_literal_token(token).unwrap())),
-        Token::OpenBracket => {
-            Ok(Expression::Statement(parse_statement(tokens)?))
-        },
+        Token::Literal(_) => Ok(Expression::Literal(
+            AstLiteral::from_literal_token(token).unwrap()
+        )),
+        Token::OpenBracket => Ok(Expression::Statement(parse_statement(tokens)?)),
         Token::Identifier(val) => Ok(Expression::Identifier(val.clone())),
         _ => Err(AstConstructionError::UnexpectedToken(token.clone()))
     }
@@ -70,10 +70,12 @@ pub fn parse_statement(tokens: &mut IntoIter<Token>) -> Result<Statement, AstCon
         match parse_expression(tokens) {
             Ok(expr) => args.push(expr),
             Err(err) => match err {
-                AstConstructionError::IteratorEmpty => return Err(AstConstructionError::UnexpectedEOF),
+                AstConstructionError::IteratorEmpty => {
+                    return Err(AstConstructionError::UnexpectedEOF)
+                }
                 AstConstructionError::UnexpectedToken(Token::CloseBracket) => {
                     break;
-                },
+                }
                 _ => return Err(err)
             }
         };
