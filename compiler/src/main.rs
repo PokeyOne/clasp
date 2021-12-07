@@ -117,7 +117,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         Err(msg) => panic!("{:?}", msg)
     };
     if *run_options.output_format() == OutputFormat::Assembly {
-        println!("{}", assembly);
+        println!("Generated clasm:\n{}", assembly.build_source());
         return Ok(());
     }
 

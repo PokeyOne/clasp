@@ -3,7 +3,9 @@ mod tests;
 
 use crate::parsing::ast::{Expression, Statement, Ast, Literal};
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum AssemblyGenerationError {
+    ExpectedStatement,
     #[allow(dead_code)]
     NotImplemented
 }
@@ -30,7 +32,7 @@ impl AssemblyBuilder {
         }
     }
 
-    pub fn add_instruction(&mut self, instruction: Instruction) {
+    pub fn add_instruction(&mut self, instruction: InstructionBuilder) {
         self.instructions.push(instruction);
     }
 
@@ -48,8 +50,12 @@ impl AssemblyBuilder {
         match literal {
             Literal::Number(number) => format!("{}", number),
             Literal::String(string) => format!("\"{}\"", string),
-            Literal::Bool(bool) => format!("{}", bool)
+            Literal::Boolean(bool) => format!("{}", bool)
         }
+    }
+
+    fn generate_statement_assembly(&mut self, statement: Statement) -> Result<(), AssemblyGenerationError> {
+        Err(AssemblyGenerationError::NotImplemented)
     }
 }
 
@@ -94,27 +100,14 @@ pub fn generate_assembly(ast: Ast) -> Result<AssemblyBuilder, AssemblyGeneration
     let mut builder = AssemblyBuilder::new();
 
     for expression in ast.into_expressions() {
-        generate_expression_assembly(&mut builder, expression)?;
+        match expression {
+            Expression::Statement(statement) => {
+                builder.generate_statement_assembly(statement)?;
+            }
+            _ => return Err(AssemblyGenerationError::ExpectedStatement)
+        }
     }
 
     Ok(builder)
-}
-
-// TODO: Remove the idea of a top-level expression, only statements.
-fn generate_expression_assembly(
-    builder: &mut AssemblyBuilder,
-    expression: Expression
-) -> Result<(), AssemblyGenerationError> {
-    match expression {
-        Expression::Literal(literal) => {
-            builder.add_instruction(InstructionBuilder::new(
-                "push".to_string(),
-                vec![format_literal(literal)]
-            ));
-        },
-        _ => Err(AssemblyGenerationError::NotImplemented)
-    }
-
-    Ok(())
 }
 

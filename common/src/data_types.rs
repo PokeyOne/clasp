@@ -2,7 +2,6 @@
 mod tests;
 
 use super::data_constants::WORD_SIZE;
-use std::convert::TryInto;
 
 // FIXME: These types feel messy... tempted to rip them apart.
 

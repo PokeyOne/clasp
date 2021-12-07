@@ -3,7 +3,7 @@ pub mod ast;
 mod tests;
 
 use std::vec::IntoIter;
-use crate::tokenization::{Token, Literal as TokenLiteral, Symbol};
+use crate::tokenization::Token;
 use ast::{Ast, Expression, Statement, Literal as AstLiteral};
 
 #[derive(Debug, Clone, PartialEq)]

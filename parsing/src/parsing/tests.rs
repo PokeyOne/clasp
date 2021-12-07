@@ -1,4 +1,4 @@
-use crate::tokenization::{self, Symbol};
+use crate::tokenization::{self, Literal as TokenLiteral};
 use super::*;
 
 #[test]
