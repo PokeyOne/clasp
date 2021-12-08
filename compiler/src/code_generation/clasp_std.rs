@@ -17,9 +17,7 @@ pub fn construct_std_fn_assembly(name: &str) -> Option<String> {
 /// following the method call.
 pub fn std_call(name: &str) -> Option<InstructionBuilder> {
     match name {
-        "print" => {
-            Some(InstructionBuilder::new("print".to_string()))
-        },
+        "print" => Some(InstructionBuilder::new("print".to_string())),
         _ => None
     }
 }
@@ -30,5 +28,6 @@ fn println_assembly() -> String {
     "println:\n\
     print arg0\n\
     print 0x20\n\
-    return".to_string()
+    return"
+        .to_string()
 }

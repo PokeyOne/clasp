@@ -3,8 +3,8 @@ mod tests;
 
 mod clasp_std;
 
-use std::collections::HashSet;
 use crate::parsing::ast::{Ast, Expression, Literal, Statement};
+use std::collections::HashSet;
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum AssemblyGenerationError {
@@ -26,7 +26,7 @@ pub struct AssemblyBuilder {
     /// The data constants.
     data_segment: DataSegmentBuilder,
     /// Names of functions that have been declared.
-    declared_functions: HashSet<String>,
+    declared_functions: HashSet<String>
 }
 
 pub struct InstructionBuilder {
@@ -100,14 +100,12 @@ impl AssemblyBuilder {
                 // Call arguments
                 for expression in statement.get_expressions() {
                     match expression {
-                        Expression::Literal(literal) => {
-                            operands.push(self.format_literal(literal))
-                        },
+                        Expression::Literal(literal) => operands.push(self.format_literal(literal)),
                         Expression::Identifier(identifier) => {
                             // TODO: dereference variables
                             println!("TODO: dereference variables");
                             return Err(NotImplemented);
-                        },
+                        }
                         Expression::Statement(_) => {
                             println!("TODO: expression statement");
                             return Err(NotImplemented);
@@ -130,7 +128,9 @@ impl AssemblyBuilder {
         statement: Statement
     ) -> Result<(), AssemblyGenerationError> {
         if statement.get_identifier() != "fn" {
-            return Err(AssemblyGenerationError::ExpectedSpecificStatement("fn".to_string()));
+            return Err(AssemblyGenerationError::ExpectedSpecificStatement(
+                "fn".to_string()
+            ));
         }
 
         let mut expression_iter = statement.get_expressions().clone().into_iter();
@@ -149,9 +149,7 @@ impl AssemblyBuilder {
             }
             self.declared_functions.insert("main".to_string());
         }
-        self.add_instruction(
-            InstructionBuilder::new(format!(":{}", name))
-        );
+        self.add_instruction(InstructionBuilder::new(format!(":{}", name)));
 
         // TODO: Figure out parameters
 
@@ -161,14 +159,12 @@ impl AssemblyBuilder {
                 Expression::Statement(statement) => match statement.get_identifier().as_str() {
                     "fn" => return Err(AssemblyGenerationError::NestedFunctionNotAllowed),
                     _ => self.generate_statement_assembly(statement)?
-                }
+                },
                 _ => return Err(AssemblyGenerationError::ExpectedStatement)
             }
         }
 
-        self.add_instruction(
-            InstructionBuilder::new("return".to_string())
-        );
+        self.add_instruction(InstructionBuilder::new("return".to_string()));
         Ok(())
     }
 
@@ -179,7 +175,10 @@ impl AssemblyBuilder {
 
 impl InstructionBuilder {
     pub fn new(operator: String) -> InstructionBuilder {
-        InstructionBuilder { operator, operands: Vec::new() }
+        InstructionBuilder {
+            operator,
+            operands: Vec::new()
+        }
     }
 
     pub fn add_operand(&mut self, operand: String) {
