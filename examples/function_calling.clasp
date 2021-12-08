@@ -1,0 +1,8 @@
+(fn add_two_numbers
+  (accept (a number) (b number))
+  (returns number)
+  (return (+ a b)))
+
+(fn main
+  (returns number)
+  (return (add_two_numbers 1 2)))
