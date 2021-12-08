@@ -12,7 +12,7 @@ use std::fs;
 
 fn help_text() -> String {
     let mut help_text = String::new();
-    help_text.push_str("Usage: clasmc [options] <file>\n");
+    help_text.push_str("Usage: claspc [options] <file>\n");
     help_text.push_str("Options:\n");
     help_text.push_str("  -h, --help                 Print this help text\n");
     help_text.push_str("  -v, --version              Print the version number\n");
@@ -25,6 +25,8 @@ fn help_text() -> String {
         .push_str("  -S, --assembly             Only compile source to assembly, not executable\n");
     help_text
         .push_str("  -T, --tokens               Only output token data, no assembly or binary\n");
+    help_text
+        .push_str("  --ast                      Only output the AST, no assembly or binary\n");
 
     help_text
 }
