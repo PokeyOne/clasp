@@ -102,7 +102,7 @@ fn test_build_program_with_one_instruction_and_data() {
 #[test]
 fn test_generate_hello_world_assembly() -> Result<(), AssemblyGenerationError> {
     // Compile the source code
-    let program_text= "(fn main (println \"hello\"))".to_string();
+    let program_text = "(fn main (println \"hello\"))".to_string();
     let tokens = clasp_parsing::tokenization::tokenize(&program_text).unwrap();
     let ast = clasp_parsing::parsing::parse_tree(tokens).unwrap();
 

@@ -1,6 +1,8 @@
 #[cfg(test)]
 mod tests;
 
+mod clasp_std;
+
 use crate::parsing::ast::{Ast, Expression, Literal, Statement};
 
 #[derive(Debug, Clone, PartialEq)]
@@ -8,16 +10,18 @@ pub enum AssemblyGenerationError {
     ExpectedStatement,
     ExpectedSpecificStatement(String),
     ExpectedIdentifierForFunctionName,
+    NestedFunctionNotAllowed,
     #[allow(dead_code)]
     NotImplemented
 }
+use AssemblyGenerationError::*;
 
 pub struct AssemblyBuilder {
     instructions: Vec<InstructionBuilder>,
     data_segment: DataSegmentBuilder
 }
 
-struct InstructionBuilder {
+pub struct InstructionBuilder {
     operator: String,
     operands: Vec<String>
 }
@@ -53,11 +57,12 @@ impl AssemblyBuilder {
         source
     }
 
-    fn format_literal(&mut self, literal: Literal) -> String {
+    fn format_literal(&mut self, literal: &Literal) -> String {
         match literal {
-            Literal::Number(number) => format!("{}", number),
-            Literal::String(string) => format!("\"{}\"", string),
-            Literal::Boolean(bool) => format!("{}", bool)
+            Literal::Number(number) => format!("({})", number),
+            // TODO: Strings will have to be added to the data segment
+            Literal::String(string) => panic!("Strings not yet supported"),
+            Literal::Boolean(bool) => format!("({})", if *bool { 1 } else { 0 })
         }
     }
 
@@ -67,6 +72,30 @@ impl AssemblyBuilder {
     ) -> Result<(), AssemblyGenerationError> {
         match statement.get_identifier().as_str() {
             "fn" => self.generate_function_assembly(statement),
+            name => {
+                let mut operands = Vec::new();
+                for expression in statement.get_expressions() {
+                    match expression {
+                        Expression::Literal(literal) => {
+                            operands.push(self.format_literal(literal))
+                        },
+                        Expression::Identifier(identifier) => {
+                            // TODO: dereference variables
+                            return Err(NotImplemented);
+                        },
+                        Expression::Statement(_) => {
+                            return Err(NotImplemented);
+                        }
+                    }
+                }
+
+                self.add_instruction(InstructionBuilder {
+                    operator: name.to_string(),
+                    operands
+                });
+
+                Ok(())
+            },
             _ => Err(AssemblyGenerationError::NotImplemented)
         }
     }
@@ -92,7 +121,17 @@ impl AssemblyBuilder {
         println!("name: {}", name);
 
         // TODO: Figure out parameters
-        // TODO: for the rest of the expressions, generate assembly
+
+        // The rest of the expressions must be statements
+        while let Some(next_expr) = expression_iter.next() {
+            match next_expr {
+                Expression::Statement(statement) => match statement.get_identifier().as_str() {
+                    "fn" => return Err(AssemblyGenerationError::NestedFunctionNotAllowed),
+                    _ => self.generate_statement_assembly(statement)?
+                }
+                _ => return Err(AssemblyGenerationError::ExpectedStatement)
+            }
+        }
 
         Err(AssemblyGenerationError::NotImplemented)
     }
