@@ -4,6 +4,7 @@ pub mod general_instructions;
 pub mod jump_instructions;
 pub mod math_instructions;
 pub mod utility;
+pub mod program_builder;
 
 pub use comparison_instructions::*;
 pub use console_instructions::*;
