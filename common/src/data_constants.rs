@@ -40,6 +40,12 @@ mod register_locations {
 
 pub use register_locations::*;
 
+// TODO: actually sort memory using theses constants
+pub const PROGRAM_SEGMENT_START: usize = 0b000 << 61;
+pub const DATA_SEGMENT_START: MemoryLocation = 0b001 << 61;
+pub const STACK_SEGMENT_START: MemoryLocation = 0b010 << 61;
+pub const HEAP_SEGMENT_START: MemoryLocation = 0b011 << 61;
+
 // TODO: Consider just an enum Register
 
 pub fn get_register_address(name: &str) -> Option<u64> {
