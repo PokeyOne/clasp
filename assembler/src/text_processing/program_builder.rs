@@ -3,7 +3,9 @@ mod tests;
 
 pub mod build_functions;
 
+use std::cell::RefCell;
 use std::collections::HashMap;
+use std::rc::Rc;
 use clasp_common::io::CCLASP_SIGNATURE;
 use clasp_common::data_constants::get_register_address;
 
@@ -18,6 +20,7 @@ pub struct ProgramBuilder {
 pub struct InstructionBuilder {
     pub instruction: InstructionKind,
     pub operands: Vec<OperandBuilder>,
+    program_builder: Rc<RefCell<ProgramBuilder>>
 }
 
 /// A description of an instruction and its operands.
@@ -30,7 +33,7 @@ pub struct InstructionKindDescription {
 type IKD = InstructionKindDescription;
 
 /// The kind of an instruction.
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub enum InstructionKind {
     Nop,
     Mov,
@@ -95,6 +98,7 @@ pub enum InstructionBuildError {
     ExpectedAddressableOperand,
     ExpectedExactOperand,
     InvalidRegister(String),
+    NoProgramBuilderAvailable
 }
 use InstructionBuildError::*;
 
@@ -107,14 +111,14 @@ impl ProgramBuilder {
     }
 
     /// Adds an instruction to the program.
-    pub fn add_instruction(&mut self, inst: InstructionBuilder) {
+    pub fn add_instruction(&mut self, mut inst: InstructionBuilder) {
         self.program.push(inst);
     }
 
     /// Builds all the instructions in the program into a collection of
     /// instructions. To build the program binary, use the `build_binary`
     /// method.
-    pub fn build(self) -> Result<Vec<Instruction>, InstructionBuildError> {
+    pub fn build(&self) -> Result<Vec<Instruction>, InstructionBuildError> {
         if self.program.len() == 0 {
             return Ok(
                 vec![
@@ -125,7 +129,7 @@ impl ProgramBuilder {
 
         let mut instructions = Vec::new();
         instructions.reserve(self.program.len());
-        for inst in self.program {
+        for inst in &self.program {
             instructions.push(inst.build()?);
         }
 
@@ -133,7 +137,7 @@ impl ProgramBuilder {
     }
 
     /// Builds the program into a binary.
-    pub fn build_binary(self) -> Result<Vec<u8>, InstructionBuildError> {
+    pub fn build_binary(&self) -> Result<Vec<u8>, InstructionBuildError> {
         let instructions = self.build()?;
         let mut binary = Vec::new();
         binary.extend_from_slice(&CCLASP_SIGNATURE);
@@ -227,10 +231,11 @@ impl OperandType {
 }
 
 impl InstructionBuilder {
-    pub fn new(instruction: InstructionKind) -> Self {
+    pub fn new(instruction: InstructionKind, program_builder: Rc<RefCell<ProgramBuilder>>) -> Self {
         Self {
             instruction,
-            operands: Vec::new()
+            operands: Vec::new(),
+            program_builder
         }
     }
 
@@ -254,12 +259,12 @@ impl InstructionBuilder {
         Ok(())
     }
 
-    pub fn build(self) -> Result<Instruction, InstructionBuildError> {
+    pub fn build(&self) -> Result<Instruction, InstructionBuildError> {
         self.verify()?;
         let built_operands = self.build_operands()?;
 
         Ok(Instruction {
-            kind: self.instruction,
+            kind: self.instruction.clone(),
             operands: built_operands,
         })
     }
