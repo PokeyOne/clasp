@@ -12,9 +12,9 @@ use crate::text_processing::program_builder::InstructionBuildError;
 /// # use clasp_assembler::text_processing::program_builder::InstructionBuildError;
 /// # use clasp_common::instruction_constants::END_CODE;
 /// # use clasp_common::data_types::ByteCollection;
-/// let result = end::end();
+/// let result = end();
 /// assert!(result.is_ok());
-/// assert_eq!(result.unwrap(), END_CODE.to_bytes().into_vec());
+/// assert_eq!(result.unwrap(), END_CODE.to_bytes().to_vec());
 /// ```
 pub fn end() -> Result<Vec<u8>, InstructionBuildError> {
     Ok(END_CODE.to_bytes().to_vec())

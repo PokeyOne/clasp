@@ -1,10 +1,11 @@
 #[cfg(test)]
 mod tests;
 
-mod build_functions;
+pub mod build_functions;
 
 use std::collections::HashMap;
 use clasp_common::io::CCLASP_SIGNATURE;
+use clasp_common::data_constants::get_register_address;
 
 /// A utility for building a program.
 #[derive(Debug)]
@@ -16,7 +17,7 @@ pub struct ProgramBuilder {
 #[derive(Debug)]
 pub struct InstructionBuilder {
     pub instruction: InstructionKind,
-    pub operands: Vec<Operand>,
+    pub operands: Vec<OperandBuilder>,
 }
 
 /// A description of an instruction and its operands.
@@ -36,7 +37,7 @@ pub enum InstructionKind {
     End
 }
 
-/// The type of operand that an instruction argument can have.
+/// The type of operand that an assembly instruction argument can have.
 // TODO: Eventually this should not allow dead code, but for now it's fine
 #[allow(dead_code)]
 #[derive(Debug, Clone)]
@@ -61,13 +62,23 @@ pub enum OperandType {
     Some(Vec<OperandType>),
 }
 
+/// The operand in the assembly language. It may be a reference to a register,
+/// label, or data block; or it may be an immediate or address value.
 #[derive(Debug)]
-pub enum Operand {
+pub enum OperandBuilder {
     Register(String),
     Immediate(u64),
     Address(u64),
     Label(String),
     Data(String)
+}
+
+/// The compiled and dereferenced operand that can directly be used in the
+/// instruction without the context of the program.
+#[derive(Debug)]
+pub enum Operand {
+    Immediate(u64),
+    Address(u64)
 }
 
 #[derive(Debug)]
@@ -81,6 +92,9 @@ pub enum InstructionBuildError {
     #[allow(dead_code)]
     NotImplemented,
     WrongNumberOfOperands,
+    ExpectedAddressableOperand,
+    ExpectedExactOperand,
+    InvalidRegister(String),
 }
 use InstructionBuildError::*;
 
@@ -172,38 +186,38 @@ impl InstructionKind {
 }
 
 impl OperandType {
-    pub fn is_valid_operand(&self, operand: &Operand) -> bool {
+    pub fn is_valid_operand(&self, operand: &OperandBuilder) -> bool {
         match self {
             OperandType::Register => match operand {
-                Operand::Register(_) => true,
+                OperandBuilder::Register(_) => true,
                 _ => false,
             },
             OperandType::Immediate => match operand {
-                Operand::Immediate(_) => true,
+                OperandBuilder::Immediate(_) => true,
                 _ => false,
             },
             OperandType::Address => match operand {
-                Operand::Address(_) => true,
+                OperandBuilder::Address(_) => true,
                 _ => false,
             },
             OperandType::Label => match operand {
-                Operand::Label(_) => true,
+                OperandBuilder::Label(_) => true,
                 _ => false,
             },
             OperandType::Data => match operand {
-                Operand::Data(_) => true,
+                OperandBuilder::Data(_) => true,
                 _ => false,
             },
             OperandType::Valuable => match operand {
-                Operand::Register(_) => true,
-                Operand::Immediate(_) => true,
-                Operand::Address(_) => true,
-                Operand::Data(_) => true,
+                OperandBuilder::Register(_) => true,
+                OperandBuilder::Immediate(_) => true,
+                OperandBuilder::Address(_) => true,
+                OperandBuilder::Data(_) => true,
                 _ => false,
             },
             OperandType::Destination => match operand {
-                Operand::Register(_) => true,
-                Operand::Address(_) => true,
+                OperandBuilder::Register(_) => true,
+                OperandBuilder::Address(_) => true,
                 _ => false,
             },
             OperandType::Any => true,
@@ -220,7 +234,7 @@ impl InstructionBuilder {
         }
     }
 
-    pub fn add_operand(&mut self, operand: Operand) {
+    pub fn add_operand(&mut self, operand: OperandBuilder) {
         self.operands.push(operand);
     }
 
@@ -242,11 +256,53 @@ impl InstructionBuilder {
 
     pub fn build(self) -> Result<Instruction, InstructionBuildError> {
         self.verify()?;
+        let built_operands = self.build_operands()?;
 
         Ok(Instruction {
             kind: self.instruction,
-            operands: self.operands
+            operands: built_operands,
         })
+    }
+
+    fn build_operands(&self) -> Result<Vec<Operand>, InstructionBuildError> {
+        let mut operands = Vec::new();
+        for operand in self.operands.iter() {
+            match operand {
+                OperandBuilder::Register(reg) => {
+                    let addr = match get_register_address(reg) {
+                        Some(addr) => addr,
+                        None => return Err(InvalidRegister(reg.clone())),
+                    };
+                    operands.push(Operand::Address(addr));
+                }
+                OperandBuilder::Immediate(imm) => {
+                    operands.push(Operand::Immediate(*imm));
+                }
+                OperandBuilder::Address(addr) => {
+                    operands.push(Operand::Address(*addr));
+                }
+                // TODO: Implement a way to get label and data information
+                //       from the program builder. At this point all labels and
+                //       data are already in the program builder.
+                OperandBuilder::Label(label) => {
+                    return Err(NotImplemented);
+                }
+                OperandBuilder::Data(data) => {
+                    return Err(NotImplemented);
+                }
+            }
+        }
+
+        Ok(operands)
+    }
+}
+
+impl Operand {
+    fn to_be_bytes(&self) -> [u8; 8] {
+        match self {
+            Operand::Immediate(imm) => imm.to_be_bytes(),
+            Operand::Address(addr) => addr.to_be_bytes()
+        }
     }
 }
 

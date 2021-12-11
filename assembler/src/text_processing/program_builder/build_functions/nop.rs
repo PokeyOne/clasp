@@ -10,7 +10,7 @@ use crate::text_processing::program_builder::InstructionBuildError;
 /// ```
 /// # use clasp_assembler::text_processing::program_builder::build_functions::nop;
 /// # use clasp_assembler::text_processing::program_builder::InstructionBuildError;
-/// let result = nop::nop();
+/// let result = nop();
 /// assert!(result.is_ok());
 /// assert_eq!(result.unwrap(), vec![0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]);
 /// ```
