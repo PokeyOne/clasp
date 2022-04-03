@@ -135,7 +135,19 @@ impl<'a> Tokenizer<'a> {
     /// Consume and return the next character while keeping track of position
     /// and line number.
     fn next(&mut self) -> Option<char> {
-        self.data.next()
+        println!("line: {}, col: {}, c: {:?}", self.line, self.col, self.data.peek());
+        match self.data.next() {
+            Some('\n') => {
+                self.col = 0;
+                self.line += 1;
+                Some('\n')
+            }
+            Some(c) => {
+                self.col += 1;
+                Some(c)
+            }
+            None => None
+        }
     }
 
     /// Discard the next character.
