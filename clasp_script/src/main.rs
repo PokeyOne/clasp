@@ -1,3 +1,6 @@
+mod script;
+
+use script::Script;
 use std::path::PathBuf;
 use clap::Parser;
 use clasp_parsing::parsing::parse;
@@ -17,5 +20,7 @@ fn main() {
     let tokens = tokenize(&source).unwrap();
     let ast = parse(tokens).unwrap();
 
-    println!("{:?}", ast);
+    let script = Script::from_ast(ast);
+
+    script.execute();
 }
