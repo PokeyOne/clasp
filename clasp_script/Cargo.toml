@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 clasp_parsing = { path = "../parsing" }
+clap = { version = "3.1.8", features = ["derive"] }

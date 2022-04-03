@@ -1,3 +1,14 @@
+use std::path::PathBuf;
+use clap::Parser;
+
+#[derive(Parser, Debug)]
+#[clap(about, version, author)]
+pub struct Cli {
+    path: PathBuf
+}
+
 fn main() {
-    println!("Hello, world!");
+    let args = Cli::parse();
+
+    println!("{:?}", args);
 }
