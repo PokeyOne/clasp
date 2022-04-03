@@ -1,3 +1,5 @@
+// mod std;
+
 use std::collections::HashMap;
 use clasp_parsing::parsing::ast::{Expression, Literal};
 use crate::script::RuntimeException;
@@ -20,7 +22,15 @@ impl Context {
             }
             match &args[0] {
                 Expression::Literal(Literal::StringLiteral(s)) => println!("{}", s),
-                _ => return Err(RuntimeException::FeatureNotImplemented("println only accepts string literals".to_string())),
+                ex => match super::execute_expression(ex, &mut Context::new()) {
+                    Ok(Expression::Literal(Literal::StringLiteral(s))) => println!("{}", s),
+                    _ => return Err(RuntimeException::ArgumentTypeMismatch {
+                        function: "println".to_string(),
+                        expected_type: "string".to_string(),
+                        actual_type: ex.type_name(),
+                        argument_index: 0,
+                    }),
+                },
             }
             Ok(args[0].clone())
         }));

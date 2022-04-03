@@ -17,6 +17,17 @@ pub enum RuntimeException {
     /// * `.1`: The number of arguments that were passed.
     /// * `.2`: The name of the function that was called.
     WrongNumberOfArguments(usize, usize, String),
+    /// A method was called with the wrong argument type.
+    ArgumentTypeMismatch {
+        /// The name of the function that was called.
+        function: String,
+        /// The index of the argument that was passed.
+        argument_index: usize,
+        /// The expected type of the argument.
+        expected_type: String,
+        /// The actual type of the argument.
+        actual_type: String,
+    },
     FeatureNotImplemented(String)
 }
 
