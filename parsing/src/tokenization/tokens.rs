@@ -3,5 +3,6 @@
 pub enum Token {
     OpenBracket,
     CloseBracket,
-    Identifier(String)
+    Identifier(String),
+    StringLiteral(String)
 }

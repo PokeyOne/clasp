@@ -19,7 +19,9 @@ pub struct TokenError {
 
 #[derive(Debug, Clone, PartialEq)]
 pub enum TokenErrorKind {
-    UnexpectedChar(char)
+    UnexpectedChar(char),
+    UnterminatedString,
+    UnknownEscapeChar(char)
 }
 
 // Quick aliases for inside this module.
@@ -33,6 +35,8 @@ enum State {
     Delegate,
     Identifier(String),
     Whitespace,
+    StringLiteral(String),
+    StringLiteralEscape(String),
     /// Tokenization done.
     Done
 }
@@ -65,7 +69,7 @@ impl<'a> Tokenizer<'a> {
             data: data.chars().peekable(),
             tokens: Vec::new(),
             line: 1,
-            col: 1
+            col: 0
         }
     }
 
@@ -77,6 +81,8 @@ impl<'a> Tokenizer<'a> {
             state = match state {
                 State::Delegate => self.delegate()?,
                 State::Identifier(s) => self.identifier(s)?,
+                State::StringLiteral(s) => self.string_literal(s)?,
+                State::StringLiteralEscape(s) => self.string_literal_escape(s)?,
                 State::Whitespace => self.whitespace()?,
                 State::Done => unreachable!()
             }
@@ -110,6 +116,10 @@ impl<'a> Tokenizer<'a> {
             c if is_valid_identifier_char(c, true) => {
                 Ok(State::Identifier(String::new()))
             }
+            '"' => {
+                self.skip();
+                Ok(State::StringLiteral(String::new()))
+            }
             _ => Err(self.error(ErrorKind::UnexpectedChar(next)))
         }
     }
@@ -130,6 +140,51 @@ impl<'a> Tokenizer<'a> {
 
                 Ok(State::Delegate)
             }
+        }
+    }
+
+    fn string_literal(&mut self, mut value: String) -> Result<State, Error> {
+        let next = match self.peek() {
+            Some(c) => c,
+            None => return Err(self.error(ErrorKind::UnterminatedString))
+        };
+
+        match next {
+            '"' => {
+                self.skip();
+                self.tokens.push(StringLiteral(value));
+                Ok(State::Delegate)
+            }
+            '\\' => {
+                self.skip();
+                Ok(State::StringLiteralEscape(value))
+            }
+            c => {
+                value.push(c);
+                self.skip();
+                Ok(State::StringLiteral(value))
+            }
+        }
+    }
+
+    fn string_literal_escape(&mut self, mut value: String) -> Result<State, Error> {
+        let next = match self.peek() {
+            Some(c) => c,
+            None => return Err(self.error(ErrorKind::UnterminatedString))
+        };
+
+        match next {
+            '"' => {
+                self.skip();
+                value.push('"');
+                Ok(State::StringLiteral(value))
+            }
+            'n' => {
+                self.skip();
+                value.push('\n');
+                Ok(State::StringLiteral(value))
+            }
+            c => Err(self.error(ErrorKind::UnknownEscapeChar(c)))
         }
     }
 
