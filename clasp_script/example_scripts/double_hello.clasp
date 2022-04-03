@@ -1,0 +1,3 @@
+("The println function should return what is printed, so this
+should print 'Hello World!' twice.")
+(println (println "Hello, World!"))

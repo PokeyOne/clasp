@@ -22,5 +22,5 @@ fn main() {
 
     let script = Script::from_ast(ast);
 
-    script.execute();
+    script.execute().unwrap();
 }

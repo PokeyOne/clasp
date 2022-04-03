@@ -7,6 +7,7 @@ pub struct Script {
     pub ast: Ast,
 }
 
+#[derive(Debug, Clone, PartialEq)]
 pub enum RuntimeException {
     UndefinedVariableOrFunction(String),
     /// The wrong number of arguments were passed to a function.
