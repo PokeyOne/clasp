@@ -121,7 +121,7 @@ impl<'a> Tokenizer<'a> {
     }
 
     fn identifier(&mut self, mut ident: String) -> Result<State, Error> {
-        let is_first_char = ident.len() == 0;
+        let is_first_char = ident.is_empty();
 
         match self.peek() {
             Some(c) if is_valid_identifier_char(c, is_first_char) => {
@@ -130,7 +130,7 @@ impl<'a> Tokenizer<'a> {
                 Ok(State::Identifier(ident))
             }
             _ => {
-                if ident.len() > 0 {
+                if !ident.is_empty() {
                     self.tokens.push(Identifier(ident));
                 }
 
