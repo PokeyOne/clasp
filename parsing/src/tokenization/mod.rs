@@ -5,8 +5,8 @@ mod tokens;
 
 pub use tokens::Token;
 
-use std::str::Chars;
 use std::iter::Peekable;
+use std::str::Chars;
 
 use Token::*;
 
@@ -110,12 +110,8 @@ impl<'a> Tokenizer<'a> {
                 self.skip();
                 Ok(State::Delegate)
             }
-            c if c.is_whitespace() => {
-                Ok(State::Whitespace)
-            }
-            c if is_valid_identifier_char(c, true) => {
-                Ok(State::Identifier(String::new()))
-            }
+            c if c.is_whitespace() => Ok(State::Whitespace),
+            c if is_valid_identifier_char(c, true) => Ok(State::Identifier(String::new())),
             '"' => {
                 self.skip();
                 Ok(State::StringLiteral(String::new()))
@@ -221,7 +217,12 @@ impl<'a> Tokenizer<'a> {
     /// Consume and return the next character while keeping track of position
     /// and line number.
     fn next(&mut self) -> Option<char> {
-        println!("line: {}, col: {}, c: {:?}", self.line, self.col, self.data.peek());
+        println!(
+            "line: {}, col: {}, c: {:?}",
+            self.line,
+            self.col,
+            self.data.peek()
+        );
         match self.data.next() {
             Some('\n') => {
                 self.col = 0;
@@ -250,7 +251,11 @@ impl<'a> Tokenizer<'a> {
     /// Untility method to create a new error object using the stored line
     /// and column values of the tokenizer.
     fn error(&self, kind: ErrorKind) -> Error {
-        Error { line: self.line, col: self.col, kind }
+        Error {
+            line: self.line,
+            col: self.col,
+            kind
+        }
     }
 }
 
