@@ -1,9 +1,12 @@
+// TODO: This whole file is going to need a major rewrite now that the ast has been
+//       re-written.
+
 #[cfg(test)]
 mod tests;
 
 mod clasp_std;
 
-use crate::parsing::ast::{Ast, Expression, Literal, Statement};
+use crate::parsing::ast::{Ast, Expression, Literal};
 use std::collections::HashSet;
 
 #[derive(Debug, Clone, PartialEq)]
@@ -76,6 +79,8 @@ impl AssemblyBuilder {
     }
 
     fn format_literal(&mut self, literal: &Literal) -> String {
+        todo!("update format_literal for new parser");
+        /*
         match literal {
             Literal::Number(number) => format!("({})", number),
             Literal::String(string) => {
@@ -84,8 +89,11 @@ impl AssemblyBuilder {
             }
             Literal::Boolean(bool) => format!("({})", if *bool { 1 } else { 0 })
         }
+        */
     }
 
+    // TODO: update generate_statement_assembly for new parser
+    /*
     fn generate_statement_assembly(
         &mut self,
         statement: Statement
@@ -127,6 +135,7 @@ impl AssemblyBuilder {
         &mut self,
         statement: Statement
     ) -> Result<(), AssemblyGenerationError> {
+        // TODO: update generate_function_assembly for new parser
         if statement.get_identifier() != "fn" {
             return Err(AssemblyGenerationError::ExpectedSpecificStatement(
                 "fn".to_string()
@@ -167,7 +176,7 @@ impl AssemblyBuilder {
         self.add_instruction(InstructionBuilder::new("return".to_string()));
         Ok(())
     }
-
+     */
     fn data_segment(&mut self) -> &mut DataSegmentBuilder {
         &mut self.data_segment
     }
@@ -243,6 +252,8 @@ impl DataSegmentBuilder {
 pub fn generate_assembly(ast: Ast) -> Result<AssemblyBuilder, AssemblyGenerationError> {
     let mut builder = AssemblyBuilder::new();
 
+    todo!("rewrite generate_assembly for the new parser");
+    /*
     for expression in ast.into_expressions() {
         match expression {
             Expression::Statement(statement) => {
@@ -250,7 +261,7 @@ pub fn generate_assembly(ast: Ast) -> Result<AssemblyBuilder, AssemblyGeneration
             }
             _ => return Err(AssemblyGenerationError::ExpectedStatement)
         }
-    }
+    }*/
 
     Ok(builder)
 }

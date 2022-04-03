@@ -104,13 +104,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         return Ok(());
     }
 
-    let ast = match parsing::parse_tree(tokens) {
+    let ast = match parsing::parse(tokens) {
         Ok(val) => val,
         Err(msg) => panic!("{:?}", msg)
     };
     if *run_options.output_format() == OutputFormat::Ast {
         println!("{:#?}", ast);
-        println!("Reconstructed code: \n{}", ast.reconstruct_code());
+        // TODO: Reimplement this in the ast rewrite
+        // println!("Reconstructed code: \n{}", ast.reconstruct_code());
         return Ok(());
     }
 
