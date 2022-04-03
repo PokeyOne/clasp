@@ -2,5 +2,6 @@
 #[derive(Debug, Clone, PartialEq)]
 pub enum Token {
     OpenBracket,
-    CloseBracket
+    CloseBracket,
+    Identifier(String)
 }

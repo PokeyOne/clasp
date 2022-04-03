@@ -31,6 +31,7 @@ type ErrorKind = TokenErrorKind;
 enum State {
     /// A generic state that delegates responsibilities elsewhere.
     Delegate,
+    Identifier(String),
     /// Tokenization done.
     Done
 }
@@ -74,6 +75,7 @@ impl<'a> Tokenizer<'a> {
         while state != State::Done {
             state = match state {
                 State::Delegate => self.delegate()?,
+                State::Identifier(s) => self.identifier(s)?,
                 State::Done => unreachable!()
             }
         }
@@ -100,7 +102,29 @@ impl<'a> Tokenizer<'a> {
                 self.skip();
                 Ok(State::Delegate)
             }
+            c if is_valid_identifier_char(c, true) => {
+                Ok(State::Identifier(String::new()))
+            }
             _ => Err(self.error(ErrorKind::UnexpectedChar(next)))
+        }
+    }
+
+    fn identifier(&mut self, mut ident: String) -> Result<State, Error> {
+        let is_first_char = ident.len() == 0;
+
+        match self.peek() {
+            Some(c) if is_valid_identifier_char(c, is_first_char) => {
+                self.skip();
+                ident.push(c);
+                Ok(State::Identifier(ident))
+            }
+            _ => {
+                if ident.len() > 0 {
+                    self.tokens.push(Identifier(ident));
+                }
+
+                Ok(State::Delegate)
+            }
         }
     }
 

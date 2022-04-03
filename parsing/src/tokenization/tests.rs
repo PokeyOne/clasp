@@ -26,3 +26,31 @@ fn test_just_brackets() -> TestResult {
 
     Ok(())
 }
+
+#[test]
+fn test_identifier() -> TestResult {
+    let result = tokenize("test")?;
+
+    let expected = vec![
+        Identifier("test".to_string())
+    ];
+
+    assert_eq!(result, expected);
+
+    Ok(())
+}
+
+#[test]
+fn test_identifier_in_brackets() -> TestResult {
+    let result = tokenize("(test)")?;
+
+    let expected = vec![
+        OpenBracket,
+        Identifier("test".to_string()),
+        CloseBracket
+    ];
+
+    assert_eq!(result, expected);
+
+    Ok(())
+}
