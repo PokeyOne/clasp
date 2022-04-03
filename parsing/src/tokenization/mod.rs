@@ -32,6 +32,7 @@ enum State {
     /// A generic state that delegates responsibilities elsewhere.
     Delegate,
     Identifier(String),
+    Whitespace,
     /// Tokenization done.
     Done
 }
@@ -76,6 +77,7 @@ impl<'a> Tokenizer<'a> {
             state = match state {
                 State::Delegate => self.delegate()?,
                 State::Identifier(s) => self.identifier(s)?,
+                State::Whitespace => self.whitespace()?,
                 State::Done => unreachable!()
             }
         }
@@ -101,6 +103,9 @@ impl<'a> Tokenizer<'a> {
 
                 self.skip();
                 Ok(State::Delegate)
+            }
+            c if c.is_whitespace() => {
+                Ok(State::Whitespace)
             }
             c if is_valid_identifier_char(c, true) => {
                 Ok(State::Identifier(String::new()))
@@ -128,6 +133,17 @@ impl<'a> Tokenizer<'a> {
         }
     }
 
+    fn whitespace(&mut self) -> Result<State, Error> {
+        match self.peek() {
+            Some(c) if c.is_whitespace() => {
+                self.skip();
+                Ok(State::Whitespace)
+            }
+            _ => Ok(State::Delegate)
+        }
+    }
+
+    /// Take a little peeksy at the next character without advancing.
     fn peek(&mut self) -> Option<char> {
         self.data.peek().copied()
     }

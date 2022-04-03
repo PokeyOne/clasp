@@ -54,3 +54,19 @@ fn test_identifier_in_brackets() -> TestResult {
 
     Ok(())
 }
+
+#[test]
+fn test_multiple_identifiers() -> TestResult {
+    let result = tokenize("(food bar)")?;
+
+    let expected = vec![
+        OpenBracket,
+        Identifier("food".to_string()),
+        Identifier("bar".to_string()),
+        CloseBracket
+    ];
+
+    assert_eq!(result, expected);
+
+    Ok(())
+}
