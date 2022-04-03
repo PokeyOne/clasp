@@ -1,5 +1,7 @@
 use std::path::PathBuf;
 use clap::Parser;
+use clasp_parsing::parsing::parse;
+use clasp_parsing::tokenization::tokenize;
 
 #[derive(Parser, Debug)]
 #[clap(about, version, author)]
@@ -10,5 +12,10 @@ pub struct Cli {
 fn main() {
     let args = Cli::parse();
 
-    println!("{:?}", args);
+    let source = std::fs::read_to_string(args.path).unwrap();
+
+    let tokens = tokenize(&source).unwrap();
+    let ast = parse(tokens).unwrap();
+
+    println!("{:?}", ast);
 }
