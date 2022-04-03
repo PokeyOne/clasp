@@ -184,6 +184,21 @@ impl<'a> Tokenizer<'a> {
                 value.push('\n');
                 Ok(State::StringLiteral(value))
             }
+            't' => {
+                self.skip();
+                value.push('\t');
+                Ok(State::StringLiteral(value))
+            }
+            '\\' => {
+                self.skip();
+                value.push('\\');
+                Ok(State::StringLiteral(value))
+            }
+            'r' => {
+                self.skip();
+                value.push('\r');
+                Ok(State::StringLiteral(value))
+            }
             c => Err(self.error(ErrorKind::UnknownEscapeChar(c)))
         }
     }
