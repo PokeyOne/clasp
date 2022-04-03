@@ -11,7 +11,7 @@ use std::iter::Peekable;
 #[derive(Debug, Clone, PartialEq)]
 pub enum AstConstructionError {
     UnexpectedToken(Token),
-    UnexpectedEOF,
+    UnexpectedEof,
 }
 
 // Convenience alias for this file.
@@ -40,8 +40,46 @@ pub fn parse(tokens: Vec<Token>) -> Result<Ast, Error> {
 }
 
 fn parse_expr(
-    data: &mut Peekable<IntoIter<Token>>
+    tokens: &mut Peekable<IntoIter<Token>>
 ) -> Result<Option<Expression>, Error> {
-    // TODO: Implement this.
-    Ok(None)
+    let next_token = match tokens.next() {
+        Some(t) => t,
+        None => return Ok(None)
+    };
+
+    match next_token {
+        Token::OpenBracket => parse_series_expr(tokens),
+        Token::CloseBracket => Err(Error::UnexpectedToken(Token::CloseBracket)),
+        Token::Identifier(s) => Ok(Some(Expression::Ident(s))),
+        Token::StringLiteral(s) => Ok(Some(
+            Expression::Literal(Literal::StringLiteral(s))
+        ))
+    }
+}
+
+fn parse_series_expr(tokens: &mut Peekable<IntoIter<Token>>)
+                     -> Result<Option<Expression>, Error> {
+    let mut exprs = Vec::new();
+
+    loop {
+        let next_token = match tokens.peek() {
+            Some(t) => t,
+            None => return Err(Error::UnexpectedEof)
+        };
+
+        match next_token {
+            Token::CloseBracket => {
+                // Safe to unwrap because just did a peek.
+                tokens.next().unwrap();
+
+                return Ok(Some(Expression::Series(exprs)))
+            },
+            _ => {
+                match parse_expr(tokens)? {
+                    Some(v) => exprs.push(v),
+                    None => return Err(Error::UnexpectedEof)
+                }
+            }
+        }
+    }
 }
