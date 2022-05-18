@@ -41,6 +41,7 @@ pub mod instruction_codes {
     pub const POW_CODE_AC: Word = POW_CODE + MATH_MOD_AC;
     pub const POW_CODE_AA: Word = POW_CODE + MATH_MOD_AA;
     pub const END_CODE: Word = 0x0000_0000_0000_0007u64;
+    /// deprecated
     pub const MOVR_CODE: Word = 0x0000_0000_0000_0008u64;
     pub const OUTR_ADDR_CODE: Word = 0x0000_0000_0000_0009u64;
     pub const OUTR_LIT_CODE: Word = 0x0000_0000_0000_000Au64;

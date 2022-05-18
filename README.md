@@ -1,7 +1,7 @@
 # CLASP
 
 ![gpl 3 badge](https://img.shields.io/badge/license-GPL%203.0-blue)
-![lines of code](https://img.shields.io/badge/lines%20of%20rust-5045-informational)
+![lines of code](https://img.shields.io/badge/lines%20of%20rust-5486-informational)
 
 **The information below is out of date as of May 17 2022 because there have been some major changes
 in how the language is structured**. *more to come in the future*

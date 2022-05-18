@@ -1,3 +1,4 @@
+use clasp_common::data_constants::DATA_SEGMENT_START;
 use super::*;
 use crate::{data_block, string_vec};
 
@@ -57,6 +58,20 @@ fn test_call_with_label() -> Result<(), OpProcessError> {
     assert_eq!(expected_data, data);
     assert_eq!(1, future_label_refs.len());
     assert_eq!((":main".to_string(), 8), future_label_refs[0]);
+
+    Ok(())
+}
+
+#[test]
+#[ignore = "TODO: fix this test"]
+fn test_call_with_arguments() -> Result<(), OpProcessError> {
+    let tokens = string_vec!["call", ":println", ".d0000"];
+    let expected_data: Vec<u8> = data_block![CALL_CODE, 0, DATA_SEGMENT_START];
+
+    let (data, future_label_refs) = call_process(tokens)?;
+
+    assert_eq!(expected_data, data);
+    assert_eq!(0, future_label_refs.len());
 
     Ok(())
 }

@@ -4,12 +4,11 @@ use super::data_types::*;
 pub const WORD_SIZE: usize = 8;
 
 #[allow(dead_code)]
-mod register_locations {
-    use super::{MemoryLocation, WORD_SIZE};
+pub mod register_locations {
+    use super::{MemoryLocation, WORD_SIZE, REGISTER_SEGMENT_START};
 
     pub const REGISTER_COUNT: u64 = 26;
-    pub const REGISTER_MEMORY_START: MemoryLocation = 0x8000_0000_0000_0000;
-    pub const RMS: MemoryLocation = REGISTER_MEMORY_START;
+    pub const RMS: MemoryLocation = REGISTER_SEGMENT_START;
     pub const GA_LOC: MemoryLocation = RMS + (WORD_SIZE * 0) as u64;
     pub const GB_LOC: MemoryLocation = RMS + (WORD_SIZE * 1) as u64;
     pub const GC_LOC: MemoryLocation = RMS + (WORD_SIZE * 2) as u64;
@@ -39,6 +38,13 @@ mod register_locations {
 }
 
 pub use register_locations::*;
+
+// TODO: actually sort memory using theses constants
+pub const PROGRAM_SEGMENT_START: usize = 0b000 << 61;
+pub const DATA_SEGMENT_START: MemoryLocation = 0b001 << 61;
+pub const STACK_SEGMENT_START: MemoryLocation = 0b010 << 61;
+pub const HEAP_SEGMENT_START: MemoryLocation = 0b011 << 61;
+pub const REGISTER_SEGMENT_START: MemoryLocation = 0b100 << 61;
 
 // TODO: Consider just an enum Register
 

@@ -73,7 +73,7 @@ pub fn return_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>
 pub fn call_process(words: Vec<String>) -> Result<(Vec<u8>, Vec<(String, u64)>), OpProcessError> {
     println!("call: {:?}", &words);
 
-    if words.len() != 2 {
+    if words.len() < 2 {
         return Err(OpProcessError::WrongNumberOfArguments(
             "Expected one label argument after call instruction".to_string()
         ));
