@@ -25,16 +25,6 @@ and running the project.
 anything about quality, but I added it nonetheless because numbers are fun. Also,
 to auto update that badge, run the `stats.rb` script in the base of the project.
 
-## Feature Requests and Proposals
-All feature proposals that would be a significant change to the language
-should be brought up with a Feature Consideration or FC. To add one to
-the language, make a PR that contains and new file in the `fc` directory.
-Copy the file `fc/template.md` into `fc/0000-feature-name.md` and follow
-the instructions in the template. Before the PR is merged this number will
-be assigned.
-
-[FC Index](fc/INDEX.md)
-
 ## Documentation
 
 Currently documentation is light. Below is a list of documentation resources.
