@@ -3,6 +3,9 @@
 ![gpl 3 badge](https://img.shields.io/badge/license-GPL%203.0-blue)
 ![lines of code](https://img.shields.io/badge/lines%20of%20rust-5045-informational)
 
+**The information below is out of date as of May 17 2022 because there have been some major changes
+in how the language is structured**. *more to come in the future*
+
 The main idea behind this language is it is a bit of a combination of C, Java,
 and Lisp. The syntax is most like Lisp, the way the language is compiled
 and run is most like Java, and the behaviour and structure is most like like C.
@@ -19,7 +22,7 @@ is a cargo project. All the standard cargo commands work in terms of building
 and running the project.
 
 **note on the lines of code badge above**: Line of code isn't a metric that says
-anything about quality, but I added it nonetheless because number are fun. Also,
+anything about quality, but I added it nonetheless because numbers are fun. Also,
 to auto update that badge, run the `stats.rb` script in the base of the project.
 
 ## Feature Requests and Proposals
